@@ -2,6 +2,7 @@
 // alert()
 
 window.onload = () => {
+    // FOR REGISTER
     // set day select options
     const daySelect = document.getElementById('daySelect')
     let options = daySelect.innerHTML;
@@ -29,11 +30,16 @@ window.onload = () => {
 
 };
 
-function hello() {
-    alert('Hi Manh!')
+function openRegisterPopup() {
+    document.querySelector('#whole-popup').style.visibility = 'visible';
+
     // const activeItems = document.querySelectorAll(".active");
 
     // activeItems.forEach((item) => {
     //     item.disabled = true;
     // });
-}
+};
+
+function closeRegisterPopup() {
+    document.querySelector('#whole-popup').style.visibility = 'hidden';
+};

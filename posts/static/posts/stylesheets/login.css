@@ -124,7 +124,11 @@ hr {
 
 /* POPUP */
 
-.popup-bg {
+#whole-popup {
+    visibility: hidden;
+}
+
+#popup-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -149,28 +153,39 @@ hr {
 
 #popup h3 {
     font-weight: bold;
+    font-size: 32px;
+    margin: 0px;
 }
 
 #popup .close {
     float: right;
+    font-weight: bold;
+    color: grey;
+    font-size: 20px;
 }
-
-/* 
-#popup .close::before {
-    cursor: default;
-}
-*/
-
-/* #popup {
-    cursor: default;
-    pointer-events: none;
-} */
 
 #popup a {
     cursor: default !important;
     color: inherit;
     text-decoration: inherit;
 }
+
+#popup hr {
+    margin: .6rem 0 1rem -20px;
+    width: inherit;
+}
+
+#popup input.form-control {
+    padding: 11px;
+    font-size: 15px;
+    background-color: #efefef;
+}
+
+#popup input.form-control:focus {
+    border: 1px solid #dee2e6;
+}
+
+/* DOB */
 
 #dob {
     margin-right: auto;
@@ -184,6 +199,8 @@ hr {
     width: 100%;
 }
 
+/* Gender */
+
 #gender input {
     float: right;
     border-color: #727272;
@@ -195,6 +212,11 @@ hr {
     margin-left: 10px;
     width: 30%;
     padding: 4px 8px;
+}
+
+#term {
+    font-size: 11px;
+    color: #707070;
 }
 
 #sign-up {

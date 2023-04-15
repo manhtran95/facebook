@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Facebook - Home{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'posts/stylesheets/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Facebook</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse me-auto" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Facebook</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#">Register</a>
+                </li> -->
+                <li>
+                    <div class="dropdown">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hi, {{user.username}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <form action="/logout" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link btn-logout dropdown-item">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'posts/scripts/home.js' %}"></script>
+{% endblock %}
