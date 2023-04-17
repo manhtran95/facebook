@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Facebook</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -41,6 +41,71 @@
         </div>
     </div>
 </nav>
+
+<main class="main">
+    <div class="vertical-nav">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">haha</a>
+            </li>
+        </ul>
+    </div>
+
+    <section class="content">
+        <div id="cover-photo">
+            <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="default-cover-photo">
+        </div>
+        <div id="basic-info">
+            <div id="profile-picture">
+                <div></div>
+                <!-- <img class="circle" src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="default-cover-photo"> -->
+                <img src="{% static 'posts/images/manh.jpg' %}" alt="default-profile-picture">
+            </div>
+            <div id="info">
+                <div class="full-name">{{user.username}}</div>
+                <div class="num-friends">688 friends</div>
+            </div>
+        </div>
+        <hr>
+        <div id="section-select">
+            <button>Posts</button>
+        </div>
+        <h2>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse eius saepe amet sit deleniti, cum
+            aspernatur dolores consequuntur voluptatem eaque, ex quaerat quas earum ipsum. Non neque quos nobis ab?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis consectetur sed officia dolor ex
+            maxime neque voluptates eveniet velit necessitatibus soluta magni alias deserunt, qui esse sit
+            exercitationem totam. Voluptatem?
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati rerum quod ut voluptatem vitae
+            cupiditate recusandae! Natus quisquam ipsum velit exercitationem necessitatibus amet sit nostrum,
+            provident quia, vitae numquam id?
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus, totam fugiat iure dolorum illo
+            consectetur cum nobis. Aspernatur, laudantium placeat ipsa fugiat odit illo non, sapiente accusamus
+            mollitia voluptas sint!
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse eius saepe amet sit deleniti, cum
+            aspernatur dolores consequuntur voluptatem eaque, ex quaerat quas earum ipsum. Non neque quos nobis ab?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis consectetur sed officia dolor ex
+            maxime neque voluptates eveniet velit necessitatibus soluta magni alias deserunt, qui esse sit
+            exercitationem totam. Voluptatem?
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati rerum quod ut voluptatem vitae
+            cupiditate recusandae! Natus quisquam ipsum velit exercitationem necessitatibus amet sit nostrum,
+            provident quia, vitae numquam id?
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus, totam fugiat iure dolorum illo
+            consectetur cum nobis. Aspernatur, laudantium placeat ipsa fugiat odit illo non, sapiente accusamus
+            mollitia voluptas sint!
+        </h2>
+    </section>
+</main>
+
 {% endblock %}
 
 {% block script %}
