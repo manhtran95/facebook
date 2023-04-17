@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 import re
+from django.contrib.auth.password_validation import validate_password, MinimumLengthValidator, NumericPasswordValidator
+from django.core.validators import validate_email
 
 
 class CustomUserManager(BaseUserManager):
@@ -11,11 +13,15 @@ class CustomUserManager(BaseUserManager):
 
     def create_user(self, username, email, password, **extra_fields):
         """
-        Create and save a user with the given email and password.
+        Create and save a user with the given username, email and password.
         """
         if not re.match(r'^[0-9a-zA-Z]+$', username):
-            raise ValueError(_('Only allow alphanumeric string for username!'))
+            raise ValueError(
+                _('Only allow alphanumeric characters for username!'))
         email = self.normalize_email(email)
+        validate_email(email)
+        validate_password(password, password_validators=[
+                          MinimumLengthValidator(min_length=6), NumericPasswordValidator()])
         user = self.model(username=username,
                           email=email, **extra_fields)
         user.set_password(password)
