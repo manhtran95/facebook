@@ -13,11 +13,12 @@ body {
     display: flex;
 }
 
-.main .vertical-nav {
+.main #vertical-nav {
     position: fixed;
     height: 100%;
     width: 5%;
-    background-color: #b7b7b7;
+    border-right: #b7b7b7 1px solid;
+    /* background-color: #b7b7b7; */
 }
 
 .main .content {
