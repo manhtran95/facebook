@@ -5,6 +5,13 @@ from django.views import View
 from django.conf import settings as conf_settings
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from django.forms import ModelForm
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "username", "email", "password"]
 
 
 class LoginView(View):
@@ -30,7 +37,9 @@ class RegisterView(View):
     def post(self, request):
         body = request.POST
         username, email, password = body['username'], body['email'], body['password']
-        user = User.objects.create_user(username, email, password)
+        user = User.objects.create_user(
+            username, email, password, first_name=body['first_name'], last_name=body['last_name'])
+        login(request, user)
         return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
 
 

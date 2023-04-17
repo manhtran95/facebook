@@ -27,7 +27,7 @@
                     <div class="dropdown">
                         <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Hi, {{user.username}}
+                            Hi, {{user.first_name}}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <form action="/logout" method="post">
@@ -71,7 +71,7 @@
                 <img src="{% static 'posts/images/manh.jpg' %}" alt="default-profile-picture">
             </div>
             <div id="info">
-                <div class="full-name">{{user.username}}</div>
+                <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
                 <div class="num-friends">688 friends</div>
             </div>
         </div>

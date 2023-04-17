@@ -23,7 +23,6 @@ body {
 .main .content {
     margin-left: 15%;
     width: 75%;
-    /* background-color: #dddddd; */
 }
 
 #cover-photo {
@@ -45,7 +44,7 @@ body {
     height: 164px;
     width: 164px;
     margin-top: -30px;
-    margin-left: 50px;
+    margin-left: 40px;
 }
 
 #profile-picture img {
