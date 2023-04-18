@@ -2,6 +2,7 @@
 // alert()
 
 window.onload = () => {
+    console.log("hello")
     // FOR REGISTER
     // set day select options
     const daySelect = document.getElementById('daySelect')
@@ -44,6 +45,44 @@ function closeRegisterPopup() {
     document.querySelector('#whole-popup').style.visibility = 'hidden';
 };
 
+/*
+(function () {
+    'use strict'
+    let inputs = document.querySelectorAll('#popup input')
+    console.log(inputs)
+
+    Array.prototype.slice.call(inputs)
+        .forEach(function (i) {
+            i.addEventListener('input', function (event) {
+                invalid = i.nextElementSibling;
+                invalid.style.display = "None";
+            }, false)
+        })
+})();
+*/
+(function () {
+    let regUsernameInput = document.querySelector('#reg-username');
+    let m = document.querySelector('.username-alphanumeric-message');
+
+    regUsernameInput.addEventListener('input', function (e) {
+        let input = e.target.value;
+        // hide feedback if input is erased
+        if (input === '') {
+            m.style.display = "None";
+            return;
+        }
+
+        // check last letter if valid
+        regUsernameInput.value = input.replace(/[^a-z0-9A-Z]/gi, '');
+        const regex = /[a-z0-9A-Z]/;
+        const valid = input.substr(input.length - 1).match(regex);
+        if (valid === null) {
+            m.style.display = "block";
+        }
+    });
+})();
+
+
 (function () {
     'use strict'
 
@@ -62,4 +101,4 @@ function closeRegisterPopup() {
                 form.classList.add('was-validated')
             }, false)
         })
-})()
+})();

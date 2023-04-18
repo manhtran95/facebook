@@ -54,21 +54,40 @@
                 <div class="mb-3 col-6">
                     <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name"
                         required>
+                    <div class="invalid-feedback">
+                        Please fill in your first name.
+                    </div>
                 </div>
                 <div class="mb-3 col-6">
                     <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name"
                         required>
+                    <div class="invalid-feedback">
+                        Please fill in your last name.
+                    </div>
                 </div>
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username"
+                    required>
+                <div class="invalid-feedback">
+                    Please fill in your username name.
+                </div>
+                <div class="my-invalid-feedback username-alphanumeric-message">
+                    Only letters and numbers are allowed in usernames.
+                </div>
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
+                <div class="invalid-feedback">
+                    Please fill in your email.
+                </div>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                <input type="password" class="form-control" id="reg-password" name="password" placeholder="Password"
                     required>
+                <div class="invalid-feedback">
+                    Please fill in your password.
+                </div>
             </div>
             <div id="whole-dob" class="mb-3">
                 <div class="text-muted"><small>Date of birth</small></div>
