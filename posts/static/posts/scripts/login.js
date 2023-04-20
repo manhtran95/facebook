@@ -80,6 +80,8 @@ function closeRegisterPopup() {
         const valid = input.substr(input.length - 1).match(regex);
         if (valid === null) {
             m.style.display = "block";
+        } else {
+            m.style.display = "None";
         }
     });
 })();
@@ -94,10 +96,15 @@ function closeRegisterPopup() {
         );
     };
 
+    const checkEntirelyNumericPassword = (pw) => {
+        if (pw.length >= 6 && pw.match(/^[1-9]+$/)) {
+            return true
+        };
+        return false;
+    };
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation')
-    let shortPwMess = document.querySelector('#pop-up .min-length-password');
-    console.log(shortPwMess)
 
     // Loop over them and prevent submission
     Array.prototype.slice.call(forms)
@@ -105,27 +112,22 @@ function closeRegisterPopup() {
             form.addEventListener('submit', function (event) {
                 // check register password length
                 // check valid email address
-                let showShortPwMess = false;
                 let showInvalidEmail = false;
+                let showShortPwMess = false;
+                let showEntirelyNumericPw = false;
 
                 let pw = document.querySelector('#reg-password');
-                if (pw.value.length > 0 && pw.value.length < 6) showShortPwMess = true;
                 let em = document.querySelector('#reg-email');
                 if (em.value.length > 0 && !validateEmail(em.value)) showInvalidEmail = true;
+                if (pw.value.length > 0 && pw.value.length < 6) showShortPwMess = true;
+                if (checkEntirelyNumericPassword(pw.value)) showEntirelyNumericPw = true;
 
-                if (!form.checkValidity() || showShortPwMess || showInvalidEmail) {
+                if (!form.checkValidity() || showInvalidEmail || showShortPwMess || showEntirelyNumericPw) {
                     event.preventDefault()
                     event.stopPropagation()
                 }
 
-                let shortPwMess = document.querySelector('#popup .min-length-password');
-                if (showShortPwMess) {
-                    shortPwMess.style.display = "Block";
-                    pw.classList.add('my-invalid-input');
-                } else {
-                    shortPwMess.style.display = "None";
-                    pw.classList.remove('my-invalid-input');
-                }
+                // display email field accordingly
                 let invalidEmail = document.querySelector('#popup .invalid-email');
                 if (showInvalidEmail) {
                     invalidEmail.style.display = "Block";
@@ -134,6 +136,25 @@ function closeRegisterPopup() {
                     invalidEmail.style.display = "None";
                     em.classList.remove('my-invalid-input');
                 }
+                // display password field - min length accordingly
+                let shortPwMess = document.querySelector('#popup .min-length-password');
+                if (showShortPwMess) {
+                    shortPwMess.style.display = "Block";
+                    pw.classList.add('my-invalid-input');
+                } else {
+                    shortPwMess.style.display = "None";
+                    pw.classList.remove('my-invalid-input');
+                }
+                // display password field - numeric pw accordingly
+                let numericPwMess = document.querySelector('#popup .numeric-password');
+                if (showEntirelyNumericPw) {
+                    numericPwMess.style.display = "Block";
+                    pw.classList.add('my-invalid-input');
+                } else {
+                    numericPwMess.style.display = "None";
+                    pw.classList.remove('my-invalid-input');
+                }
+
                 form.classList.add('was-validated')
             }, false)
         })

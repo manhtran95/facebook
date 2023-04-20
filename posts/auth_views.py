@@ -7,6 +7,7 @@ from django.conf import settings as conf_settings
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.forms import ModelForm
+from django.contrib import messages
 
 
 class LoginView(View):
@@ -22,6 +23,7 @@ class LoginView(View):
         username, password = body['username'], body['password']
         user = authenticate(request, username=username, password=password)
         if user is None:
+            messages.error(request, "Invalid username and/or password!")
             return render(request, 'posts/login.html',  {})
         else:
             login(request, user)
