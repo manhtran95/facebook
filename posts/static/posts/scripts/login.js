@@ -60,6 +60,8 @@ function closeRegisterPopup() {
         })
 })();
 */
+
+// function to validate that only allow alphanumeric username for registration
 (function () {
     let regUsernameInput = document.querySelector('#reg-username');
     let m = document.querySelector('.username-alphanumeric-message');
@@ -82,22 +84,56 @@ function closeRegisterPopup() {
     });
 })();
 
-
+// function to validate form
+// for reg form, validate min lenth password and valid email address requirement
 (function () {
     'use strict'
+    const validateEmail = (email) => {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation')
+    let shortPwMess = document.querySelector('#pop-up .min-length-password');
+    console.log(shortPwMess)
 
     // Loop over them and prevent submission
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
+                // check register password length
+                // check valid email address
+                let showShortPwMess = false;
+                let showInvalidEmail = false;
+
+                let pw = document.querySelector('#reg-password');
+                if (pw.value.length > 0 && pw.value.length < 6) showShortPwMess = true;
+                let em = document.querySelector('#reg-email');
+                if (em.value.length > 0 && !validateEmail(em.value)) showInvalidEmail = true;
+
+                if (!form.checkValidity() || showShortPwMess || showInvalidEmail) {
                     event.preventDefault()
                     event.stopPropagation()
                 }
 
+                let shortPwMess = document.querySelector('#popup .min-length-password');
+                if (showShortPwMess) {
+                    shortPwMess.style.display = "Block";
+                    pw.classList.add('my-invalid-input');
+                } else {
+                    shortPwMess.style.display = "None";
+                    pw.classList.remove('my-invalid-input');
+                }
+                let invalidEmail = document.querySelector('#popup .invalid-email');
+                if (showInvalidEmail) {
+                    invalidEmail.style.display = "Block";
+                    em.classList.add('my-invalid-input');
+                } else {
+                    invalidEmail.style.display = "None";
+                    em.classList.remove('my-invalid-input');
+                }
                 form.classList.add('was-validated')
             }, false)
         })

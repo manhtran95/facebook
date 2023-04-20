@@ -22,7 +22,8 @@
                     <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control min-length-password" id="password" name="password"
+                        placeholder="Password">
                 </div>
                 <button id="login" type="submit" class="btn btn-primary">Log in</button>
 
@@ -77,9 +78,13 @@
                 </div>
             </div>
             <div class="mb-3">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
+                <input type="text" class="form-control" id="reg-email" name="email" placeholder="Email address"
+                    required>
                 <div class="invalid-feedback">
                     Please fill in your email.
+                </div>
+                <div class="my-invalid-feedback invalid-email">
+                    Please provide a valid email address.
                 </div>
             </div>
             <div class="mb-3">
@@ -87,6 +92,9 @@
                     required>
                 <div class="invalid-feedback">
                     Please fill in your password.
+                </div>
+                <div class="my-invalid-feedback min-length-password">
+                    Passwords must be at least 6-character long.
                 </div>
             </div>
             <div id="whole-dob" class="mb-3">
