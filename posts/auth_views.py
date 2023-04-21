@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.forms import ModelForm
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class LoginView(View):
@@ -40,7 +41,7 @@ class RegisterView(View):
         return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
 
 
-class LogoutView(View):
+class LogoutView(LoginRequiredMixin, View):
     def post(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('posts:login'))

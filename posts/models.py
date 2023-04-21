@@ -19,3 +19,6 @@ class AppUser(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = [username]
     objects = CustomUserManager()
+
+    def get_profile_picture_round(self):
+        return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_160,w_160/')
