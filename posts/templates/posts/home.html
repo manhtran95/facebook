@@ -66,9 +66,23 @@
         </div>
         <div id="basic-info">
             <div id="profile-picture">
-                <div></div>
-                <!-- <img class="circle" src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="default-cover-photo"> -->
-                <img src="{% static 'posts/images/manh.jpg' %}" alt="default-profile-picture">
+                <div id="profile-picture-circle"></div>
+                <img src="{% if user.profile_picture %}{{ profile_url_round }}{% endif %}" alt="profile-picture">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form action="{% url 'posts:upload_profile' user.id %}" method="post"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group mb-2">
+                                <input type="file" class="form-control" name="file">
+                                <button type="submit" class="input-group-text" disabled>Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div id="info">
                 <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
@@ -76,10 +90,28 @@
             </div>
         </div>
         <hr>
-        <div id="section-select">
-            <button>Posts</button>
+        <div id="section-select" class="mb-3">
+            <a href="#">Posts</a>
+            <a href="#">About</a>
+            <a href="#">Friends</a>
+            <a href="#">Photos</a>
+            <a href="#">Videos</a>
+            <a href="#">Reel</a>
+            <a href="#">More</a>
         </div>
-        <h2>
+        <hr>
+
+        <div class="row">
+            <div class="col-5">
+                Intro
+                <div style="height: 200px"></div>
+            </div>
+            <div class="col-7">
+                What's on your mind
+            </div>
+        </div>
+
+        <h4>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse eius saepe amet sit deleniti, cum
             aspernatur dolores consequuntur voluptatem eaque, ex quaerat quas earum ipsum. Non neque quos nobis ab?
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis consectetur sed officia dolor ex
@@ -102,7 +134,7 @@
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus, totam fugiat iure dolorum illo
             consectetur cum nobis. Aspernatur, laudantium placeat ipsa fugiat odit illo non, sapiente accusamus
             mollitia voluptas sint!
-        </h2>
+            </h2>
     </section>
 </main>
 

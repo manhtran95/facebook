@@ -11,6 +11,7 @@ body {
 
 .main {
     display: flex;
+    background-color: #F0F2F5;
 }
 
 .main #vertical-nav {
@@ -18,16 +19,15 @@ body {
     height: 100%;
     width: 5%;
     border-right: #b7b7b7 1px solid;
-    /* background-color: #b7b7b7; */
 }
 
 .main .content {
-    margin-left: 15%;
-    width: 75%;
+    margin-left: 13.5%;
+    width: 78%;
 }
 
 #cover-photo {
-    height: 393px;
+    height: 463px;
 }
 
 #cover-photo img {
@@ -48,17 +48,8 @@ body {
     margin-left: 40px;
 }
 
-#profile-picture img {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    position: absolute;
-    top: 80px;
-    left: 80px;
-    transform: translate(-50%, -50%);
-}
-
-#profile-picture div {
+/* white background cirle */
+#profile-picture-circle {
     width: 168px;
     height: 168px;
     border-radius: 50%;
@@ -69,10 +60,39 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#profile-picture .circle {
+/* main photo */
+#profile-picture img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    transform: translate(-50%, -50%);
+}
+
+/* dropdown caret button */
+#profile-picture .dropdown-toggle {
     width: 164px;
     height: 164px;
+    border: none;
 }
+
+#profile-picture .dropdown-toggle::after {
+    content: none
+}
+
+#profile-picture .dropdown-menu {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* upload profile pic form */
+#profile-picture .input-group {
+    width: 400px;
+    padding: 8px 18px 3px 18px;
+}
+
+
 
 #info {
     margin: 15px 0px 16px 20px;
@@ -87,4 +107,13 @@ body {
     font-weight: 700;
     font-size: 18px;
     color: #686868;
+}
+
+
+#section-select a {
+    font-weight: bold;
+    color: #686868;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 15px;
 }
