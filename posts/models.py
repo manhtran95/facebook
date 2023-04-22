@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager, User
 from django.core.validators import RegexValidator
 from .managers import CustomUserManager
+from django.utils import timezone
 
 # Create your models here.
 
@@ -29,3 +30,10 @@ class AppUser(AbstractUser):
         if self.cover_photo and 'upload/' in self.cover_photo.url:
             return self.cover_photo.url.replace('upload/', 'upload/c_fill,h_463,w_1241/')
         return ''
+
+
+class Post(models.Model):
+    post_text = models.TextField()
+    pub_datetime = models.DateTimeField(
+        'datetime published', default=timezone.now, blank=True)
+    author = models.ForeignKey(AppUser, on_delete=models.CASCADE)

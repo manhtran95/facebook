@@ -1,6 +1,53 @@
 
 
-function updatePhoto(section_id) {
+// #NEW-POST
+(function () {
+    let charCount = 0
+    // add style to #new-post submit button
+    let formButton = document.querySelector('#new-post button')
+    let formInput = document.querySelector('#new-post textarea')
+    formInput.addEventListener('input', function (e) {
+        if (this.value.length > 0) {
+            formButton.disabled = false
+        } else {
+            formButton.disabled = true
+        }
+        this.style.height = 0;
+        this.style.height = (this.scrollHeight + 20) + "px";
+    });
+
+    let form = document.querySelector('#new-post form')
+    formButton.addEventListener('click', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        const content = formInput.value;
+        formInput.value = '';
+        formButton.disabled = true
+
+        axios.post(form.action, {
+            content: content,
+            csrfmiddlewaretoken: window.CSRF_TOKEN
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(function (response) {
+                console.log('SUCCESS!');
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log('ERROR!');
+                console.log(error);
+            });
+    })
+
+
+
+})();
+
+// send API call to update a image field and update the UI image
+function updateImage(section_id) {
     let image = document.querySelector(`${section_id} img`);
     let dropdownMenu = document.querySelector(`${section_id} .dropdown-menu`)
     let formButton = document.querySelector(`${section_id} .dropdown-menu button`)
@@ -21,7 +68,7 @@ function updatePhoto(section_id) {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        }).then(function (response) {
+        },).then(function (response) {
             console.log('SUCCESS!!');
             image.src = response.data.url;
         })
@@ -33,7 +80,7 @@ function updatePhoto(section_id) {
 };
 
 
-// function to 
+// function for PROFILE PICTURE
 // add styles to profile picture on hover and click events
 // execute Axios Update profile API call
 (function () {
@@ -66,12 +113,12 @@ function updatePhoto(section_id) {
     });
 
     // 2. process Axios upload-profile API call
-    updatePhoto('#profile-picture');
+    updateImage('#profile-picture');
 })();
 
 
-// function to 
-// add styles to profile picture on hover and click events
+// function for COVER PHOTO
+// add styles to cover photo button on hover and click events
 // execute Axios Update profile API call
 (function () {
     // 1. add styles to profile picture on hover and click events
@@ -98,6 +145,6 @@ function updatePhoto(section_id) {
     });
 
     // 2. process Axios upload-profile API call
-    updatePhoto('#cover-photo');
+    updateImage('#cover-photo');
 
 })();

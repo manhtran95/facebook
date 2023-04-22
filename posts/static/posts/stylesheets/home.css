@@ -26,6 +26,10 @@ body {
     width: 78%;
 }
 
+/* *** */
+/* COVER-PHOTO */
+/* *** */
+
 #cover-photo {
     position: relative;
     height: 463px;
@@ -71,6 +75,11 @@ body {
 #basic-info {
     display: flex;
 }
+
+/* *** */
+/* PROFILE-PICTURE */
+/* *** */
+
 
 #profile-picture {
     position: relative;
@@ -148,4 +157,35 @@ body {
     text-decoration: none;
     padding: 10px 20px;
     font-size: 15px;
+}
+
+/* *** */
+/* CONTENT */
+/* *** */
+
+
+
+#overview {
+    background-color: white;
+}
+
+/* *** */
+/* NEW-POST */
+/* *** */
+
+#new-post {
+    background-color: white;
+    padding: 1em;
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#new-post textarea {
+    overflow: hidden;
+    height: 56px;
+}
+
+#new-post button {
+    font-weight: 700;
+    float: right;
 }

@@ -118,12 +118,24 @@
         <hr>
 
         <div class="row">
-            <div class="col-5">
+            <div id="overview" class="col-5">
                 Intro
                 <div style="height: 200px"></div>
             </div>
-            <div class="col-7">
-                What's on your mind
+            <div id="posts" class="col-7">
+                <div id="whole-new-post" class="row">
+                    <div id="new-post" class="col-10 offset-1">
+                        <form action="{% url 'posts:create' user.id %}" method="post">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="content" rows="3"
+                                    placeholder="What's on your mind"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary font-weight-bold" disabled>Make a
+                                Post!</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="all-posts"></div>
             </div>
         </div>
 
