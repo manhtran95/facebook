@@ -62,12 +62,28 @@
 
     <section class="content">
         <div id="cover-photo">
-            <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="default-cover-photo">
+
+            <img src="{% if user.cover_photo %}{{ cover_url }}{% else %}
+            {% static 'posts/images/default-cover-photo.jpg' %}{% endif %}" alt="cover-photo">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Update cover photo
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="{% url 'posts:upload_cover' user.id %}" method="post" enctype="multipart/form-data">
+                        <div class="input-group mb-2">
+                            <input type="file" class="form-control" name="file">
+                            <button type="submit" class="input-group-text" disabled>Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div id="basic-info">
             <div id="profile-picture">
                 <div id="profile-picture-circle"></div>
-                <img src="{% if user.profile_picture %}{{ profile_url_round }}{% endif %}" alt="profile-picture">
+                <img src="{% if user.profile_picture %}{{ profile_url_round }}{% else %}
+                {% static 'posts/images/default-profile-picture.jpg' %}{% endif %}" alt="profile-picture">
                 <div class="dropdown">
                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">

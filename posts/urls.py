@@ -9,6 +9,8 @@ urlpatterns = [
     path('users/<int:user_id>', views.home, name='home'),
     path('users/<int:user_id>/upload_profile',
          views.upload_profile_picture, name='upload_profile'),
+    path('users/<int:user_id>/upload_cover',
+         views.upload_cover_photo, name='upload_cover'),
 
     path('login', LoginView.as_view(), name='login'),
     path('register', RegisterView.as_view(), name='register'),

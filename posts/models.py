@@ -21,4 +21,11 @@ class AppUser(AbstractUser):
     objects = CustomUserManager()
 
     def get_profile_picture_round(self):
-        return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_160,w_160/')
+        if self.profile_picture and 'upload/' in self.profile_picture.url:
+            return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_160,w_160/')
+        return ''
+
+    def get_cover_photo(self):
+        if self.cover_photo and 'upload/' in self.cover_photo.url:
+            return self.cover_photo.url.replace('upload/', 'upload/c_fill,h_463,w_1241/')
+        return ''
