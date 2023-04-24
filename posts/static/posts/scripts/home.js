@@ -1,4 +1,59 @@
+import { getFacebookDatetimeStr } from "./helper.js"
 
+let postCounter = 0
+
+// #ALL-POSTS - load next page
+function showPosts(posts) {
+    const allPosts = document.querySelector('#all-posts')
+    const postTemplate = document.querySelector('#all-posts .post-template')
+    posts.forEach(function (p) {
+        const newPost = postTemplate.cloneNode(true);
+        const post = newPost.firstElementChild
+        const postInfo = post.firstElementChild
+
+        const image = postInfo.firstElementChild
+        image.src = p.author_image
+        const info = postInfo.lastElementChild
+        const name = info.firstElementChild
+        name.innerText = p.author
+        const pubDatetime = info.lastElementChild
+        pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
+
+        const postText = post.lastElementChild
+        postText.innerText = p.post_text
+        newPost.classList.remove('post-template')
+
+        allPosts.appendChild(newPost)
+    })
+};
+
+// #ALL-POSTS - load next page
+function loadPosts() {
+    var formData = new FormData();
+    let form = document.querySelector(`#hidden-info .index-form`)
+
+    formData.append("counter", postCounter);
+    axios.get(form.action, {
+        params: {
+            counter: postCounter
+        }
+    })
+        .then(function (response) {
+            console.log('SUCCESS!!');
+            postCounter = response.data.counter
+            showPosts(response.data.page);
+        })
+        .catch(function (err) {
+            console.log('FAILURE!!');
+            console.log(err)
+        });
+};
+
+// ALL-POSTS
+(function () {
+    loadPosts();
+
+})();
 
 // #NEW-POST
 (function () {
@@ -22,6 +77,7 @@
         e.stopPropagation()
         const content = formInput.value;
         formInput.value = '';
+        formInput.style.height = "56px";
         formButton.disabled = true
 
         axios.post(form.action, {

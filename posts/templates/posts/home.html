@@ -42,6 +42,10 @@
     </div>
 </nav>
 
+<div id="hidden-info">
+    <form class="index-form" action="{% url 'posts:create_index' user.id %}"></form>
+</div>
+
 <main class="main">
     <div id="vertical-nav">
         <ul class="nav flex-column">
@@ -125,7 +129,7 @@
             <div id="posts" class="col-7">
                 <div id="whole-new-post" class="row">
                     <div id="new-post" class="col-10 offset-1">
-                        <form action="{% url 'posts:create' user.id %}" method="post">
+                        <form action="{% url 'posts:create_index' user.id %}" method="post">
                             <div class="mb-3">
                                 <textarea class="form-control" name="content" rows="3"
                                     placeholder="What's on your mind"></textarea>
@@ -135,7 +139,25 @@
                         </form>
                     </div>
                 </div>
-                <div id="all-posts"></div>
+                <div id="all-posts">
+                    <div class="whole-post row my-3 post-template">
+                        <div class="post col-10 offset-1">
+                            <div class="post-info">
+                                <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
+                                    alt="">
+                                <div>
+                                    <div class="author">Manh Tran</div>
+                                    <div class="pub-date small text-muted">December 4, 2023</div>
+                                </div>
+                            </div>
+                            <div class="post-text small mt-2">
+                                Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
+                                hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
+                                a honoured tradition of Vietnamese people where we as descendants visit our homeland,
+                                pay tribute to ancestors during warm spring time of the year. </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -169,5 +191,6 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'posts/scripts/home.js' %}"></script>
+<script type="module" src="{% static 'posts/scripts/helper.js' %}"></script>
+<script type="module" src="{% static 'posts/scripts/home.js' %}"></script>
 {% endblock %}

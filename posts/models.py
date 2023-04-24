@@ -21,9 +21,17 @@ class AppUser(AbstractUser):
     REQUIRED_FIELDS = [username]
     objects = CustomUserManager()
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
     def get_profile_picture_round(self):
         if self.profile_picture and 'upload/' in self.profile_picture.url:
             return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_160,w_160/')
+        return ''
+
+    def get_profile_picture_mini(self):
+        if self.profile_picture and 'upload/' in self.profile_picture.url:
+            return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_40,w_40/')
         return ''
 
     def get_cover_photo(self):
