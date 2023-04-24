@@ -198,14 +198,23 @@ body {
 /* ALL-POSTS */
 /* *** */
 
-#all-posts .post-template {
-    display: none;
+#post-template {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+#post-template.active {
+    opacity: 1;
+    height: auto;
 }
 
 #all-posts .post {
     background-color: white;
     border-radius: 7px;
     padding: 1em;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 #all-posts .post-info {

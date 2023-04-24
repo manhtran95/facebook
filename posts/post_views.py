@@ -17,7 +17,13 @@ class CreateIndexView(LoginRequiredMixin, View):
         body = request.POST
         newPost = Post(post_text=body['content'], author=user)
         newPost.save()
-        return JsonResponse({'post_text': newPost.post_text})
+        p = {
+            'author': newPost.author.__str__(),
+            'author_image': newPost.author.get_profile_picture_mini(),
+            'pub_timestamp': datetime.timestamp(newPost.pub_datetime)*1000,
+            'post_text': newPost.post_text
+        }
+        return JsonResponse({'new_post': p})
 
     def get(self, request, user_id):
         user = request.user

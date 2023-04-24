@@ -1,30 +1,36 @@
 import { getFacebookDatetimeStr } from "./helper.js"
 
 let postCounter = 0
+const allPosts = document.querySelector('#all-posts')
+const postTemplate = document.querySelector('#post-template')
 
-// #ALL-POSTS - load next page
+// #ALL-POSTS - show 1 psot / next page
+function createPost(p) {
+    const newPost = postTemplate.cloneNode(true);
+    const post = newPost.firstElementChild
+    const postInfo = post.firstElementChild
+
+    const image = postInfo.firstElementChild
+    image.src = p.author_image
+    const info = postInfo.lastElementChild
+    const name = info.firstElementChild
+    name.innerText = p.author
+    const pubDatetime = info.lastElementChild
+    pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
+
+    const postText = post.lastElementChild
+    postText.innerText = p.post_text
+    window.setTimeout(function () {
+        newPost.classList.add('active')
+    }, 50);
+    newPost.style.marginTop = '1rem'
+    newPost.style.marginBottom = '1rem'
+
+    return newPost
+}
+
 function showPosts(posts) {
-    const allPosts = document.querySelector('#all-posts')
-    const postTemplate = document.querySelector('#all-posts .post-template')
-    posts.forEach(function (p) {
-        const newPost = postTemplate.cloneNode(true);
-        const post = newPost.firstElementChild
-        const postInfo = post.firstElementChild
-
-        const image = postInfo.firstElementChild
-        image.src = p.author_image
-        const info = postInfo.lastElementChild
-        const name = info.firstElementChild
-        name.innerText = p.author
-        const pubDatetime = info.lastElementChild
-        pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
-
-        const postText = post.lastElementChild
-        postText.innerText = p.post_text
-        newPost.classList.remove('post-template')
-
-        allPosts.appendChild(newPost)
-    })
+    posts.forEach(p => allPosts.appendChild(createPost(p)))
 };
 
 // #ALL-POSTS - load next page
@@ -55,7 +61,7 @@ function loadPosts() {
 
 })();
 
-// #NEW-POST
+// #NEW-POST Make a new post!
 (function () {
     let charCount = 0
     // add style to #new-post submit button
@@ -91,6 +97,7 @@ function loadPosts() {
             .then(function (response) {
                 console.log('SUCCESS!');
                 console.log(response.data);
+                allPosts.insertBefore(createPost(response.data.new_post), allPosts.firstChild)
             })
             .catch(function (error) {
                 console.log('ERROR!');
