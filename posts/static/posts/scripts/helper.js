@@ -18,7 +18,5 @@ export function getFacebookDatetimeStr(d) {
         { hour12: true, hour: 'numeric', minute: 'numeric' }
     );
 
-    console.log(d)
-
     return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} ${timeString12hr}`
 };

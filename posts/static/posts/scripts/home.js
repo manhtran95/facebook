@@ -1,11 +1,31 @@
 import { getFacebookDatetimeStr } from "./helper.js"
 
-let postCounter = 0
+let nextCounter = 0
+let curCounter = 0
+const NUM_LOAD = 8
+let curObserve = 5
 const allPosts = document.querySelector('#all-posts')
-const postTemplate = document.querySelector('#post-template')
+const postTemplate = document.querySelector('#post-template');
+const observer = new IntersectionObserver(function (entries) {
+    // isIntersecting is true when element and viewport are overlapping
+    // isIntersecting is false when element and viewport don't overlap
+    if (entries[0].isIntersecting === true) {
+        console.log('Element has just become visible in screen');
+        this.disconnect()
+        loadPosts()
+    }
+}, { threshold: [0] });
 
-// #ALL-POSTS - show 1 psot / next page
+(function () {
+    function observe() {
+    }
+
+    window.setTimeout(observe, 50);
+})();
+
+// #ALL-POSTS
 function createPost(p) {
+    curCounter += 1
     const newPost = postTemplate.cloneNode(true);
     const post = newPost.firstElementChild
     const postInfo = post.firstElementChild
@@ -23,8 +43,9 @@ function createPost(p) {
     window.setTimeout(function () {
         newPost.classList.add('active')
     }, 50);
-    newPost.style.marginTop = '1rem'
-    newPost.style.marginBottom = '1rem'
+    newPost.classList.add(`p${curCounter}`)
+    newPost.style.marginTop = '1.25rem'
+    newPost.style.marginBottom = '1.25rem'
 
     return newPost
 }
@@ -35,19 +56,32 @@ function showPosts(posts) {
 
 // #ALL-POSTS - load next page
 function loadPosts() {
+    const loading = document.querySelector('#posts .loading');
+    const noMore = document.querySelector('#posts .no-more');
+
+    console.log('LOADING NEXT PAGE!');
+    loading.style.display = 'block'
     var formData = new FormData();
     let form = document.querySelector(`#hidden-info .index-form`)
 
-    formData.append("counter", postCounter);
+    formData.append("counter", nextCounter);
     axios.get(form.action, {
         params: {
-            counter: postCounter
+            counter: nextCounter
         }
     })
         .then(function (response) {
             console.log('SUCCESS!!');
-            postCounter = response.data.counter
+            loading.style.display = 'none'
+            nextCounter = response.data.counter
             showPosts(response.data.page);
+            // update observer if next page available
+            if (nextCounter > 0) {
+                observer.observe(document.querySelector(`#all-posts .p${curObserve}`));
+                curObserve += NUM_LOAD
+            } else {
+                noMore.style.display = 'block'
+            }
         })
         .catch(function (err) {
             console.log('FAILURE!!');
@@ -104,8 +138,6 @@ function loadPosts() {
                 console.log(error);
             });
     })
-
-
 
 })();
 

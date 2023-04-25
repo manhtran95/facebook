@@ -7,8 +7,9 @@ from .models import Post
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
+import time
 
-NUM_LOAD = 10
+NUM_LOAD = 8
 
 
 class CreateIndexView(LoginRequiredMixin, View):
@@ -30,10 +31,14 @@ class CreateIndexView(LoginRequiredMixin, View):
         counter = int(request.GET['counter'])
         queryset = Post.objects.order_by(
             '-pub_datetime')[counter:counter+NUM_LOAD]
+
+        total_num = Post.objects.count()
+        return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
+
         l = [{
             'author': p.author.__str__(),
             'author_image': p.author.get_profile_picture_mini(),
             'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
             'post_text': p.post_text
         } for p in queryset]
-        return JsonResponse({'page': l, 'counter': counter+NUM_LOAD})
+        return JsonResponse({'page': l, 'counter': return_counter})

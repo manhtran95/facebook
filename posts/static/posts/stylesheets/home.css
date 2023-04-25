@@ -1,10 +1,9 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #F0F2F5;
 }
 
 #overview .content {
-
-
     margin-left: 10%;
     width: 80%;
 }
@@ -177,6 +176,10 @@ body {
 /* NEW-POST */
 /* *** */
 
+#whole-new-post {
+    margin-bottom: 2em;
+}
+
 #new-post {
     background-color: white;
     padding: 1em;
@@ -210,12 +213,14 @@ body {
     height: auto;
 }
 
-#all-posts .post {
+#posts .post {
     background-color: white;
     border-radius: 7px;
     padding: 1em;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+
 
 #all-posts .post-info {
     display: flex;
@@ -231,4 +236,21 @@ body {
 #all-posts .author {
     font-size: 14px;
     font-weight: 700;
+}
+
+#posts .loading {
+    text-align: center;
+    padding: 1em;
+}
+
+#posts .no-more {
+    display: none;
+    text-align: center;
+    padding: 1em;
+}
+
+footer {
+    margin-left: 10%;
+    margin-right: 5%;
+    font-size: 14px;
 }
