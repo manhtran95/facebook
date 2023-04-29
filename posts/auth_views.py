@@ -15,7 +15,7 @@ class LoginView(View):
     def get(self, request):
         user = request.user
         if user.is_authenticated:
-            return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
+            return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
         else:
             return render(request, 'posts/login.html', {})
 
@@ -28,7 +28,7 @@ class LoginView(View):
             return render(request, 'posts/login.html',  {})
         else:
             login(request, user)
-            return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
+            return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
 
 
 class RegisterView(View):
@@ -38,7 +38,7 @@ class RegisterView(View):
         user = AppUser.objects.create_user(
             username, email, password, first_name=body['first_name'], last_name=body['last_name'])
         login(request, user)
-        return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
+        return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
 
 
 class LogoutView(LoginRequiredMixin, View):

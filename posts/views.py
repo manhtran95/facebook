@@ -9,14 +9,15 @@ from .models import AppUser
 @login_required
 def index(request):
     user = request.user
-    return HttpResponseRedirect(reverse('posts:home', args=(user.id,)))
+    return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
 
 
 @login_required
-def home(request, user_id):
-    user = request.user
-    # u = get_object_or_404(AppUser, pk=user_id)
-    return render(request, 'posts/home.html', {
+def profile(request, user_id):
+    current_user = request.user
+    user = get_object_or_404(AppUser, pk=user_id)
+    return render(request, 'posts/profile.html', {
+        'current_user': current_user,
         'user': user,
         'profile_url_round': user.get_profile_picture_round(),
         'cover_url': user.get_cover_photo(),

@@ -5,7 +5,6 @@
 
 <section class="content">
     <div id="cover-photo">
-
         <img src="{% if user.cover_photo %}{{ cover_url }}{% else %}
             {% static 'posts/images/default-cover-photo.jpg' %}{% endif %}" alt="cover-photo">
         <div class="dropdown">

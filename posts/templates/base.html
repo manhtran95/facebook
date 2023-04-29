@@ -27,10 +27,10 @@
                         <div class="dropdown">
                             <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Hi, {{user.first_name}}
+                                Hi, {{current_user.first_name}}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <form action="/logout" method="post">
+                                <form action="users/{{current_user.id}}/logout" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-link btn-logout dropdown-item">Logout</button>
                                 </form>
@@ -45,16 +45,16 @@
         <div id="vertical-nav">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link disabled" href="#">Feeds</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link disabled" href="#">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Video</a>
+                    <a class="nav-link disabled" href="#">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Game</a>
+                    <a class="nav-link disabled" href="#">Game</a>
                 </li>
             </ul>
         </div>
