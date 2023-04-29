@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import mimetypes
 from pathlib import Path
 import os
 import environ
@@ -40,7 +41,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECRET_KEY = ''
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition

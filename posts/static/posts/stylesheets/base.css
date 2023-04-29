@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #F0F2F5;
+}
+
+nav .dropdown-menu {
+    min-width: 8rem;
+}
+
+.main {
+    display: flex;
+    background-color: #F0F2F5;
+    min-height: 600px;
+}
+
+.main #vertical-nav {
+    position: fixed;
+    height: 100%;
+    width: 5%;
+    border-right: #b7b7b7 1px solid;
+}
+
+.main .content {
+    margin-left: 13.5%;
+    width: 78%;
+}
+
+/*  */
+
+footer {
+    margin-left: 10%;
+    margin-right: 5%;
+    width: 85%;
+    font-size: 14px;
+}

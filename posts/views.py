@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from .models import AppUser
 
 
 @login_required
@@ -14,6 +15,7 @@ def index(request):
 @login_required
 def home(request, user_id):
     user = request.user
+    # u = get_object_or_404(AppUser, pk=user_id)
     return render(request, 'posts/home.html', {
         'user': user,
         'profile_url_round': user.get_profile_picture_round(),
@@ -35,3 +37,9 @@ def upload_cover_photo(request, user_id):
     user.cover_photo = request.FILES['image']
     user.save()
     return JsonResponse({'url': user.get_cover_photo()})
+
+
+def handler404(request, exception, template_name="404.html"):
+    response = render(request, template_name, {})
+    response.status_code = 404
+    return response

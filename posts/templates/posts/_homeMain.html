@@ -1,0 +1,117 @@
+{% load static %}
+<div id="hidden-info">
+    <form class="index-form" action="{% url 'posts:create_index' user.id %}"></form>
+</div>
+
+<section class="content">
+    <div id="cover-photo">
+
+        <img src="{% if user.cover_photo %}{{ cover_url }}{% else %}
+            {% static 'posts/images/default-cover-photo.jpg' %}{% endif %}" alt="cover-photo">
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Update cover photo
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <form action="{% url 'posts:upload_cover' user.id %}" method="post" enctype="multipart/form-data">
+                    <div class="input-group mb-2">
+                        <input type="file" class="form-control" name="file">
+                        <button type="submit" class="input-group-text" disabled>Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="basic-info">
+        <div id="profile-picture">
+            <div id="profile-picture-circle"></div>
+            <img src="{% if user.profile_picture %}{{ profile_url_round }}{% else %}
+                {% static 'posts/images/default-profile-picture.jpg' %}{% endif %}" alt="profile-picture">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="{% url 'posts:upload_profile' user.id %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group mb-2">
+                            <input type="file" class="form-control" name="file">
+                            <button type="submit" class="input-group-text" disabled>Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="info">
+            <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
+            <div class="num-friends">688 friends</div>
+        </div>
+    </div>
+    <hr>
+    <div id="section-select" class="mb-3">
+        <a href="#">Posts</a>
+        <a href="#">About</a>
+        <a href="#">Friends</a>
+        <a href="#">Photos</a>
+        <a href="#">Videos</a>
+        <a href="#">Reel</a>
+        <a href="#">More</a>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div id="overview" class="col-5">
+            Intro
+            <div style="height: 200px"></div>
+        </div>
+        <div id="posts" class="col-7">
+            <div id="whole-new-post">
+                <div class="row">
+                    <div id="new-post" class="col-10 offset-1">
+                        <form action="{% url 'posts:create_index' user.id %}" method="post">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="content" rows="3"
+                                    placeholder="What's on your mind"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary font-weight-bold" disabled>Make a
+                                Post!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="all-posts">
+
+            </div>
+            <div id="post-template" class="whole-post row">
+                <div class="post col-10 offset-1">
+                    <div class="post-info">
+                        <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
+                            alt="">
+                        <div>
+                            <div class="author">Manh Tran</div>
+                            <div class="pub-date small text-muted">December 4, 2023</div>
+                        </div>
+                    </div>
+                    <div class="post-text small mt-2">
+                        Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
+                        hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
+                        a honoured tradition of Vietnamese people where we as descendants visit our homeland,
+                        pay tribute to ancestors during warm spring time of the year. </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="loading col-6 offset-3 text-muted">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </div>
+                <div class="no-more col-6 offset-3 py-4">
+                    <div class="post-text text-muted small">
+                        There are no more posts to show right now.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
