@@ -7,6 +7,7 @@
     <div id="cover-photo">
         <img src="{% if user.cover_photo %}{{ cover_url }}{% else %}
             {% static 'posts/images/default-cover-photo.jpg' %}{% endif %}" alt="cover-photo">
+        {% if current_user.id == user.id %}
         <div class="dropdown">
             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Update cover photo
@@ -20,12 +21,14 @@
                 </form>
             </div>
         </div>
+        {% endif %}
     </div>
     <div id="basic-info">
         <div id="profile-picture">
             <div id="profile-picture-circle"></div>
             <img src="{% if user.profile_picture %}{{ profile_url_round }}{% else %}
                 {% static 'posts/images/default-profile-picture.jpg' %}{% endif %}" alt="profile-picture">
+            {% if current_user.id == user.id %}
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -40,6 +43,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
         </div>
         <div id="info">
             <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
@@ -64,6 +68,7 @@
             <div style="height: 200px"></div>
         </div>
         <div id="posts" class="col-7">
+            {% if current_user.id == user.id %}
             <div id="whole-new-post">
                 <div class="row">
                     <div id="new-post" class="col-10 offset-1">
@@ -78,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div id="all-posts">
 
             </div>
