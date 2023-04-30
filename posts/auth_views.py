@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
-from .models import AppUser
+# from .models import AppUser
 from django.views import View
 from django.conf import settings as conf_settings
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.forms import ModelForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from custom_auth.models import AppUser
 
 
 class LoginView(View):

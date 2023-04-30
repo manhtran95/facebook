@@ -48,6 +48,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
+    'custom_auth.apps.CustomAuthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -148,7 +149,7 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "posts.AppUser"
+AUTH_USER_MODEL = "custom_auth.AppUser"
 
 LOGIN_URL = '/login'
 
