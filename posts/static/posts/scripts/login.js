@@ -1,4 +1,3 @@
-
 // alert()
 
 window.onload = () => {
@@ -33,35 +32,49 @@ window.onload = () => {
 
 function openRegisterPopup() {
     document.querySelector('#whole-popup').style.visibility = 'visible';
-
-    // const activeItems = document.querySelectorAll(".active");
-
-    // activeItems.forEach((item) => {
-    //     item.disabled = true;
-    // });
 };
 
 function closeRegisterPopup() {
     document.querySelector('#whole-popup').style.visibility = 'hidden';
 };
 
-/*
+// POST_REQ - REGISTER - AJAX
 (function () {
-    'use strict'
-    let inputs = document.querySelectorAll('#popup input')
-    console.log(inputs)
-
-    Array.prototype.slice.call(inputs)
-        .forEach(function (i) {
-            i.addEventListener('input', function (event) {
-                invalid = i.nextElementSibling;
-                invalid.style.display = "None";
-            }, false)
+    let popup = document.querySelector('#popup')
+    let regButton = document.querySelector('#popup form button')
+    let form = document.querySelector('#popup form')
+    let usernameError = document.querySelector('#popup .server-username-exists')
+    regButton.addEventListener('click', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        popup.disabled = true
+        let formData = new FormData(form)
+        formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
+        axios.post(form.action, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         })
-})();
-*/
+            .then(function (response) {
+                console.log('SUCCESS!!');
+                console.log(response.data);
+                if (response.data.error) {
+                    usernameError.style.display = 'block'
+                } else {
+                    window.location.replace(response.data.url);
+                }
+                popup.disabled = false
+            })
+            .catch(function (err) {
+                console.log('FAILURE!!');
+                console.log(err)
+            });
+    })
 
-// function to validate that only allow alphanumeric username for registration
+})();
+
+
+// VALIDATE that only allow alphanumeric username for registration
 (function () {
     let regUsernameInput = document.querySelector('#reg-username');
     let m = document.querySelector('.username-alphanumeric-message');
@@ -86,7 +99,7 @@ function closeRegisterPopup() {
     });
 })();
 
-// function to validate form
+// function to VALIDATE form
 // for reg form, validate min lenth password and valid email address requirement
 (function () {
     'use strict'

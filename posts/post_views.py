@@ -29,10 +29,11 @@ class CreateIndexView(LoginRequiredMixin, View):
     def get(self, request, user_id):
         user = request.user
         counter = int(request.GET['counter'])
-        queryset = Post.objects.filter(author_id=user_id).order_by(
+        userPosts = Post.objects.filter(author_id=user_id)
+        queryset = userPosts.order_by(
             '-pub_datetime')[counter:counter+NUM_LOAD]
 
-        total_num = Post.objects.count()
+        total_num = userPosts.count()
         return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
 
         l = [{

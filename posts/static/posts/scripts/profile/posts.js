@@ -60,6 +60,7 @@ export function processPostTasks() {
 
         console.log('LOADING NEXT PAGE!');
         loading.style.display = 'block'
+        noMore.style.display = 'none'
         var formData = new FormData();
         let form = document.querySelector(`#hidden-info .index-form`)
 
@@ -72,6 +73,7 @@ export function processPostTasks() {
             .then(function (response) {
                 console.log('SUCCESS!!');
                 loading.style.display = 'none'
+                noMore.style.display = 'block'
                 nextCounter = response.data.counter
                 showPosts(response.data.page);
                 // update observer if next page available

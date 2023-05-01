@@ -1,171 +1,186 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Facebook - Log in or Register{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My amazing site{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/stylesheets/base.css' %}">
+    <link rel="stylesheet" href="{% static 'posts/stylesheets/login.css' %}">
+</head>
 
-{% load static %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'posts/stylesheets/login.css' %}">
-{% endblock %}
+<body>
 
-{% block content %}
-<main id="container" class="text-center">
-    <div id="content" class="row">
-        <section class="col-7" id="whole-brand">
-            <div id="brand"><img src="./../../static/posts/images/fb-logo.svg" alt="Sorry the image is not rendered!">
-            </div>
-            <div id="logo">Facebook helps you connect and share with the people in your life.</div>
-        </section>
-        <section class="col-5" id="all-form">
-            <form id="form" action="{% url 'posts:login' %}" method="post">
+
+    <main id="container" class="text-center">
+        <div id="content" class="row">
+            <section class="col-7" id="whole-brand">
+                <div id="brand"><img src="./../../static/posts/images/fb-logo.svg"
+                        alt="Sorry the image is not rendered!">
+                </div>
+                <div id="logo">Facebook helps you connect and share with the people in your life.</div>
+            </section>
+            <section class="col-5" id="all-form">
+                <form id="form" action="{% url 'custom_auth:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control min-length-password" id="password" name="password"
+                            placeholder="Password">
+                    </div>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                            {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <button id="login" type="submit" class="btn btn-primary">Log in</button>
+
+                </form>
+                <div id="other">
+                    <div id="forgot"><a href="#">Forgotten password?</a></div>
+                    <hr>
+                    </hr>
+                    <div id="register">
+                        <button type="submit" class="btn btn-primary" onclick="openRegisterPopup()">Create new
+                            account</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <section id="whole-popup">
+        <div id="popup-bg">
+        </div>
+        <div id="popup">
+            <a href="#" class="close" onclick="closeRegisterPopup()">X</a>
+            <h3>Sign Up</h3>
+            <div class="text-muted">Its quick and easy.</div>
+            <hr>
+            </hr>
+            <form action="{% url 'custom_auth:register' %}" method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <input type="text" class="form-control" id="first_name" name="first_name"
+                            placeholder="First name" required>
+                        <div class="invalid-feedback">
+                            Please fill in your first name.
+                        </div>
+                    </div>
+                    <div class="mb-3 col-6">
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name"
+                            required>
+                        <div class="invalid-feedback">
+                            Please fill in your last name.
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control min-length-password" id="password" name="password"
-                        placeholder="Password">
+                    <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username"
+                        required>
+                    <div class="invalid-feedback">
+                        Please fill in your username name.
+                    </div>
+                    <div class="invalid-feedback server-username-exists">
+                        Username already exists.
+                    </div>
+                    <div class="my-invalid-feedback username-alphanumeric-message">
+                        Only letters and numbers are allowed in usernames.
+                    </div>
                 </div>
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                        {% endfor %}
-                </ul>
-                {% endif %}
-                <button id="login" type="submit" class="btn btn-primary">Log in</button>
-
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="reg-email" name="email" placeholder="Email address"
+                        required>
+                    <div class="invalid-feedback">
+                        Please fill in your email.
+                    </div>
+                    <div class="my-invalid-feedback invalid-email">
+                        Please provide a valid email address.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="reg-password" name="password" placeholder="Password"
+                        required>
+                    <div class="invalid-feedback">
+                        Please fill in your password.
+                    </div>
+                    <div class="my-invalid-feedback min-length-password">
+                        Passwords must be at least 6-character long.
+                    </div>
+                    <div class="my-invalid-feedback numeric-password">
+                        Passwords cannot be all numbers.
+                    </div>
+                </div>
+                <div id="whole-dob" class="mb-3">
+                    <div class="text-muted"><small>Date of birth</small></div>
+                    <div class="row" id="dob">
+                        <div class="col-4">
+                            <select name="day" class="form-select" id="daySelect" aria-label="DOB day select">
+                                <option value="">Day</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="month" class="form-select" id="monthSelect" aria-label="DOB month select">
+                                <option value="">Month</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="year" class="form-select" id="yearSelect" aria-label="DOB year select">
+                                <option value="">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="whole-gender" class="mb-3">
+                    <div class="text-muted"><small>Gender</small></div>
+                    <div class="row" id="gender">
+                        <div class="col-4 form-check">
+                            <label class="form-check-label" for="genderRadio1">
+                                Female
+                            </label>
+                            <input class="form-check-input" type="radio" name="gender" id="genderRadio1" value="F">
+                        </div>
+                        <div class="col-4 form-check">
+                            <label class="form-check-label" for="genderRadio2">
+                                Male
+                            </label>
+                            <input class="form-check-input" type="radio" name="gender" id="genderRadio2" value="M"
+                                checked>
+                        </div>
+                        <div class="col-4 form-check">
+                            <label class="form-check-label" for="genderRadio3">
+                                Other
+                            </label>
+                            <input class="form-check-input" type="radio" name="gender" id="genderRadio3" value="O">
+                        </div>
+                    </div>
+                </div>
+                <div id="term">
+                    <p>People who use our service may have uploaded your contact information to Facebook.
+                        Learn more.
+                    </p>
+                    <p>By clicking Sign Up, you agree to our Terms, Privacy Policy and Cookies Policy. You
+                        may receive
+                        SMS notifications from us and can opt out at any time.</p>
+                </div>
+                <div id="sign-up">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
             </form>
-            <div id="other">
-                <div id="forgot"><a href="#">Forgotten password?</a></div>
-                <hr>
-                </hr>
-                <div id="register">
-                    <button type="submit" class="btn btn-primary" onclick="openRegisterPopup()">Create new
-                        account</button>
-                </div>
-            </div>
-        </section>
-    </div>
-</main>
-<section id="whole-popup">
-    <div id="popup-bg">
-    </div>
-    <div id="popup">
-        <a href="#" class="close" onclick="closeRegisterPopup()">X</a>
-        <h3>Sign Up</h3>
-        <div class="text-muted">Its quick and easy.</div>
-        <hr>
-        </hr>
-        <form action="{% url 'posts:register' %}" method="POST" class="needs-validation" novalidate>
-            {% csrf_token %}
-            <div class="row">
-                <div class="mb-3 col-6">
-                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name"
-                        required>
-                    <div class="invalid-feedback">
-                        Please fill in your first name.
-                    </div>
-                </div>
-                <div class="mb-3 col-6">
-                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name"
-                        required>
-                    <div class="invalid-feedback">
-                        Please fill in your last name.
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username"
-                    required>
-                <div class="invalid-feedback">
-                    Please fill in your username name.
-                </div>
-                <div class="my-invalid-feedback username-alphanumeric-message">
-                    Only letters and numbers are allowed in usernames.
-                </div>
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control" id="reg-email" name="email" placeholder="Email address"
-                    required>
-                <div class="invalid-feedback">
-                    Please fill in your email.
-                </div>
-                <div class="my-invalid-feedback invalid-email">
-                    Please provide a valid email address.
-                </div>
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="reg-password" name="password" placeholder="Password"
-                    required>
-                <div class="invalid-feedback">
-                    Please fill in your password.
-                </div>
-                <div class="my-invalid-feedback min-length-password">
-                    Passwords must be at least 6-character long.
-                </div>
-                <div class="my-invalid-feedback numeric-password">
-                    Passwords cannot be all numbers.
-                </div>
-            </div>
-            <div id="whole-dob" class="mb-3">
-                <div class="text-muted"><small>Date of birth</small></div>
-                <div class="row" id="dob">
-                    <div class="col-4">
-                        <select name="day" class="form-select" id="daySelect" aria-label="DOB day select">
-                            <option value="">Day</option>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <select name="month" class="form-select" id="monthSelect" aria-label="DOB month select">
-                            <option value="">Month</option>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <select name="year" class="form-select" id="yearSelect" aria-label="DOB year select">
-                            <option value="">Year</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div id="whole-gender" class="mb-3">
-                <div class="text-muted"><small>Gender</small></div>
-                <div class="row" id="gender">
-                    <div class="col-4 form-check">
-                        <label class="form-check-label" for="genderRadio1">
-                            Female
-                        </label>
-                        <input class="form-check-input" type="radio" name="gender" id="genderRadio1" value="F">
-                    </div>
-                    <div class="col-4 form-check">
-                        <label class="form-check-label" for="genderRadio2">
-                            Male
-                        </label>
-                        <input class="form-check-input" type="radio" name="gender" id="genderRadio2" value="M" checked>
-                    </div>
-                    <div class="col-4 form-check">
-                        <label class="form-check-label" for="genderRadio3">
-                            Other
-                        </label>
-                        <input class="form-check-input" type="radio" name="gender" id="genderRadio3" value="O">
-                    </div>
-                </div>
-            </div>
-            <div id="term">
-                <p>People who use our service may have uploaded your contact information to Facebook.
-                    Learn more.
-                </p>
-                <p>By clicking Sign Up, you agree to our Terms, Privacy Policy and Cookies Policy. You
-                    may receive
-                    SMS notifications from us and can opt out at any time.</p>
-            </div>
-            <div id="sign-up">
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </div>
-        </form>
-    </div>
-</section>
-{% endblock %}
+        </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'posts/scripts/login.js' %}"></script>
+</body>
 
-{% block script %}
-<script src="{% static 'posts/scripts/login.js' %}"></script>
-{% endblock %}
+</html>

@@ -2,9 +2,7 @@ from django.urls import path
 from django.http import HttpResponse
 
 from . import views
-from . import post_views
 from .post_views import CreateIndexView
-from .auth_views import LoginView, RegisterView, LogoutView
 
 app_name = 'posts'
 urlpatterns = [
@@ -17,8 +15,4 @@ urlpatterns = [
 
     path('users/<int:user_id>/posts',
          CreateIndexView.as_view(), name='create_index'),
-
-    path('login', LoginView.as_view(), name='login'),
-    path('register', RegisterView.as_view(), name='register'),
-    path('logout', LogoutView.as_view(), name='logout'),
 ]
