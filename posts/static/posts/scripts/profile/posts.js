@@ -97,6 +97,9 @@ export function processPostTasks() {
 
     // process #NEW-POST
     (function () {
+        if (window.friendingState != FRIENDING_STATE.Self) {
+            return
+        }
         let charCount = 0
         // add style to #new-post submit button
         let formButton = document.querySelector('#new-post button')

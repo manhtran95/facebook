@@ -4,6 +4,7 @@
 </div>
 
 <section class="content">
+    <!-- COVER-PHOTO -->
     <div id="cover-photo">
         <img src="{% if user.cover_photo %}{{ cover_url }}{% else %}
             {% static 'posts/images/default-cover-photo.jpg' %}{% endif %}" alt="cover-photo">
@@ -23,6 +24,8 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- BASIC INFO: PROFILE PIC, INFO, FRIENDING -->
     <div id="basic-info">
         <div id="profile-picture">
             <div id="profile-picture-circle"></div>
@@ -49,7 +52,56 @@
             <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
             <div class="num-friends">688 friends</div>
         </div>
+        <!-- FRIENDING -->
+        <div class="friending">
+
+            <div class="friending-non-friend">
+                <form action="{% url 'friending:general' user.id %}" method="post">
+                    <button type="submit" class="btn btn-primary">
+                        <img class="invert" src="{% static 'posts/images/add-friend.png' %}" alt="">
+                        &nbsp;Add friend</button>
+                </form>
+            </div>
+
+            <div class="friending-request-sent">
+                <form action="{% url 'friending:delete' user.id %}" method="post">
+                    <button type="submit" class="btn btn-light negative cancel-button">
+                        <img src="{% static 'posts/images/cancel-request.png' %}" alt="">
+                        &nbsp;Cancel request</button>
+                </form>
+            </div>
+
+            <div class="dropdown friending-request-received">
+                <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="invert" src="{% static 'posts/images/befriend.png' %}" alt="">
+                    &nbsp;Respond</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="{% url 'friending:update' user.id %}" method="post">
+                        <button type="submit" class="btn btn-link btn-confirm dropdown-item">Confirm</button>
+                    </form>
+                    <form action="{% url 'friending:delete' user.id %}" method="post">
+                        <button type="submit" class="btn btn-link btn-delete-request dropdown-item">Delete
+                            request</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="dropdown friending-friend">
+                <button type="button" class="btn btn-light negative dropdown-toggle" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{% static 'posts/images/befriend.png' %}" alt="">
+                    &nbsp;Friends</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="{% url 'friending:delete' user.id %}" method="post">
+                        <button type="submit" class="btn btn-link btn-confirm dropdown-item">Unfriend</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
+
     <hr>
     <div id="section-select" class="mb-3">
         <a href="#">Posts</a>
@@ -62,6 +114,7 @@
     </div>
     <hr>
 
+    <!-- OVERVIEW, POSTS -->
     <div class="row">
         <div id="overview" class="col-5">
             Intro

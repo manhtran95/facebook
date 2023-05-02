@@ -27,7 +27,7 @@
                         <div class="dropdown">
                             <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Hi, {{current_user.first_name}}
+                                Hi, {{ current_user.first_name}}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <form action="{% url 'custom_auth:logout' %}" method="post">
@@ -77,6 +77,14 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}";
+        window.friendingState = "{{friending_state}}";
+        window.FRIENDING_STATE = {
+            Self: 'SELF',
+            NonFriend: 'NON-FRIEND',
+            RequestSent: 'REQUEST-SENT',
+            RequestReceived: 'REQUEST-RECEIVED',
+            Friend: 'FRIEND',
+        }
     </script>
 
     {% block script %}{% endblock %}
