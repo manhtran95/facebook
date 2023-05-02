@@ -20,3 +20,7 @@ export function getFacebookDatetimeStr(d) {
 
     return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} ${timeString12hr}`
 };
+
+export function pluralizeWord(singularWord, pluralWord, count) {
+    return count > 1 ? pluralWord : singularWord;
+}

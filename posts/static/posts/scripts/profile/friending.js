@@ -1,6 +1,11 @@
 
+import { pluralizeWord } from "./../helper.js"
 
 export function processFriending() {
+    // process num friends
+    let numFriends = parseInt(window.numFriends)
+    let numFriendsNode = document.querySelector('#basic-info .num-friends')
+    numFriendsNode.innerHTML = window.numFriends + ' ' + pluralizeWord('friend', 'friends', numFriends)
     if (friendingState == window.FRIENDING_STATE.Self) {
         return
     }

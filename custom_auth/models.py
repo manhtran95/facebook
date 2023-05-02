@@ -4,6 +4,8 @@ from django.core.validators import RegexValidator
 from custom_auth.managers import CustomUserManager
 from django.db.models import Q
 from enum import Enum
+import names
+import random
 
 # Create your models here.
 
@@ -36,3 +38,17 @@ class AppUser(AbstractUser):
         if self.cover_photo and 'upload/' in self.cover_photo.url:
             return self.cover_photo.url.replace('upload/', 'upload/c_fill,h_463,w_1241/')
         return ''
+
+    @classmethod
+    def make_user(cls):
+        first_name = names.get_first_name()
+        last_name = names.get_last_name()
+        username = first_name.lower() + str(random.randint(100, 10000))
+        email = username + "@gmail.com"
+        password = 'abc123'
+        try:
+            user = AppUser.objects.create_user(
+                username, email, password, first_name=first_name, last_name=last_name)
+        except Exception as e:
+            print(e)
+        return user

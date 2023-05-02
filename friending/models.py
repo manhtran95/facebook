@@ -1,6 +1,7 @@
 from django.db import models
 from custom_auth.models import AppUser
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Q
 
 # Create your models here.
 
@@ -67,7 +68,7 @@ class Friending(models.Model):
         smallId, bigId = min(user.id, second_user.id), max(
             user.id, second_user.id)
         if smallId == bigId:
-            return
+            raise Exception('Can not befriend with oneself.')
         Friending(first_id=smallId, second_id=bigId, sent=user.id).save()
         return
 
@@ -85,3 +86,24 @@ class Friending(models.Model):
             user.id, second_user.id)
         Friending.objects.filter(first_id=smallId, second_id=bigId).delete()
         return
+
+    @classmethod
+    def get_all_friends(cls, user):
+        return Friending.objects.filter(Q(first_id=user.id) | Q(second_id=user.id),
+                                        state=cls.FriendState.FRIENDED)
+
+    @classmethod
+    def make_friends(cls, user, second_user):
+        smallId, bigId = min(user.id, second_user.id), max(
+            user.id, second_user.id)
+        if smallId == bigId:
+            raise Exception('Can not befriend with oneself.')
+        state = cls.get_state(user, second_user)
+        if state == cls.State.friend:
+            return
+        elif state == cls.State.non_friend:
+            Friending(first_id=smallId, second_id=bigId, sent=user.id,
+                      state=cls.FriendState.FRIENDED).save()
+        else:
+            Friending.objects.filter(first_id=smallId, second_id=bigId).update(
+                state=cls.FriendState.FRIENDED)

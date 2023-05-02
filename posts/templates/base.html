@@ -85,7 +85,9 @@
             RequestReceived: 'REQUEST-RECEIVED',
             Friend: 'FRIEND',
         }
+        window.numFriends = "{{num_friends}}"
     </script>
+    <script type="module" src="{% static 'posts/scripts/helper.js' %}"></script>
 
     {% block script %}{% endblock %}
 </body>
