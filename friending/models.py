@@ -34,11 +34,11 @@ class Friending(models.Model):
 
     @classmethod
     def are_friends(cls, user1, user2):
-        smallId = min(user1.id, user2.id)
-        bigId = max(user1.id, user2.id)
+        smallId, bigId = min(user1.id, user2.id), max(user1.id, user2.id)
         return cls.objects.filter(first_id=smallId, second_id=bigId).filter(state=cls.FriendState.FRIENDED).exists()
 
     class State:
+        self = 'SELF'
         non_friend = 'NON-FRIEND'
         request_sent = 'REQUEST-SENT'
         request_received = 'REQUEST-RECEIVED'
@@ -46,8 +46,9 @@ class Friending(models.Model):
 
     @classmethod
     def get_state(cls, user1, user2):
-        smallId = min(user1.id, user2.id)
-        bigId = max(user1.id, user2.id)
+        smallId, bigId = min(user1.id, user2.id), max(user1.id, user2.id)
+        if smallId == bigId:
+            return cls.State.self
         q = cls.objects.filter(first_id=smallId, second_id=bigId)
         if not q.exists():
             return cls.State.non_friend
@@ -63,15 +64,17 @@ class Friending(models.Model):
 
     @classmethod
     def add_friend(cls, user, second_user):
-        smallId = min(user.id, second_user.id)
-        bigId = max(user.id, second_user.id)
+        smallId, bigId = min(user.id, second_user.id), max(
+            user.id, second_user.id)
+        if smallId == bigId:
+            return
         Friending(first_id=smallId, second_id=bigId, sent=user.id).save()
         return
 
     @classmethod
     def accept_request(cls, user, second_user):
-        smallId = min(user.id, second_user.id)
-        bigId = max(user.id, second_user.id)
+        smallId, bigId = min(user.id, second_user.id), max(
+            user.id, second_user.id)
         Friending.objects.filter(first_id=smallId, second_id=bigId).update(
             state=cls.FriendState.FRIENDED)
         return

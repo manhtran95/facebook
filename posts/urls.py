@@ -13,6 +13,6 @@ urlpatterns = [
     path('users/<int:user_id>/upload_cover',
          views.upload_cover_photo, name='upload_cover'),
 
-    path('users/<int:user_id>/posts',
+    path('users/<int:second_user_id>/posts',
          CreateIndexView.as_view(), name='create_index'),
 ]

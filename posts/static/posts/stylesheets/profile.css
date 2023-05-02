@@ -233,6 +233,10 @@
 /* ALL-POSTS */
 /* *** */
 
+#posts .posts-info>div {
+    display: none;
+}
+
 #posts .loading {
     text-align: center;
     padding: 1em;
@@ -264,18 +268,18 @@
 
 
 
-#all-posts .post-info {
+#posts .all-posts .post-info {
     display: flex;
 }
 
-#all-posts img {
+#posts .all-posts img {
     height: 40px;
     width: 40px;
     border-radius: 50%;
     margin-right: 14px;
 }
 
-#all-posts .author {
+#posts .all-posts .author {
     font-size: 14px;
     font-weight: 700;
 }

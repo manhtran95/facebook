@@ -22,11 +22,8 @@ def profile(request, user_id):
         'user': user,
         'profile_url_round': user.get_profile_picture_round(),
         'cover_url': user.get_cover_photo(),
+        'friending_state': Friending.get_state(current_user, user),
     }
-    if current_user.id != user.id:
-        data['friending_state'] = Friending.get_state(current_user, user)
-    else:
-        data['friending_state'] = 'SELF'
     return render(request, 'posts/profile.html', data)
 
 

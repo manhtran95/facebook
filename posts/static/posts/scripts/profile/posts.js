@@ -5,7 +5,7 @@ export function processPostTasks() {
     let curCounter = 0
     const NUM_LOAD = 8
     let curObserve = 5
-    const allPosts = document.querySelector('#all-posts')
+    const allPosts = document.querySelector('#posts .all-posts')
     const postTemplate = document.querySelector('#post-template');
     const observer = new IntersectionObserver(function (entries) {
         // isIntersecting is true when element and viewport are overlapping
@@ -71,6 +71,12 @@ export function processPostTasks() {
             }
         })
             .then(function (response) {
+                if (response.data.error) {
+                    console.log('ERROR!')
+                    console.log(response.data.error)
+                    return
+                }
+
                 console.log('SUCCESS!!');
                 loading.style.display = 'none'
                 noMore.style.display = 'block'
@@ -78,7 +84,7 @@ export function processPostTasks() {
                 showPosts(response.data.page);
                 // update observer if next page available
                 if (nextCounter > 0) {
-                    observer.observe(document.querySelector(`#all-posts .p${curObserve}`));
+                    observer.observe(document.querySelector(`#posts .all-posts .p${curObserve}`));
                     curObserve += NUM_LOAD
                 } else {
                     noMore.style.display = 'block'
@@ -92,7 +98,15 @@ export function processPostTasks() {
 
     // first load
     (function () {
-        loadPosts();
+        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
+        let displayInfoNode = document.querySelector('#posts .posts-info .display')
+        if (window.friendingState == FRIENDING_STATE.Self || window.friendingState == FRIENDING_STATE.Friend) {
+            displayInfoNode.style.display = 'block'
+            loadPosts();
+        } else {
+            nonDisplayInfoNode.style.display = 'block'
+            return
+        }
     })();
 
     // process #NEW-POST

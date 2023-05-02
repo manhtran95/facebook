@@ -25,6 +25,14 @@ export function processFriending() {
                 node.style.display = 'none'
             }
         }
+        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
+        let allPostsNode = document.querySelector('#posts .all-posts')
+        let displayInfoNode = document.querySelector('#posts .posts-info .display')
+        if (state == window.FRIENDING_STATE.NonFriend) {
+            nonDisplayInfoNode.style.display = 'block'
+            allPostsNode.style.display = 'none'
+            displayInfoNode.style.display = 'none'
+        }
     }
 
     // make AJAX calls to server for 5 actions

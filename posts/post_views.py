@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -8,12 +8,14 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 import time
+from custom_auth.models import AppUser
+from friending.models import Friending
 
 NUM_LOAD = 8
 
 
 class CreateIndexView(LoginRequiredMixin, View):
-    def post(self, request, user_id):
+    def post(self, request, second_user_id):
         user = request.user
         body = request.POST
         newPost = Post(post_text=body['content'], author=user)
@@ -26,10 +28,15 @@ class CreateIndexView(LoginRequiredMixin, View):
         }
         return JsonResponse({'new_post': p})
 
-    def get(self, request, user_id):
+    def get(self, request, second_user_id):
         user = request.user
+        second_user = get_object_or_404(AppUser, pk=second_user_id)
+        state = Friending.get_state(user, second_user)
+        if state != Friending.State.self and state != Friending.State.friend:
+            return JsonResponse({'error': 'Bad request'})
+
         counter = int(request.GET['counter'])
-        userPosts = Post.objects.filter(author_id=user_id)
+        userPosts = Post.objects.filter(author_id=second_user_id)
         queryset = userPosts.order_by(
             '-pub_datetime')[counter:counter+NUM_LOAD]
 

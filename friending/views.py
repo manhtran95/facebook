@@ -12,8 +12,10 @@ from custom_auth.models import AppUser
 class GeneralView(LoginRequiredMixin, View):
     # add friend
     def post(self, request, second_user_id):
-        second_user = get_object_or_404(AppUser, pk=second_user_id)
         user = request.user
+        if user.id == second_user_id:
+            return JsonResponse({'error': 'Bad request'})
+        second_user = get_object_or_404(AppUser, pk=second_user_id)
         state = Friending.get_state(user, second_user)
         if not state == Friending.State.non_friend:
             return JsonResponse({'error': 'Bad request'})
