@@ -42,6 +42,19 @@ NUM_POSTS_MAX = 50
 NUM_FRIENDS_MIN = 5
 NUM_FRIENDS_MAX = 25
 
+images = [
+    'media/profile_pictures/anne-hathaway_wtefas.jpg',
+    'media/profile_pictures//tuong_san_pzuffr.jpg',
+    'media/profile_pictures/A-Hau-Tuong-San-2-01_zyvldm.jpg',
+    'media/profile_pictures/tang_thanh_ha_rbryku.jpg',
+    'media/profile_pictures/chris_e9yeky.jpg',
+    'media/profile_pictures/casemiro_xwaave.jpg',
+    'media/profile_pictures/elizabeth_olsen_etrm8v.jpg',
+    'media/profile_pictures/Cristiano_Ronaldo_2018_llglx2.jpg',
+    'media/profile_pictures/scarlett_johansson_p7ctuy.jpg',
+    'media/profile_pictures/katheryn_winnick_i00jun.jpg',
+]
+
 
 def generate():
     # make users and posts
@@ -73,6 +86,14 @@ def generate():
                 pass
 
 
+def update_profile_picture():
+    all_users = AppUser.objects.all()
+    for i in range(all_users.count()):
+        user = all_users[i]
+        user.profile_picture = images[random.randint(0, len(images)-1)]
+        user.save()
+
+
 def run_seed(self, mode):
     """ Seed database based on mode
 
@@ -81,4 +102,5 @@ def run_seed(self, mode):
     """
     if mode != MODE_GENERATE:
         return
-    generate()
+    # generate()
+    update_profile_picture()

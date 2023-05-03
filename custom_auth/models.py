@@ -14,7 +14,7 @@ class AppUser(AbstractUser):
     username = models.CharField(
         max_length=49, unique=True)
     profile_picture = models.ImageField(
-        null=True, upload_to='profile_pictures')
+        null=True, upload_to='profile_pictures', default='media/profile_pictures/default-profile-picture_xdklkn.jpg')
     cover_photo = models.ImageField(null=True, upload_to='cover_photos')
 
     USERNAME_FIELD = "username"

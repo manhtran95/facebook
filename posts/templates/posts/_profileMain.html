@@ -114,70 +114,79 @@
     </div>
     <hr>
 
-    <!-- OVERVIEW, POSTS -->
-    <div class="row">
-        <div id="overview" class="col-5">
-            Intro
-            <div style="height: 200px"></div>
-        </div>
-        <div id="posts" class="col-7">
-            {% if current_user.id == user.id %}
-            <div id="whole-new-post">
-                <div class="row">
-                    <div id="new-post" class="col-10 offset-1">
-                        <form action="{% url 'posts:create_index' user.id %}" method="post">
-                            <div class="mb-3">
-                                <textarea class="form-control" name="content" rows="3"
-                                    placeholder="What's on your mind"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary font-weight-bold" disabled>Make a
-                                Post!</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
+    <!-- SECTION POSTS -->
+    <div id="section-content">
+        <div class="row section-friends">
 
-            <!-- ALL THE POSTS -->
-            <div class="all-posts">
+        </div>
+        <div class="row section-posts">
+            <div id="overview" class="col-5">
+                Intro
+                <div style="height: 200px"></div>
             </div>
-            <div id="post-template" class="whole-post row">
-                <div class="post col-10 offset-1">
-                    <div class="post-info">
-                        <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
-                            alt="">
-                        <div>
-                            <div class="author">Manh Tran</div>
-                            <div class="pub-date small text-muted">December 4, 2023</div>
+            <div id="posts" class="col-7">
+                {% if current_user.id == user.id %}
+                <div id="whole-new-post">
+                    <div class="row">
+                        <div id="new-post" class="col-10 offset-1">
+                            <form action="{% url 'posts:create_index' user.id %}" method="post">
+                                <div class="mb-3">
+                                    <textarea class="form-control" name="content" rows="3"
+                                        placeholder="What's on your mind"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary font-weight-bold" disabled>Make a
+                                    Post!</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="post-text small mt-2">
-                        Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
-                        hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
-                        a honoured tradition of Vietnamese people where we as descendants visit our homeland,
-                        pay tribute to ancestors during warm spring time of the year. </div>
                 </div>
-            </div>
+                {% endif %}
 
-            <div class="row posts-info">
-                <div class="display">
-                    <div class="loading col-6 offset-3 text-muted">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Loading...
-                    </div>
-                    <div class="no-more col-6 offset-3 py-4">
-                        <div class="post-text text-muted small">
-                            There are no more posts to show right now.</div>
+                <!-- ALL THE POSTS -->
+                <div class="all-posts">
+                </div>
+                <div id="post-template" class="whole-post row">
+                    <div class="post col-10 offset-1">
+                        <div class="post-info">
+                            <a href="{% url 'posts:profile' user.id %}">
+                                <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
+                                    alt="">
+                            </a>
+                            <div>
+                                <div class="author">
+                                    <a href="{% url 'posts:profile' user.id %}">Manh Tran</a>
+                                </div>
+                                <div class="pub-date small text-muted">December 4, 2023</div>
+                            </div>
+                        </div>
+                        <div class="post-text small mt-2">
+                            Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
+                            hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
+                            a honoured tradition of Vietnamese people where we as descendants visit our homeland,
+                            pay tribute to ancestors during warm spring time of the year. </div>
                     </div>
                 </div>
-                <div class="non-display">
-                    <div class="no-more col-6 offset-3 py-4">
-                        <div class="post-text">
-                            Add friend me to view my posts my friend!</div>
-                    </div>
-                </div>
-            </div>
 
+                <div class="row posts-info">
+                    <div class="display">
+                        <div class="loading col-6 offset-3 text-muted">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </div>
+                        <div class="no-more col-6 offset-3 py-4">
+                            <div class="post-text text-muted small">
+                                There are no more posts to show right now.</div>
+                        </div>
+                    </div>
+                    <div class="non-display">
+                        <div class="no-more col-6 offset-3 py-4">
+                            <div class="post-text">
+                                Add friend me to view my posts my friend!</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 

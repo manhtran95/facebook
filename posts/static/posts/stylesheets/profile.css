@@ -254,6 +254,15 @@
     overflow: hidden;
 }
 
+#post-template .author a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#post-template .author a:hover {
+    text-decoration: underline;
+}
+
 #post-template.active {
     opacity: 1;
     height: auto;

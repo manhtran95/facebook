@@ -29,11 +29,11 @@ export function processPostTasks() {
         const post = newPost.firstElementChild
         const postInfo = post.firstElementChild
 
-        const image = postInfo.firstElementChild
+        const image = postInfo.firstElementChild.firstElementChild
         image.src = p.author_image
         const info = postInfo.lastElementChild
         const name = info.firstElementChild
-        name.innerText = p.author
+        name.firstElementChild.innerText = p.author
         const pubDatetime = info.lastElementChild
         pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
 
