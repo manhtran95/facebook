@@ -7,14 +7,27 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from custom_auth.models import AppUser
+from django.urls import reverse
+
+
+class IndexView(LoginRequiredMixin, View):
+    def get(self, request, second_user_id):
+        current_user = request.user
+        second_user = get_object_or_404(AppUser, pk=second_user_id)
+        all_friend_users = Friending.get_all_friend_users(second_user)
+        friend_list = [{
+            'full_name': f.__str__(),
+            'friend_profile_picture': f.get_profile_picture_friend(),
+            'friend_state': Friending.get_state(current_user, f),
+            'friend_profile_url': reverse('posts:profile', args=(f.id,)),
+        } for f in all_friend_users]
+        return JsonResponse({'friend_list': friend_list})
 
 
 class GeneralView(LoginRequiredMixin, View):
     # add friend
     def post(self, request, second_user_id):
         user = request.user
-        if user.id == second_user_id:
-            return JsonResponse({'error': 'Bad request'})
         second_user = get_object_or_404(AppUser, pk=second_user_id)
         state = Friending.get_state(user, second_user)
         if not state == Friending.State.non_friend:

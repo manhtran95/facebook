@@ -188,6 +188,37 @@
     font-size: 15px;
 }
 
+#section-select a.active {
+    color: hsl(214, 89%, 52%);
+}
+
+#section-select a.disabled {
+    font-weight: normal;
+    pointer-events: none;
+    cursor: default;
+}
+
+#section-content .section-friends {
+    display: none;
+}
+
+#section-content .section-friends .friend-template {
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    width: 48%;
+    margin-right: 2%;
+    display: none;
+}
+
+#section-content .section-friends .friend-template img {
+    border-radius: 8px;
+    margin-right: .75rem;
+}
+
+#section-content .section-friends .friend-template a {
+    font-weight: bold;
+}
+
 /* *** */
 /* END PROFILE-PICTURE */
 /* *** */
@@ -260,6 +291,15 @@
 }
 
 #post-template .author a:hover {
+    text-decoration: underline;
+}
+
+.mylink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.mylink:hover {
     text-decoration: underline;
 }
 

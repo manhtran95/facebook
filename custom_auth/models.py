@@ -14,7 +14,7 @@ class AppUser(AbstractUser):
     username = models.CharField(
         max_length=49, unique=True)
     profile_picture = models.ImageField(
-        null=True, upload_to='profile_pictures', default='media/profile_pictures/default-profile-picture_xdklkn.jpg')
+        upload_to='profile_pictures', default='media/profile_pictures/default-profile-picture_xdklkn.jpg')
     cover_photo = models.ImageField(null=True, upload_to='cover_photos')
 
     USERNAME_FIELD = "username"
@@ -24,15 +24,19 @@ class AppUser(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    def get_profile_picture_round(self):
+    def get_profile_picture(self, h, w):
         if self.profile_picture and 'upload/' in self.profile_picture.url:
-            return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_160,w_160/')
+            return self.profile_picture.url.replace('upload/', f'upload/c_fill,h_{h},w_{w}/')
         return ''
 
+    def get_profile_picture_round(self):
+        return self.get_profile_picture(160, 160)
+
     def get_profile_picture_mini(self):
-        if self.profile_picture and 'upload/' in self.profile_picture.url:
-            return self.profile_picture.url.replace('upload/', 'upload/c_fill,h_40,w_40/')
-        return ''
+        return self.get_profile_picture(40, 40)
+
+    def get_profile_picture_friend(self):
+        return self.get_profile_picture(80, 80)
 
     def get_cover_photo(self):
         if self.cover_photo and 'upload/' in self.cover_photo.url:

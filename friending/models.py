@@ -2,7 +2,7 @@ from django.db import models
 from custom_auth.models import AppUser
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
-
+from typing import List
 # Create your models here.
 
 
@@ -88,9 +88,17 @@ class Friending(models.Model):
         return
 
     @classmethod
-    def get_all_friends(cls, user):
+    def get_all_friendings(cls, user):
         return Friending.objects.filter(Q(first_id=user.id) | Q(second_id=user.id),
                                         state=cls.FriendState.FRIENDED)
+
+    @classmethod
+    def get_all_friend_users(cls, user) -> List[AppUser]:
+        l1 = [AppUser.objects.all().get(pk=fr.second_id)
+              for fr in Friending.objects.filter(first_id=user.id)]
+        l2 = [AppUser.objects.all().get(pk=fr.first_id)
+              for fr in Friending.objects.filter(second_id=user.id)]
+        return l1 + l2
 
     @classmethod
     def make_friends(cls, user, second_user):
