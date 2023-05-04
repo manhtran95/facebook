@@ -37,7 +37,7 @@ function updateImage(section_id) {
 // add styles to profile picture on hover and click events
 // execute Axios Update profile API call
 export function processProfilePicture() {
-    if (window.friendingState != window.FRIENDING_STATE.Self) {
+    if (window.mainFriendingState != window.FRIENDING_STATE.Self) {
         return
     }
     // 1. add styles to profile picture on hover and click events
@@ -77,7 +77,7 @@ export function processProfilePicture() {
 // add styles to cover photo button on hover and click events
 // execute Axios Update profile API call
 export function processCoverPhoto() {
-    if (window.friendingState != FRIENDING_STATE.Self) {
+    if (window.mainFriendingState != FRIENDING_STATE.Self) {
         return
     }
     // 1. add styles to profile picture on hover and click events

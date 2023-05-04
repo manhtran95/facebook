@@ -56,7 +56,7 @@
         <div class="friending">
 
             <div class="friending-non-friend">
-                <form action="{% url 'friending:general' user.id %}" method="post">
+                <form name="add-friend" action="{% url 'friending:general' user.id %}" method="post">
                     <button type="submit" class="btn btn-primary">
                         <img class="invert" src="{% static 'posts/images/add-friend.png' %}" alt="">
                         &nbsp;Add friend</button>
@@ -64,7 +64,7 @@
             </div>
 
             <div class="friending-request-sent">
-                <form action="{% url 'friending:delete' user.id %}" method="post">
+                <form name="cancel-request" action="{% url 'friending:delete' user.id %}" method="post">
                     <button type="submit" class="btn btn-light negative cancel-button">
                         <img src="{% static 'posts/images/cancel-request.png' %}" alt="">
                         &nbsp;Cancel request</button>
@@ -77,10 +77,10 @@
                     <img class="invert" src="{% static 'posts/images/befriend.png' %}" alt="">
                     &nbsp;Respond</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form action="{% url 'friending:update' user.id %}" method="post">
+                    <form name="confirm-request" action="{% url 'friending:update' user.id %}" method="post">
                         <button type="submit" class="btn btn-link btn-confirm dropdown-item">Confirm</button>
                     </form>
-                    <form action="{% url 'friending:delete' user.id %}" method="post">
+                    <form name="delete-request" action="{% url 'friending:delete' user.id %}" method="post">
                         <button type="submit" class="btn btn-link btn-delete-request dropdown-item">Delete
                             request</button>
                     </form>
@@ -93,7 +93,7 @@
                     <img src="{% static 'posts/images/befriend.png' %}" alt="">
                     &nbsp;Friends</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form action="{% url 'friending:delete' user.id %}" method="post">
+                    <form name="unfriend" action="{% url 'friending:delete' user.id %}" method="post">
                         <button type="submit" class="btn btn-link btn-confirm dropdown-item">Unfriend</button>
                     </form>
                 </div>
@@ -118,7 +118,8 @@
     <div id="section-content">
         <div class="row section-friends">
             <div class="friend-template p-3 mb-2 col-6">
-                <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_80,w_80/v1/media/profile_pictures/elizabeth_olsen_etrm8v.jpg"
+                <img name="friend-profile-picture"
+                    src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_80,w_80/v1/media/profile_pictures/elizabeth_olsen_etrm8v.jpg"
                     alt="">
                 <a href="#" class="mylink">Manh Tran</a>
             </div>

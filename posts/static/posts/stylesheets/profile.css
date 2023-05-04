@@ -135,44 +135,44 @@
     FRIENDING
 */
 
-#basic-info .friending {
+.friending {
     position: absolute;
     right: 2rem;
     bottom: 2rem;
 }
 
-#basic-info .friending>div {
+.friending>div {
     display: none;
 }
 
-#basic-info .friending button {
+.friending button {
     font-size: 15px;
     font-weight: bold;
 }
 
-#basic-info .friending button img {
+.friending button img {
     width: 16px;
     height: 16px;
 }
 
-#basic-info .friending button .invert {
+.friending button .invert {
     filter: invert(100);
 }
 
-#basic-info .friending button.negative {
+.friending button.negative {
     background-color: #dbdbdb;
     border-color: #dbdbdb;
     color: #1c1c1c;
 }
 
-#basic-info .friending button.negative:hover {
+.friending button.negative:hover {
     background-color: #d3d3d3;
     border-color: #d3d3d3;
 
 }
 
 
-#basic-info .friending .dropdown-menu button {
+.friending .dropdown-menu button {
     font-weight: 500;
 }
 
@@ -203,6 +203,7 @@
 }
 
 #section-content .section-friends .friend-template {
+    position: relative;
     border: 1px solid #d3d3d3;
     border-radius: 8px;
     width: 48%;
@@ -210,7 +211,7 @@
     display: none;
 }
 
-#section-content .section-friends .friend-template img {
+#section-content .section-friends .friend-template [name='friend-profile-picture'] {
     border-radius: 8px;
     margin-right: .75rem;
 }

@@ -34,6 +34,14 @@ function showFriends(friendList) {
         let link = document.querySelector(`.section-friends .friend${i} a`)
         link.href = friendInfo.friend_profile_url
         link.innerHTML = friendInfo.full_name
+        // process Friending
+        let friendingTemplate = document.querySelector('.friending')
+        let newFriending = friendingTemplate.cloneNode(true)
+
+        newFriend.appendChild(newFriending)
+
+        newFriending.classList.add(`friending${i}`)
+        processFriending(`friending${i}`, friendInfo.friend_state, friendInfo.urls)
         newFriend.style.display = 'block'
     });
 
@@ -42,14 +50,16 @@ function showFriends(friendList) {
 sectionFriendsLink.addEventListener('click', e => {
     e.preventDefault()
     e.stopPropagation()
-    if (firstLoad) {
-        return
-    }
+
     console.log('friends')
     sectionFriendsLink.classList.add('active')
     sectionPostsLink.classList.remove('active')
     sectionPostsContent.style.display = 'none'
     sectionFriendsContent.style.display = 'flex'
+
+    if (firstLoad) {
+        return
+    }
 
     axios.get(sectionFriendsLink.href, {
         params: {}
@@ -74,7 +84,7 @@ sectionFriendsLink.addEventListener('click', e => {
 
 
 
-processFriending();
+processFriending('friending', window.mainFriendingState);
 processPostTasks();
 processCoverPhoto();
 processProfilePicture();

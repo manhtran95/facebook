@@ -20,6 +20,13 @@ class IndexView(LoginRequiredMixin, View):
             'friend_profile_picture': f.get_profile_picture_friend(),
             'friend_state': Friending.get_state(current_user, f),
             'friend_profile_url': reverse('posts:profile', args=(f.id,)),
+            'urls': {
+                'add_friend': reverse('friending:general', args=(f.id,)),
+                'cancel_request': reverse('friending:delete', args=(f.id,)),
+                'confirm_request': reverse('friending:update', args=(f.id,)),
+                'delete_request': reverse('friending:delete', args=(f.id,)),
+                'unfriend': reverse('friending:delete', args=(f.id,)),
+            }
         } for f in all_friend_users]
         return JsonResponse({'friend_list': friend_list})
 

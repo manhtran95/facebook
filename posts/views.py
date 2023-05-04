@@ -22,7 +22,7 @@ def profile(request, user_id):
         'user': user,
         'profile_url_round': user.get_profile_picture_round(),
         'cover_url': user.get_cover_photo(),
-        'friending_state': Friending.get_state(current_user, user),
+        'main_friending_state': Friending.get_state(current_user, user),
         'num_friends': Friending.get_all_friendings(user).count(),
     }
     return render(request, 'posts/profile.html', data)

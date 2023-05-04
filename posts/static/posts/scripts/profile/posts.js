@@ -100,7 +100,7 @@ export function processPostTasks() {
     (function () {
         let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
         let displayInfoNode = document.querySelector('#posts .posts-info .display')
-        if (window.friendingState == FRIENDING_STATE.Self || window.friendingState == FRIENDING_STATE.Friend) {
+        if (window.mainFriendingState == FRIENDING_STATE.Self || window.mainFriendingState == FRIENDING_STATE.Friend) {
             displayInfoNode.style.display = 'block'
             loadPosts();
         } else {
@@ -111,7 +111,7 @@ export function processPostTasks() {
 
     // process #NEW-POST
     (function () {
-        if (window.friendingState != FRIENDING_STATE.Self) {
+        if (window.mainFriendingState != FRIENDING_STATE.Self) {
             return
         }
         let charCount = 0
