@@ -53,60 +53,16 @@
             <div class="num-friends">{{num_friends}} friends</div>
         </div>
         <!-- FRIENDING -->
-        <div class="friending">
+        {% include 'posts/_friending.html' %}
 
-            <div class="friending-non-friend">
-                <form name="add-friend" action="{% url 'friending:general' user.id %}" method="post">
-                    <button type="submit" class="btn btn-primary">
-                        <img class="invert" src="{% static 'posts/images/add-friend.png' %}" alt="">
-                        &nbsp;Add friend</button>
-                </form>
-            </div>
-
-            <div class="friending-request-sent">
-                <form name="cancel-request" action="{% url 'friending:delete' user.id %}" method="post">
-                    <button type="submit" class="btn btn-light negative cancel-button">
-                        <img src="{% static 'posts/images/cancel-request.png' %}" alt="">
-                        &nbsp;Cancel request</button>
-                </form>
-            </div>
-
-            <div class="dropdown friending-request-received">
-                <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="invert" src="{% static 'posts/images/befriend.png' %}" alt="">
-                    &nbsp;Respond</button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form name="confirm-request" action="{% url 'friending:update' user.id %}" method="post">
-                        <button type="submit" class="btn btn-link btn-confirm dropdown-item">Confirm</button>
-                    </form>
-                    <form name="delete-request" action="{% url 'friending:delete' user.id %}" method="post">
-                        <button type="submit" class="btn btn-link btn-delete-request dropdown-item">Delete
-                            request</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="dropdown friending-friend">
-                <button type="button" class="btn btn-light negative dropdown-toggle" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{% static 'posts/images/befriend.png' %}" alt="">
-                    &nbsp;Friends</button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form name="unfriend" action="{% url 'friending:delete' user.id %}" method="post">
-                        <button type="submit" class="btn btn-link btn-confirm dropdown-item">Unfriend</button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
     </div>
 
     <hr>
-    <div id="section-select" class="mb-3">
+    <!-- SELECT-"SECTION" -->
+    <div class="myselect mb-3" name="section">
         <a class="posts active" href="#">Posts</a>
         <a class="disabled" href="#">About</a>
-        <a class="friends" href="{% url 'friending:index' user.id %}">Friends</a>
+        <a name="friends" href="{% url 'friending:index' user.id %}">Friends</a>
         <a class="disabled" href="#">Photos</a>
         <a class="disabled" href="#">Videos</a>
         <a class="disabled" href="#">Reel</a>
@@ -114,17 +70,9 @@
     </div>
     <hr>
 
-    <!-- SECTION POSTS -->
-    <div id="section-content">
-        <div class="row section-friends">
-            <div class="friend-template p-3 mb-2 col-6">
-                <img name="friend-profile-picture"
-                    src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_80,w_80/v1/media/profile_pictures/elizabeth_olsen_etrm8v.jpg"
-                    alt="">
-                <a href="#" class="mylink">Manh Tran</a>
-            </div>
-        </div>
-        <div class="row section-posts">
+    <!-- SELECT-CONTENT-"SECTION" -->
+    <div class="myselect-content" name="section">
+        <div class="section-posts row">
             <div id="overview" class="col-5">
                 Intro
                 <div style="height: 200px"></div>
@@ -193,6 +141,21 @@
 
             </div>
         </div>
+        <div class="section-about row"></div>
+        <div name="friends" class="row">
+            <div class="friend-template p-3 mb-2 col-6">
+                <a name="pic" href="">
+                    <img name="friend-profile-picture"
+                        src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_80,w_80/v1/media/profile_pictures/elizabeth_olsen_etrm8v.jpg"
+                        alt="">
+                </a>
+                <a name="name" href="#" class="mylink">Manh Tran</a>
+            </div>
+        </div>
+        <div class="section-photos row"></div>
+        <div class="section-videos row"></div>
+        <div class="section-reel row"></div>
+        <div class="section-more row"></div>
     </div>
 
 </section>

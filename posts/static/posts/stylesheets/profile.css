@@ -180,7 +180,11 @@
     END-FRIENDING
 */
 
-#section-select a {
+/*
+    SELECT - CONTENT
+*/
+
+.myselect a {
     font-weight: bold;
     color: #686868;
     text-decoration: none;
@@ -188,21 +192,21 @@
     font-size: 15px;
 }
 
-#section-select a.active {
+.myselect a.active {
     color: hsl(214, 89%, 52%);
 }
 
-#section-select a.disabled {
+.myselect a.disabled {
     font-weight: normal;
     pointer-events: none;
     cursor: default;
 }
 
-#section-content .section-friends {
+.myselect-content [name='friends'] {
     display: none;
 }
 
-#section-content .section-friends .friend-template {
+.friend-template {
     position: relative;
     border: 1px solid #d3d3d3;
     border-radius: 8px;
@@ -211,13 +215,17 @@
     display: none;
 }
 
-#section-content .section-friends .friend-template [name='friend-profile-picture'] {
+.friend-template [name='friend-profile-picture'] {
     border-radius: 8px;
     margin-right: .75rem;
 }
 
-#section-content .section-friends .friend-template a {
+.friend-template a {
     font-weight: bold;
+}
+
+.friend-template a[name='pic'] {
+    display: contents;
 }
 
 /* *** */

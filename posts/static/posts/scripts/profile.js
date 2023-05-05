@@ -4,83 +4,91 @@ import { processFriending } from "./profile/friending.js"
 
 console.log(window.CSRF_TOKEN)
 
-let firstLoad = false
 
-// process section-select
-let sectionPostsLink = document.querySelector('#section-select .posts')
-let sectionFriendsLink = document.querySelector('#section-select .friends')
-let sectionPostsContent = document.querySelector('#section-content .section-posts')
-let sectionFriendsContent = document.querySelector('#section-content .section-friends')
+// process select-section
+function processSelectAndContent(sectionName = '') {
+    let selectParent = document.querySelector(`.myselect`) // ${sectionName}
+    let selectContentParent = document.querySelector(`.myselect-content`) // ${sectionName}
+    let selectLinks = selectParent.children
+    let selectContentBlocks = selectContentParent.children
 
-sectionPostsLink.addEventListener('click', e => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log('posts')
-    sectionPostsLink.classList.add('active')
-    sectionFriendsLink.classList.remove('active')
-    sectionPostsContent.style.display = 'flex'
-    sectionFriendsContent.style.display = 'none'
-})
-
-function showFriends(friendList) {
-    let friendTemplate = document.querySelector('.section-friends .friend-template');
-    let parent = document.querySelector('.section-friends')
-    friendList.forEach((friendInfo, i) => {
-        let newFriend = friendTemplate.cloneNode(true);
-        newFriend.classList.add(`friend${i}`)
-        parent.appendChild(newFriend)
-        let img = document.querySelector(`.section-friends .friend${i} img`)
-        img.src = friendInfo.friend_profile_picture
-        let link = document.querySelector(`.section-friends .friend${i} a`)
-        link.href = friendInfo.friend_profile_url
-        link.innerHTML = friendInfo.full_name
-        // process Friending
-        let friendingTemplate = document.querySelector('.friending')
-        let newFriending = friendingTemplate.cloneNode(true)
-
-        newFriend.appendChild(newFriending)
-
-        newFriending.classList.add(`friending${i}`)
-        processFriending(`friending${i}`, friendInfo.friend_state, friendInfo.urls)
-        newFriend.style.display = 'block'
-    });
-
-}
-
-sectionFriendsLink.addEventListener('click', e => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    console.log('friends')
-    sectionFriendsLink.classList.add('active')
-    sectionPostsLink.classList.remove('active')
-    sectionPostsContent.style.display = 'none'
-    sectionFriendsContent.style.display = 'flex'
-
-    if (firstLoad) {
-        return
-    }
-
-    axios.get(sectionFriendsLink.href, {
-        params: {}
-    })
-        .then(function (response) {
-            if (response.data.error) {
-                console.log('ERROR!')
-                console.log(response.data.error)
-                return
+    Array.from(selectLinks).forEach((link, i) => {
+        link.addEventListener('click', e => {
+            e.preventDefault()
+            e.stopPropagation()
+            for (let j = 0; j < selectLinks.length; j++) {
+                if (j == i) {
+                    selectLinks[j].classList.add('active')
+                    selectContentBlocks[j].style.display = 'flex'
+                } else {
+                    selectLinks[j].classList.remove('active')
+                    selectContentBlocks[j].style.display = 'none'
+                }
             }
-            console.log('SUCCESS!!');
-            console.log(response.data)
-            showFriends(response.data.friend_list);
-            firstLoad = true
         })
-        .catch(function (err) {
-            console.log('FAILURE!!');
-            console.log(err)
-        });
-})
+    })
 
+    // auto click first select
+    selectLinks[0].click()
+}
+processSelectAndContent('section')
+
+function processSectionContentFriends(sectionName, contentBlock, friendingClass) {
+    let sectionFriendsLink = document.querySelector(`.myselect[name=${sectionName}] [name="${contentBlock}"]`)
+    console.log(sectionFriendsLink)
+    let firstLoad = false
+    sectionFriendsLink.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (firstLoad) {
+            return
+        }
+        function showFriends(friendList) {
+            let friendTemplate = document.querySelector(`.myselect-content[name=${sectionName}] [name="${contentBlock}"] .friend-template`);
+            let parent = document.querySelector(`.myselect-content[name=${sectionName}] [name="${contentBlock}"]`)
+            friendList.forEach((friendInfo, i) => {
+                let newFriend = friendTemplate.cloneNode(true);
+                newFriend.classList.add(`friend${i}`)
+                parent.appendChild(newFriend)
+                let img = document.querySelector(`.myselect-content[name=${sectionName}] [name="${contentBlock}"] .friend${i} img`)
+                img.src = friendInfo.friend_profile_picture
+                let imageLink = document.querySelector(`.myselect-content[name=${sectionName}] [name="${contentBlock}"] .friend${i} a[name='pic']`)
+                imageLink.href = friendInfo.friend_profile_url
+                let nameLink = document.querySelector(`.myselect-content[name=${sectionName}] [name="${contentBlock}"] .friend${i} a[name='name']`)
+                nameLink.href = friendInfo.friend_profile_url
+                nameLink.innerHTML = friendInfo.full_name
+                // process Friending
+                let friendingTemplate = document.querySelector('.friending')
+                let newFriending = friendingTemplate.cloneNode(true)
+
+                newFriend.appendChild(newFriending)
+
+                newFriending.classList.add(`${friendingClass}${i}`)
+                processFriending(`${friendingClass}${i}`, friendInfo.friend_state, friendInfo.urls)
+                newFriend.style.display = 'block'
+            });
+        }
+        axios.get(sectionFriendsLink.href, {
+            params: {}
+        })
+            .then(function (response) {
+                if (response.data.error) {
+                    console.log('ERROR!')
+                    console.log(response.data.error)
+                    return
+                }
+                console.log('SUCCESS!!');
+                console.log(response.data)
+                showFriends(response.data.friend_list);
+                firstLoad = true
+            })
+            .catch(function (err) {
+                console.log('FAILURE!!');
+                console.log(err)
+            });
+    })
+}
+processSectionContentFriends('section', 'friends', 'friending')
 
 
 
