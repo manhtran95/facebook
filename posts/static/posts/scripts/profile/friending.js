@@ -1,13 +1,27 @@
 
 import { pluralizeWord } from "./../helper.js"
 
-export function processFriending(friendingClass, initialFriendingState, urls = null) {
-    // process num friends
-    let numFriends = parseInt(window.numFriends)
-    let numFriendsNode = document.querySelector('#basic-info .num-friends')
-    numFriendsNode.innerHTML = window.numFriends + ' ' + pluralizeWord('friend', 'friends', numFriends)
-    if (initialFriendingState == window.FRIENDING_STATE.Self) {
-        return
+export function processFriending(friendingClass, initialFriendingState, isMain, urls) {
+    function displayOrHidePosts(state) {
+        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
+        let allPostsNode = document.querySelector('#posts .all-posts')
+        let displayInfoNode = document.querySelector('#posts .posts-info .display')
+        if (state != window.FRIENDING_STATE.Friend) {
+            // hide posts
+            nonDisplayInfoNode.style.display = 'block'
+            allPostsNode.style.display = 'none'
+            displayInfoNode.style.display = 'none'
+        }
+    }
+
+    if (isMain) {
+        // process num friends
+        let numFriends = parseInt(window.numFriends)
+        let numFriendsNode = document.querySelector('#basic-info .num-friends')
+        numFriendsNode.innerHTML = window.numFriends + ' ' + pluralizeWord('friend', 'friends', numFriends)
+        if (initialFriendingState == window.FRIENDING_STATE.Self) {
+            return
+        }
     }
 
     // process form url
@@ -43,14 +57,6 @@ export function processFriending(friendingClass, initialFriendingState, urls = n
             } else {
                 node.style.display = 'none'
             }
-        }
-        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
-        let allPostsNode = document.querySelector('#posts .all-posts')
-        let displayInfoNode = document.querySelector('#posts .posts-info .display')
-        if (state == window.FRIENDING_STATE.NonFriend) {
-            nonDisplayInfoNode.style.display = 'block'
-            allPostsNode.style.display = 'none'
-            displayInfoNode.style.display = 'none'
         }
     }
 
@@ -91,4 +97,8 @@ export function processFriending(friendingClass, initialFriendingState, urls = n
 
     processFormButtons();
     displayFriendingWithState(initialFriendingState);
+    if (isMain) {
+        displayOrHidePosts(initialFriendingState);
+    }
+
 }

@@ -202,16 +202,12 @@
     cursor: default;
 }
 
-.myselect-content [name='friends'] {
-    display: none;
-}
-
 .friend-template {
     position: relative;
     border: 1px solid #d3d3d3;
     border-radius: 8px;
     width: 48%;
-    margin-right: 2%;
+    margin-left: 1.5%;
     display: none;
 }
 
