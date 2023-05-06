@@ -1,0 +1,31 @@
+#main-content {
+    margin-left: 59px;
+    background-color: aqua;
+    width: 100%;
+    display: flex;
+}
+
+#search-panel {
+    min-width: 396px;
+    background-color: blueviolet;
+}
+
+#search-panel [name='content'] {
+    padding: 1rem;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+#search-result {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.results {
+    width: 680px;
+    background-color: brown;
+}

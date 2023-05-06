@@ -53,3 +53,9 @@ class LogoutView(LoginRequiredMixin, View):
     def post(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('users:login'))
+
+
+class SearchView(LoginRequiredMixin, View):
+    def get(self, request):
+        current_user = request.user
+        return render(request, 'users/user_search.html', {'current_user': current_user})
