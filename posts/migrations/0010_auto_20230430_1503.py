@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
         ('posts', '0006_appuser_cover_photo_appuser_profile_picture')]
 
     database_operations = [
-        migrations.AlterModelTable('AppUser', 'custom_auth_appuser')
+        migrations.AlterModelTable('AppUser', 'users_appuser')
     ]
 
     state_operations = [

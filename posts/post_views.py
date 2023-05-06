@@ -8,7 +8,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 import time
-from custom_auth.models import AppUser
+from users.models import AppUser
 from friending.models import Friending
 
 NUM_LOAD = 8

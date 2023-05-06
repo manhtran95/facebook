@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager, User
 from django.core.validators import RegexValidator
-from custom_auth.managers import CustomUserManager
+from users.managers import CustomUserManager
 from django.db.models import Q
 from enum import Enum
 import names

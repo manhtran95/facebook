@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser, UserManager, User
 from django.core.validators import RegexValidator
 from .managers import CustomUserManager
 from django.utils import timezone
-from custom_auth.models import AppUser
+from users.models import AppUser
 from helper.helper import generateSentence
 
 # Create your models here.

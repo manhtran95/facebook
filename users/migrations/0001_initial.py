@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'user',
                 'verbose_name_plural': 'users',
                 'abstract': False,
-                'db_table': 'custom_auth_appuser',
+                'db_table': 'users_appuser',
             },
         ),
     ]

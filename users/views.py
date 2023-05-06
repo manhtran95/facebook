@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.forms import ModelForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from custom_auth.models import AppUser
+from users.models import AppUser
 from django.db import IntegrityError
 from django.http import JsonResponse
 
@@ -52,4 +52,4 @@ class RegisterView(View):
 class LogoutView(LoginRequiredMixin, View):
     def post(self, request):
         logout(request)
-        return HttpResponseRedirect(reverse('custom_auth:login'))
+        return HttpResponseRedirect(reverse('users:login'))

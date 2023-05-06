@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('custom_auth', '0005_friending_sent'),
+        ('users', '0005_friending_sent'),
     ]
 
     operations = [

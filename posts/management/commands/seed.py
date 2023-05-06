@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand
 import random
 import logging
-from custom_auth.models import AppUser
+from users.models import AppUser
 from posts.models import Post
 from friending.models import Friending
 import random

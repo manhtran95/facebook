@@ -1,5 +1,5 @@
 from django.db import models
-from custom_auth.models import AppUser
+from users.models import AppUser
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from typing import List

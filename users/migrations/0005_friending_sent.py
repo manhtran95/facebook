@@ -6,14 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('custom_auth', '0004_alter_friending_friend_datetime'),
+        ('users', '0004_alter_friending_friend_datetime'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='friending',
             name='sent',
-            field=models.BigIntegerField(default=4, verbose_name='request_sent_user'),
+            field=models.BigIntegerField(
+                default=4, verbose_name='request_sent_user'),
             preserve_default=False,
         ),
     ]

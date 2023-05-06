@@ -25,7 +25,7 @@
                 <div id="logo">Facebook helps you connect and share with the people in your life.</div>
             </section>
             <section class="col-5" id="all-form">
-                <form id="form" action="{% url 'custom_auth:login' %}" method="post">
+                <form id="form" action="{% url 'users:login' %}" method="post">
                     {% csrf_token %}
                     <div class="mb-3">
                         <input type="text" class="form-control" id="username" name="username" placeholder="Username">
@@ -65,7 +65,7 @@
             <div class="text-muted">Its quick and easy.</div>
             <hr>
             </hr>
-            <form action="{% url 'custom_auth:register' %}" method="POST" class="needs-validation" novalidate>
+            <form action="{% url 'users:register' %}" method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
                 <div class="row">
                     <div class="mb-3 col-6">

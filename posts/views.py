@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from custom_auth.models import AppUser
+from users.models import AppUser
 from friending.models import Friending
 
 
