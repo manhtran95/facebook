@@ -15,20 +15,9 @@ class IndexView(LoginRequiredMixin, View):
         current_user = request.user
         second_user = get_object_or_404(AppUser, pk=second_user_id)
         all_friend_users = Friending.get_all_friend_users(second_user)
-        friend_list = [{
-            'full_name': f.__str__(),
-            'friend_profile_picture': f.get_profile_picture_friend(),
-            'friend_state': Friending.get_state(current_user, f),
-            'friend_profile_url': reverse('posts:profile', args=(f.id,)),
-            'urls': {
-                'add_friend': reverse('friending:general', args=(f.id,)),
-                'cancel_request': reverse('friending:delete', args=(f.id,)),
-                'confirm_request': reverse('friending:update', args=(f.id,)),
-                'delete_request': reverse('friending:delete', args=(f.id,)),
-                'unfriend': reverse('friending:delete', args=(f.id,)),
-            }
-        } for f in all_friend_users]
-        return JsonResponse({'friend_list': friend_list})
+        user_list = [Friending.get_user_info(
+            current_user, user) for user in all_friend_users]
+        return JsonResponse({'user_list': user_list})
 
 
 class GeneralView(LoginRequiredMixin, View):
@@ -79,17 +68,6 @@ class RequestIndexView(LoginRequiredMixin, View):
         current_user = request.user
 
         all_friend_requests = Friending.get_friend_requests(current_user)
-        friend_list = [{
-            'full_name': f.__str__(),
-            'friend_profile_picture': f.get_profile_picture_friend(),
-            'friend_state': Friending.get_state(current_user, f),
-            'friend_profile_url': reverse('posts:profile', args=(f.id,)),
-            'urls': {
-                'add_friend': reverse('friending:general', args=(f.id,)),
-                'cancel_request': reverse('friending:delete', args=(f.id,)),
-                'confirm_request': reverse('friending:update', args=(f.id,)),
-                'delete_request': reverse('friending:delete', args=(f.id,)),
-                'unfriend': reverse('friending:delete', args=(f.id,)),
-            }
-        } for f in all_friend_requests]
-        return JsonResponse({'friend_list': friend_list})
+        user_list = [Friending.get_user_info(
+            current_user, user) for user in all_friend_requests]
+        return JsonResponse({'user_list': user_list})

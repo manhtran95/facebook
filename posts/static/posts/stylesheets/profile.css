@@ -131,55 +131,6 @@
     color: #686868;
 }
 
-/* 
-    FRIENDING
-*/
-
-.friending {
-    position: absolute;
-    right: 2rem;
-    bottom: 2rem;
-}
-
-.friending>div {
-    display: none;
-}
-
-.friending button {
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.friending button img {
-    width: 16px;
-    height: 16px;
-}
-
-.friending button .invert {
-    filter: invert(100);
-}
-
-.friending button.negative {
-    background-color: #dbdbdb;
-    border-color: #dbdbdb;
-    color: #1c1c1c;
-}
-
-.friending button.negative:hover {
-    background-color: #d3d3d3;
-    border-color: #d3d3d3;
-
-}
-
-
-.friending .dropdown-menu button {
-    font-weight: 500;
-}
-
-/* 
-    END-FRIENDING
-*/
-
 /*
     SELECT - CONTENT
 */
@@ -200,28 +151,6 @@
     font-weight: normal;
     pointer-events: none;
     cursor: default;
-}
-
-.friend-template {
-    position: relative;
-    border: 1px solid #d3d3d3;
-    border-radius: 8px;
-    width: 48%;
-    margin-left: 1.5%;
-    display: none;
-}
-
-.friend-template [name='friend-profile-picture'] {
-    border-radius: 8px;
-    margin-right: .75rem;
-}
-
-.friend-template a {
-    font-weight: bold;
-}
-
-.friend-template a[name='pic'] {
-    display: contents;
 }
 
 /* *** */

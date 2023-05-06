@@ -1,5 +1,5 @@
 
-import { pluralizeWord } from "./../helper.js"
+import { pluralizeWord } from "./helper.js"
 
 export function processFriending(friendingClass, initialFriendingState, isMain, urls) {
     function displayOrHidePosts(state) {

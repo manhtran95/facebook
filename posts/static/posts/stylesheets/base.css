@@ -20,13 +20,13 @@ a.navbar-brand {
 .main {
     display: flex;
     background-color: #F0F2F5;
-    min-height: 600px;
+    min-height: 647px;
 }
 
 .main #vertical-nav {
     position: fixed;
     height: 100%;
-    width: 5%;
+    width: 59px;
     border-right: #b7b7b7 1px solid;
 }
 

@@ -1,0 +1,48 @@
+/* 
+    FRIENDING
+*/
+
+.friending {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+}
+
+.friending>div {
+    display: none;
+}
+
+.friending button {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.friending button img {
+    width: 16px;
+    height: 16px;
+}
+
+.friending button .invert {
+    filter: invert(100);
+}
+
+.friending button.negative {
+    background-color: #dbdbdb;
+    border-color: #dbdbdb;
+    color: #1c1c1c;
+}
+
+.friending button.negative:hover {
+    background-color: #d3d3d3;
+    border-color: #d3d3d3;
+
+}
+
+
+.friending .dropdown-menu button {
+    font-weight: 500;
+}
+
+/* 
+    END-FRIENDING
+*/
