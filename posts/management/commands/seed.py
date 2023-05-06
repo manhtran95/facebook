@@ -94,6 +94,19 @@ def update_profile_picture():
         user.save()
 
 
+def generate_friend_requests():
+    all_users = AppUser.objects.all()
+    users_count = all_users.count()
+    for i in range(users_count):
+        current_user = all_users[i]
+        for j in range(3):
+            other_user = all_users[random.randint(0, users_count-1)]
+            try:
+                Friending.make_friend_requests(current_user, other_user)
+            except Exception:
+                pass
+
+
 def run_seed(self, mode):
     """ Seed database based on mode
 
@@ -103,4 +116,4 @@ def run_seed(self, mode):
     if mode != MODE_GENERATE:
         return
     # generate()
-    update_profile_picture()
+    generate_friend_requests()

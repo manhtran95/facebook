@@ -145,7 +145,8 @@
         <div name="friends" class="row">
             <div class="myselect mb-3" name="friends">
                 <a name="all-friends" class="active" href="{% url 'friending:index' user.id %}">All friends</a>
-                <a name="friend-requests" href="{% url 'friending:index' user.id %}">Friend requests</a>
+                <a name="friend-requests" class="home-required" href="{% url 'friending:requests' %}">Friend
+                    requests</a>
             </div>
             <div class="myselect-content" name="friends">
                 <div name="all-friends" class="row">
@@ -158,7 +159,6 @@
                         <a name="name" href="#" class="mylink">Manh Tran</a>
                     </div>
                 </div>
-
                 <div name="friend-requests" class="row"></div>
             </div>
 

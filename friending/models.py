@@ -88,17 +88,31 @@ class Friending(models.Model):
         return
 
     @classmethod
-    def get_all_friendings(cls, user):
+    def get_all_friend_friendings(cls, user):
         return Friending.objects.filter(Q(first_id=user.id) | Q(second_id=user.id),
                                         state=cls.FriendState.FRIENDED)
 
     @classmethod
     def get_all_friend_users(cls, user) -> List[AppUser]:
-        l1 = [AppUser.objects.all().get(pk=fr.second_id)
+        l1 = [AppUser.objects.get(pk=fr.second_id)
               for fr in Friending.objects.filter(first_id=user.id)]
-        l2 = [AppUser.objects.all().get(pk=fr.first_id)
+        l2 = [AppUser.objects.get(pk=fr.first_id)
               for fr in Friending.objects.filter(second_id=user.id)]
         return l1 + l2
+
+    @classmethod
+    def get_all_friendings(cls, user) -> List:
+        return Friending.objects.filter(Q(first_id=user.id) | Q(second_id=user.id))
+
+    @classmethod
+    def get_friend_requests(cls, user) -> List[AppUser]:
+        all_received_pending_friendings = cls.get_all_friendings(user).filter(
+            state=cls.FriendState.PENDING).filter(~Q(sent=user.id))
+        sent_ids = [fr.second_id if fr.first_id ==
+                    user.id else fr.first_id for fr in all_received_pending_friendings]
+        sent_users = [AppUser.objects.get(pk=id)
+                      for id in sent_ids]
+        return sent_users
 
     @classmethod
     def make_friends(cls, user, second_user):
@@ -115,3 +129,17 @@ class Friending(models.Model):
         else:
             Friending.objects.filter(first_id=smallId, second_id=bigId).update(
                 state=cls.FriendState.FRIENDED)
+
+    @classmethod
+    def make_friend_requests(cls, user, second_user):
+        smallId, bigId = min(user.id, second_user.id), max(
+            user.id, second_user.id)
+        if smallId == bigId:
+            raise Exception('Can not befriend with oneself.')
+        state = cls.get_state(user, second_user)
+        if state == cls.State.non_friend:
+            Friending(first_id=smallId, second_id=bigId,
+                      state=cls.FriendState.PENDING, sent=user.id).save()
+        else:
+            Friending.objects.filter(first_id=smallId, second_id=bigId).update(
+                state=cls.FriendState.PENDING, sent=user.id)

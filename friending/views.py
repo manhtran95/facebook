@@ -72,3 +72,24 @@ class DeleteView(LoginRequiredMixin, View):
             return JsonResponse({'error': 'Bad request'})
         Friending.delete(user, second_user)
         return JsonResponse({'state': Friending.State.non_friend})
+
+
+class RequestIndexView(LoginRequiredMixin, View):
+    def get(self, request):
+        current_user = request.user
+
+        all_friend_requests = Friending.get_friend_requests(current_user)
+        friend_list = [{
+            'full_name': f.__str__(),
+            'friend_profile_picture': f.get_profile_picture_friend(),
+            'friend_state': Friending.get_state(current_user, f),
+            'friend_profile_url': reverse('posts:profile', args=(f.id,)),
+            'urls': {
+                'add_friend': reverse('friending:general', args=(f.id,)),
+                'cancel_request': reverse('friending:delete', args=(f.id,)),
+                'confirm_request': reverse('friending:update', args=(f.id,)),
+                'delete_request': reverse('friending:delete', args=(f.id,)),
+                'unfriend': reverse('friending:delete', args=(f.id,)),
+            }
+        } for f in all_friend_requests]
+        return JsonResponse({'friend_list': friend_list})

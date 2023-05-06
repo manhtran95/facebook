@@ -11,6 +11,11 @@ function processSelectAndContentAll() {
         let selectLinks = selectParent.children
         let selectContentBlocks = selectContentParent.children
         Array.from(selectLinks).forEach((link, i) => {
+            if (Array.from(link.classList).includes('home-required')) {
+                if (window.currentUserId != window.userId) {
+                    link.style.display = 'none'
+                }
+            }
             link.addEventListener('click', e => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -25,7 +30,7 @@ function processSelectAndContentAll() {
                 }
             })
         })
-        // auto click first select
+        // auto click
         if (Array.from(selectLinks[0].classList).includes('click')) {
             selectLinks[0].click()
         }
