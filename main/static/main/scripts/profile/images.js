@@ -1,6 +1,6 @@
 
 // send API call to update a image field and update the UI image
-function updateImage(section_id) {
+function updateImage(section_id, url) {
     let image = document.querySelector(`${section_id} img`);
     let dropdownMenu = document.querySelector(`${section_id} .dropdown-menu`)
     let formButton = document.querySelector(`${section_id} .dropdown-menu button`)
@@ -17,7 +17,7 @@ function updateImage(section_id) {
         }
         formData.append("image", fileInput.files[0]);
         formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
-        axios.post(form.action, formData, {
+        axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -36,10 +36,7 @@ function updateImage(section_id) {
 // function for PROFILE PICTURE
 // add styles to profile picture on hover and click events
 // execute Axios Update profile API call
-export function processProfilePicture() {
-    if (window.mainFriendingState != window.FRIENDING_STATE.Self) {
-        return
-    }
+export function processUploadProfilePicture(uploadProfilePictureUrl) {
     // 1. add styles to profile picture on hover and click events
     let coverButton = document.querySelector('#profile-picture .dropdown-toggle');
     let image = document.querySelector('#profile-picture img');
@@ -69,17 +66,15 @@ export function processProfilePicture() {
     });
 
     // 2. process Axios upload-profile API call
-    updateImage('#profile-picture');
+    updateImage('#profile-picture', uploadProfilePictureUrl);
 };
 
 
 // function for COVER PHOTO
 // add styles to cover photo button on hover and click events
 // execute Axios Update profile API call
-export function processCoverPhoto() {
-    if (window.mainFriendingState != FRIENDING_STATE.Self) {
-        return
-    }
+export function processUploadCoverPhoto(uploadCoverPhotoUrl) {
+
     // 1. add styles to profile picture on hover and click events
     let coverButton = document.querySelector('#cover-photo .dropdown-toggle');
     console.log(coverButton)
@@ -104,6 +99,6 @@ export function processCoverPhoto() {
     });
 
     // 2. process Axios upload-profile API call
-    updateImage('#cover-photo');
+    updateImage('#cover-photo', uploadCoverPhotoUrl);
 
 };

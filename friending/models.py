@@ -153,7 +153,7 @@ class Friending(models.Model):
             'full_name': user.__str__(),
             'profile_picture': user.get_profile_picture_friend(),
             'friend_state': Friending.get_state(current_user, user),
-            'profile_url': reverse('main:profile', args=(user.id,)),
+            'profile_url': reverse('main:main', args=(user.id,)),
             'urls': {
                 'add_friend': reverse('friending:general', args=(user.id,)),
                 'cancel_request': reverse('friending:delete', args=(user.id,)),

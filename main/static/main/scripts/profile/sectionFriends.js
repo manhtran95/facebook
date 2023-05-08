@@ -1,7 +1,7 @@
 import { showUsers } from "./../showUsers.js"
 
-export function processSectionFriends() {
-    function processSectionContentFriends(sectionName, contentBlock, friendingClass, parentSection = null) {
+export function processSectionFriends(friendingIndexEndpoint, friendingRequestsEndpoint) {
+    function processSectionContentFriends(friendingEndpoint, sectionName, contentBlock, friendingClass, parentSection = null) {
         let links = []
         let parentIdentifier = `.myselect-content[name=${sectionName}] [name="${contentBlock}"]`
         let sectionFriendsLink = document.querySelector(`.myselect[name=${sectionName}] [name="${contentBlock}"]`)
@@ -15,7 +15,7 @@ export function processSectionFriends() {
             link.addEventListener('click', e => {
                 e.preventDefault()
                 e.stopPropagation()
-                axios.get(sectionFriendsLink.href, {
+                axios.get(friendingEndpoint, {
                     params: {}
                 })
                     .then(function (response) {
@@ -37,6 +37,6 @@ export function processSectionFriends() {
 
     }
 
-    processSectionContentFriends('friends', 'all-friends', 'friending', 'section')
-    processSectionContentFriends('friends', 'friend-requests', 'request-friending')
+    processSectionContentFriends(friendingIndexEndpoint, 'friends', 'all-friends', 'friending', 'section')
+    processSectionContentFriends(friendingRequestsEndpoint, 'friends', 'friend-requests', 'request-friending')
 }

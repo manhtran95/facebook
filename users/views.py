@@ -18,9 +18,9 @@ class LoginView(View):
     def get(self, request):
         user = request.user
         if user.is_authenticated:
-            return HttpResponseRedirect(reverse('main:profile', args=(user.id,)))
+            return HttpResponseRedirect(reverse('main:main', args=(user.id,)))
         else:
-            return render(request, 'posts/login.html', {})
+            return render(request, 'users/login.html', {})
 
     def post(self, request):
         body = request.POST
@@ -28,10 +28,10 @@ class LoginView(View):
         user = authenticate(request, username=username, password=password)
         if user is None:
             messages.error(request, "Invalid username and/or password!")
-            return render(request, 'posts/login.html',  {})
+            return render(request, 'users/login.html',  {})
         else:
             login(request, user)
-            return HttpResponseRedirect(reverse('main:profile', args=(user.id,)))
+            return HttpResponseRedirect(reverse('main:main', args=(user.id,)))
 
 
 class RegisterView(View):
@@ -46,7 +46,7 @@ class RegisterView(View):
             return JsonResponse({'error': 'Username already exists.'})
 
         login(request, user)
-        return JsonResponse({'url': reverse('main:profile', args=(user.id,))})
+        return JsonResponse({'url': reverse('main:main', args=(user.id,))})
 
 
 class LogoutView(LoginRequiredMixin, View):

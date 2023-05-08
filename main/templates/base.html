@@ -17,7 +17,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'main:profile' current_user.id %}">
+            <a class="navbar-brand" href="{% url 'main:main' current_user.id %}">
                 <!-- facebook -->
                 {% load static %}
                 <img src="{% static 'posts/images/fb-Logo.png' %}" alt="">
@@ -82,7 +82,6 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}";
-        window.mainFriendingState = "{{main_friending_state}}";
         window.FRIENDING_STATE = {
             Self: 'SELF',
             NonFriend: 'NON-FRIEND',
@@ -90,9 +89,8 @@
             RequestReceived: 'REQUEST-RECEIVED',
             Friend: 'FRIEND',
         }
-        window.numFriends = "{{num_friends}}"
-        window.currentUserId = "{{current_user.id}}"
-        window.userId = "{{user.id}}"
+        window.currentUserId = "{{ current_user.id }}"
+        window.secondUserProfileUrl = "{{ second_user_profile_url }}"
         if (typeof Element.prototype.clearChildren === 'undefined') {
             Object.defineProperty(Element.prototype, 'clearChildren', {
                 configurable: true,

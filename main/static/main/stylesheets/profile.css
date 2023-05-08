@@ -203,7 +203,11 @@
 /* ALL-POSTS */
 /* *** */
 
-#posts .posts-info>div {
+#posts .posts-info .non-display {
+    display: none;
+}
+
+#posts .posts-info .display {
     display: none;
 }
 

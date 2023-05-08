@@ -1,56 +1,22 @@
 
-import { pluralizeWord } from "./helper.js"
+import { pluralizeWord } from "./helper/helper.js"
 
-export function processFriending(friendingClass, initialFriendingState, isMain, urls) {
-    function displayOrHidePosts(state) {
-        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
-        let allPostsNode = document.querySelector('#posts .all-posts')
-        let displayInfoNode = document.querySelector('#posts .posts-info .display')
-        if (state != window.FRIENDING_STATE.Friend) {
-            // hide posts
-            nonDisplayInfoNode.style.display = 'block'
-            allPostsNode.style.display = 'none'
-            displayInfoNode.style.display = 'none'
-        }
-    }
+export function processFriending(friendingClass, friendingState, isMain, urls) {
 
-    if (isMain) {
-        // process num friends
-        let numFriends = parseInt(window.numFriends)
-        let numFriendsNode = document.querySelector('#basic-info .num-friends')
-        numFriendsNode.innerHTML = window.numFriends + ' ' + pluralizeWord('friend', 'friends', numFriends)
-        if (initialFriendingState == window.FRIENDING_STATE.Self) {
-            return
-        }
-    }
 
-    // process form url
-    if (urls) {
-        let formAddFriend = document.querySelector(`.${friendingClass} form[name='add-friend']`)
-        let formCancelRequest = document.querySelector(`.${friendingClass} form[name='cancel-request']`)
-        let formConfirmRequest = document.querySelector(`.${friendingClass} form[name='confirm-request']`)
-        let formDeleteRequest = document.querySelector(`.${friendingClass} form[name='delete-request']`)
-        let formUnfriend = document.querySelector(`.${friendingClass} form[name='unfriend']`)
-
-        formAddFriend.action = urls.add_friend
-        formCancelRequest.action = urls.cancel_request
-        formConfirmRequest.action = urls.confirm_request
-        formDeleteRequest.action = urls.delete_request
-        formUnfriend.action = urls.unfriend
-    }
-
-    // DISPLAY the correct state block
-    let nonFriendNode = document.querySelector(`.${friendingClass} .friending-non-friend`)
-    let requestSentNode = document.querySelector(`.${friendingClass} .friending-request-sent`)
-    let requestReceivedNode = document.querySelector(`.${friendingClass} .friending-request-received`)
-    let friendNode = document.querySelector(`.${friendingClass} .friending-friend`)
-    let nodes = {
-        'NON-FRIEND': nonFriendNode,
-        'REQUEST-SENT': requestSentNode,
-        'REQUEST-RECEIVED': requestReceivedNode,
-        'FRIEND': friendNode
-    }
+    console.log(1)
     function displayFriendingWithState(state) {
+        // DISPLAY the correct state block
+        let nonFriendNode = document.querySelector(`.${friendingClass} .friending-non-friend`)
+        let requestSentNode = document.querySelector(`.${friendingClass} .friending-request-sent`)
+        let requestReceivedNode = document.querySelector(`.${friendingClass} .friending-request-received`)
+        let friendNode = document.querySelector(`.${friendingClass} .friending-friend`)
+        let nodes = {
+            'NON-FRIEND': nonFriendNode,
+            'REQUEST-SENT': requestSentNode,
+            'REQUEST-RECEIVED': requestReceivedNode,
+            'FRIEND': friendNode
+        }
         for (const [nodeState, node] of Object.entries(nodes)) {
             if (nodeState == state) {
                 node.style.display = 'block'
@@ -62,6 +28,21 @@ export function processFriending(friendingClass, initialFriendingState, isMain, 
 
     // make AJAX calls to server for 5 actions
     function processFormButtons() {
+        // process form url
+        if (urls) {
+            let formAddFriend = document.querySelector(`.${friendingClass} form[name='add-friend']`)
+            let formCancelRequest = document.querySelector(`.${friendingClass} form[name='cancel-request']`)
+            let formConfirmRequest = document.querySelector(`.${friendingClass} form[name='confirm-request']`)
+            let formDeleteRequest = document.querySelector(`.${friendingClass} form[name='delete-request']`)
+            let formUnfriend = document.querySelector(`.${friendingClass} form[name='unfriend']`)
+
+            formAddFriend.action = urls.add_friend
+            formCancelRequest.action = urls.cancel_request
+            formConfirmRequest.action = urls.confirm_request
+            formDeleteRequest.action = urls.delete_request
+            formUnfriend.action = urls.unfriend
+        }
+
         let formButtons = document.querySelectorAll(`.${friendingClass} form button`)
         formButtons.forEach(formButton => {
             let form = formButton.parentNode;
@@ -95,10 +76,20 @@ export function processFriending(friendingClass, initialFriendingState, isMain, 
         })
     }
 
-    processFormButtons();
-    displayFriendingWithState(initialFriendingState);
     if (isMain) {
-        displayOrHidePosts(initialFriendingState);
+        let friendingTemplate = document.querySelector('.friending')
+        let newFriending = friendingTemplate.cloneNode(true)
+        let parent = document.querySelector(`#basic-info`)
+        parent.appendChild(newFriending)
+        newFriending.classList.add(friendingClass)
     }
+
+    if (friendingState == window.FRIENDING_STATE.Self) {
+        console.log('stop friending!!')
+        return
+    }
+    processFormButtons();
+    displayFriendingWithState(friendingState);
+
 
 }

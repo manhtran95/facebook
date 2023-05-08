@@ -19,4 +19,4 @@ function setMainSection(sectionName = 'profile') {
 }
 
 setMainSection()
-processProfile()
+processProfile(window.secondUserProfileUrl)

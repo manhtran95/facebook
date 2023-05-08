@@ -1,4 +1,4 @@
-export function processNewPost() {
+export function processNewPost(endpoint) {
     if (window.mainFriendingState != FRIENDING_STATE.Self) {
         return
     }
@@ -25,7 +25,7 @@ export function processNewPost() {
         formInput.style.height = "56px";
         formButton.disabled = true
 
-        axios.post(form.action, {
+        axios.post(endpoint, {
             content: content,
             csrfmiddlewaretoken: window.CSRF_TOKEN
         }, {

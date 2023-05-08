@@ -1,11 +1,12 @@
-import { getFacebookDatetimeStr } from "./../helper.js"
+import { getFacebookDatetimeStr } from "./../helper/helper.js"
 
-export function processPostTasks() {
+export function processPostLoading(indexEndpoint, mainFriendingState) {
     let nextCounter = 0
     let curCounter = 0
     const NUM_LOAD = 8
     let curObserve = 5
     const allPosts = document.querySelector('#posts .all-posts')
+    allPosts.clearChildren()
     const postTemplate = document.querySelector('#post-template');
     const observer = new IntersectionObserver(function (entries) {
         // isIntersecting is true when element and viewport are overlapping
@@ -65,7 +66,7 @@ export function processPostTasks() {
         let form = document.querySelector(`#hidden-info .index-form`)
 
         formData.append("counter", nextCounter);
-        axios.get(form.action, {
+        axios.get(indexEndpoint, {
             params: {
                 counter: nextCounter
             }
@@ -100,7 +101,7 @@ export function processPostTasks() {
     (function () {
         let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
         let displayInfoNode = document.querySelector('#posts .posts-info .display')
-        if (window.mainFriendingState == FRIENDING_STATE.Self || window.mainFriendingState == FRIENDING_STATE.Friend) {
+        if (mainFriendingState == window.FRIENDING_STATE.Self || mainFriendingState == window.FRIENDING_STATE.Friend) {
             displayInfoNode.style.display = 'block'
             loadPosts();
         } else {
