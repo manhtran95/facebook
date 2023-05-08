@@ -4,6 +4,7 @@ import { processFriending } from "./friending.js"
 export function showUsers(userList, sectionName, parentIdentifier) {
     let friendTemplate = document.querySelector(`.user-template`);
     let parent = document.querySelector(parentIdentifier)
+    parent.clearChildren()
     userList.forEach((userInfo, i) => {
         let newFriend = friendTemplate.cloneNode(true);
         let thisUserClass = `friend${i}`

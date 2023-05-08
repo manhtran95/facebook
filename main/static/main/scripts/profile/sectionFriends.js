@@ -10,15 +10,11 @@ export function processSectionFriends() {
             let parentFriendsLink = document.querySelector(`.myselect[name=${parentSection}] [name="${sectionName}"]`)
             links.push(parentFriendsLink)
         }
-        let firstLoad = false
 
         links.forEach(link => {
             link.addEventListener('click', e => {
                 e.preventDefault()
                 e.stopPropagation()
-                if (firstLoad) {
-                    return
-                }
                 axios.get(sectionFriendsLink.href, {
                     params: {}
                 })
@@ -31,7 +27,6 @@ export function processSectionFriends() {
                         console.log('SUCCESS!!');
                         console.log(response.data)
                         showUsers(response.data.user_list, friendingClass, parentIdentifier);
-                        firstLoad = true
                     })
                     .catch(function (err) {
                         console.log('FAILURE!!');

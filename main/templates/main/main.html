@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Facebook - Profile{% endblock %}
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'main/stylesheets/main.css' %}">
+<link rel="stylesheet" href="{% static 'main/stylesheets/profile.css' %}">
+<link rel="stylesheet" href="{% static 'main/stylesheets/search.css' %}">
+<link rel="stylesheet" href="{% static 'main/stylesheets/components/friending.css' %}">
+<link rel="stylesheet" href="{% static 'main/stylesheets/components/userTemplate.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% include 'main/_profile.html' %}
+{% include 'main/_search.html' %}
+
+{% endblock %}
+
+{% block script %}
+<script type="module" src="{% static 'main/scripts/main.js' %}"></script>
+{% endblock %}

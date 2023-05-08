@@ -27,7 +27,8 @@ class AppUser(AbstractUser):
     def get_profile_picture(self, h, w):
         if self.profile_picture and 'upload/' in self.profile_picture.url:
             return self.profile_picture.url.replace('upload/', f'upload/c_fill,h_{h},w_{w}/')
-        return ''
+        else:
+            return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470568/media/basic_images/default-profile-picture_me5ztx.jpg'
 
     def get_profile_picture_round(self):
         return self.get_profile_picture(160, 160)
@@ -41,7 +42,8 @@ class AppUser(AbstractUser):
     def get_cover_photo(self):
         if self.cover_photo and 'upload/' in self.cover_photo.url:
             return self.cover_photo.url.replace('upload/', 'upload/c_fill,h_463,w_1241/')
-        return ''
+        else:
+            return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470571/media/basic_images/default-cover-photo_furh0o.jpg'
 
     @classmethod
     def make_user(cls):

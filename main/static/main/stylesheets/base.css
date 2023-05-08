@@ -23,17 +23,14 @@ a.navbar-brand {
     min-height: 647px;
 }
 
-.main #vertical-nav {
+#vertical-nav {
     position: fixed;
     height: 100%;
     width: 59px;
     border-right: #b7b7b7 1px solid;
 }
 
-.main .content {
-    margin-left: 13.5%;
-    width: 78%;
-}
+
 
 /*  */
 

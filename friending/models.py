@@ -96,11 +96,12 @@ class Friending(models.Model):
 
     @classmethod
     def get_all_friend_users(cls, user) -> List[AppUser]:
-        l1 = [AppUser.objects.get(pk=fr.second_id)
-              for fr in Friending.objects.filter(first_id=user.id)]
-        l2 = [AppUser.objects.get(pk=fr.first_id)
-              for fr in Friending.objects.filter(second_id=user.id)]
-        return l1 + l2
+        all_friendings = cls.get_all_friend_friendings(user)
+        ids = [fr.second_id if fr.first_id ==
+               user.id else fr.first_id for fr in all_friendings]
+        l = [AppUser.objects.get(pk=id)
+             for id in ids]
+        return l
 
     @classmethod
     def get_all_friendings(cls, user) -> List:
@@ -152,7 +153,7 @@ class Friending(models.Model):
             'full_name': user.__str__(),
             'profile_picture': user.get_profile_picture_friend(),
             'friend_state': Friending.get_state(current_user, user),
-            'profile_url': reverse('posts:profile', args=(user.id,)),
+            'profile_url': reverse('main:profile', args=(user.id,)),
             'urls': {
                 'add_friend': reverse('friending:general', args=(user.id,)),
                 'cancel_request': reverse('friending:delete', args=(user.id,)),

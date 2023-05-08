@@ -1,50 +1,52 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from .models import Post
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime
+import time
 from users.models import AppUser
 from friending.models import Friending
 
-
-@login_required
-def index(request):
-    user = request.user
-    return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
+NUM_LOAD = 8
 
 
-@login_required
-def profile(request, user_id):
-    current_user = request.user
-    user = get_object_or_404(AppUser, pk=user_id)
-    data = {
-        'current_user': current_user,
-        'user': user,
-        'profile_url_round': user.get_profile_picture_round(),
-        'cover_url': user.get_cover_photo(),
-        'main_friending_state': Friending.get_state(current_user, user),
-        'num_friends': Friending.get_all_friend_friendings(user).count(),
-    }
-    return render(request, 'posts/profile.html', data)
+class GeneralView(LoginRequiredMixin, View):
+    def post(self, request, second_user_id):
+        user = request.user
+        body = request.POST
+        newPost = Post(post_text=body['content'], author=user)
+        newPost.save()
+        p = {
+            'author': newPost.author.__str__(),
+            'author_image': newPost.author.get_profile_picture_mini(),
+            'pub_timestamp': datetime.timestamp(newPost.pub_datetime)*1000,
+            'post_text': newPost.post_text
+        }
+        return JsonResponse({'new_post': p})
 
+    def get(self, request, second_user_id):
+        user = request.user
+        second_user = get_object_or_404(AppUser, pk=second_user_id)
+        state = Friending.get_state(user, second_user)
+        if state != Friending.State.self and state != Friending.State.friend:
+            return JsonResponse({'error': 'Bad request'})
 
-@login_required
-def upload_profile_picture(request, user_id):
-    user = request.user
-    user.profile_picture = request.FILES['image']
-    user.save()
-    return JsonResponse({'url': user.get_profile_picture_round()})
+        counter = int(request.GET['counter'])
+        userPosts = Post.objects.filter(author_id=second_user_id)
+        queryset = userPosts.order_by(
+            '-pub_datetime')[counter:counter+NUM_LOAD]
 
+        total_num = userPosts.count()
+        return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
 
-@login_required
-def upload_cover_photo(request, user_id):
-    user = request.user
-    user.cover_photo = request.FILES['image']
-    user.save()
-    return JsonResponse({'url': user.get_cover_photo()})
-
-
-def handler404(request, exception, template_name="404.html"):
-    response = render(request, template_name, {})
-    response.status_code = 404
-    return response
+        l = [{
+            'author': p.author.__str__(),
+            'author_image': p.author.get_profile_picture_mini(),
+            'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
+            'post_text': p.post_text
+        } for p in queryset]
+        return JsonResponse({'page': l, 'counter': return_counter})

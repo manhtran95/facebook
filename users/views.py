@@ -18,7 +18,7 @@ class LoginView(View):
     def get(self, request):
         user = request.user
         if user.is_authenticated:
-            return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
+            return HttpResponseRedirect(reverse('main:profile', args=(user.id,)))
         else:
             return render(request, 'posts/login.html', {})
 
@@ -31,7 +31,7 @@ class LoginView(View):
             return render(request, 'posts/login.html',  {})
         else:
             login(request, user)
-            return HttpResponseRedirect(reverse('posts:profile', args=(user.id,)))
+            return HttpResponseRedirect(reverse('main:profile', args=(user.id,)))
 
 
 class RegisterView(View):
@@ -46,7 +46,7 @@ class RegisterView(View):
             return JsonResponse({'error': 'Username already exists.'})
 
         login(request, user)
-        return JsonResponse({'url': reverse('posts:profile', args=(user.id,))})
+        return JsonResponse({'url': reverse('main:profile', args=(user.id,))})
 
 
 class LogoutView(LoginRequiredMixin, View):
@@ -59,3 +59,19 @@ class SearchView(LoginRequiredMixin, View):
     def get(self, request):
         current_user = request.user
         return render(request, 'users/user_search.html', {'current_user': current_user})
+
+
+class ProfilePictureView(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        user.profile_picture = request.FILES['image']
+        user.save()
+        return JsonResponse({'url': user.get_profile_picture_round()})
+
+
+class CoverPhotoView(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        user.cover_photo = request.FILES['image']
+        user.save()
+        return JsonResponse({'url': user.get_cover_photo()})

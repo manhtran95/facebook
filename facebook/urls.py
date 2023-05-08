@@ -18,10 +18,11 @@ from django.urls import include, path
 
 
 urlpatterns = [
-    path('', include('posts.urls')),
+    path('', include('main.urls')),
+    path('posts', include('posts.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('friends/', include('friending.urls')),
 ]
 
-handler404 = 'posts.views.handler404'
+handler404 = 'main.views.handler404'
