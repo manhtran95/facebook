@@ -45,6 +45,7 @@ class GeneralView(LoginRequiredMixin, View):
 
         l = [{
             'author': p.author.__str__(),
+            'author_main_url': reverse('main:main', args=(p.author.id,)),
             'author_image': p.author.get_profile_picture_mini(),
             'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
             'post_text': p.post_text

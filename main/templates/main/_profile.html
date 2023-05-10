@@ -1,5 +1,4 @@
 <div id="hidden-info">
-    <form class="index-form" action="{% url 'posts:create_index' user.id %}"></form>
 </div>
 
 <section id="section-profile">
@@ -25,7 +24,7 @@
     <div id="basic-info">
         <div id="profile-picture">
             <div id="profile-picture-circle"></div>
-            <img src="{{ profile_url_round }}" alt="profile-picture">
+            <img src="" alt="profile-picture">
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -41,8 +40,8 @@
             </div>
         </div>
         <div id="info">
-            <div class="full-name">{{user.first_name}} {{user.last_name}}</div>
-            <div class="num-friends">{{num_friends}} friends</div>
+            <div class="full-name"></div>
+            <div class="num-friends">friends</div>
         </div>
         <!-- FRIENDING -->
         {% include 'main/components/_friending.html' %}
@@ -97,9 +96,9 @@
                             </a>
                             <div>
                                 <div class="author">
-                                    <a href="">Manh Tran</a>
+                                    <a href="" name="name">Manh Tran</a>
                                 </div>
-                                <div class="pub-date small text-muted">December 4, 2023</div>
+                                <div class="pub-date small text-muted" name="datetime">December 4, 2023</div>
                             </div>
                         </div>
                         <div class="post-text small mt-2">

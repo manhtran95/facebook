@@ -103,7 +103,7 @@ function validateRegisterForm() {
             }
         })
             .then(function (response) {
-                console.log('SUCCESS!!');
+                console.log('Register SUCCESS!!');
                 console.log(response.data);
                 if (response.data.error) {
                     usernameError.innerText = response.data.error

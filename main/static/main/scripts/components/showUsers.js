@@ -1,5 +1,6 @@
 
 import { processFriending } from "./friending.js"
+import { processProfileLink } from "../main.js"
 
 export function showUsers(userList, sectionName, parentIdentifier) {
     let friendTemplate = document.querySelector(`.user-template`);
@@ -13,10 +14,12 @@ export function showUsers(userList, sectionName, parentIdentifier) {
         let img = document.querySelector(`${parentIdentifier} .${thisUserClass} img`)
         img.src = userInfo.profile_picture
         let imageLink = document.querySelector(`${parentIdentifier} .${thisUserClass} a[name='pic']`)
-        imageLink.href = userInfo.profile_url
+        imageLink.href = userInfo.main_url
+        processProfileLink(imageLink)
         let nameLink = document.querySelector(`${parentIdentifier} .${thisUserClass} a[name='name']`)
-        nameLink.href = userInfo.profile_url
+        nameLink.href = userInfo.main_url
         nameLink.innerHTML = userInfo.full_name
+        processProfileLink(nameLink)
         // process Friending
         let friendingTemplate = document.querySelector('.friending')
         let newFriending = friendingTemplate.cloneNode(true)

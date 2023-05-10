@@ -22,7 +22,7 @@ class MainView(LoginRequiredMixin, View):
         current_user = request.user
         data = {
             'current_user': current_user,
-            'second_user_profile_url': reverse('main:profile', args=(second_user_id,))
+            'second_user_main_url': reverse('main:main', args=(second_user_id,))
         }
         return render(request, 'main/main.html', data)
 
@@ -41,7 +41,7 @@ class ProfileView(LoginRequiredMixin, View):
             'friending_index_url': reverse('friending:index', args=(second_user_id,)),
             'friending_requests_url': reverse('friending:requests', args=()),
             # profile info
-            'profile_url_round': second_user.get_profile_picture_round(),
+            'profile_picture_url_round': second_user.get_profile_picture_round(),
             'cover_url': second_user.get_cover_photo(),
             'first_name': second_user.first_name,
             'last_name': second_user.last_name,

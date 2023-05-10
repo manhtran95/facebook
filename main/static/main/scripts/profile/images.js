@@ -22,7 +22,7 @@ function updateImage(section_id, url) {
                 'Content-Type': 'multipart/form-data'
             }
         },).then(function (response) {
-            console.log('SUCCESS!!');
+            console.log('Post Update Image - SUCCESS!!');
             image.src = response.data.url;
         })
             .catch(function (err) {

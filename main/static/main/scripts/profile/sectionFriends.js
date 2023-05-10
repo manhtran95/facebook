@@ -1,4 +1,4 @@
-import { showUsers } from "./../showUsers.js"
+import { showUsers } from "../components/showUsers.js"
 
 export function processSectionFriends(friendingIndexEndpoint, friendingRequestsEndpoint) {
     function processSectionContentFriends(friendingEndpoint, sectionName, contentBlock, friendingClass, parentSection = null) {
@@ -12,7 +12,7 @@ export function processSectionFriends(friendingIndexEndpoint, friendingRequestsE
         }
 
         links.forEach(link => {
-            link.addEventListener('click', e => {
+            link.onclick = e => {
                 e.preventDefault()
                 e.stopPropagation()
                 axios.get(friendingEndpoint, {
@@ -24,7 +24,7 @@ export function processSectionFriends(friendingIndexEndpoint, friendingRequestsE
                             console.log(response.data.error)
                             return
                         }
-                        console.log('SUCCESS!!');
+                        console.log(`get Friends ${friendingEndpoint} SUCCESS!!`);
                         console.log(response.data)
                         showUsers(response.data.user_list, friendingClass, parentIdentifier);
                     })
@@ -32,7 +32,7 @@ export function processSectionFriends(friendingIndexEndpoint, friendingRequestsE
                         console.log('FAILURE!!');
                         console.log(err)
                     });
-            })
+            }
         })
 
     }

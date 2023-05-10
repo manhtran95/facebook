@@ -1,7 +1,7 @@
 import { processUploadCoverPhoto, processUploadProfilePicture } from "./profile/images.js"
 import { processNewPost } from "./profile/newPost.js";
 import { processPostLoading } from "./profile/posts.js";
-import { processFriending } from "./friending.js"
+import { processFriending } from "./components/friending.js"
 import { processSectionFriends } from "./profile/sectionFriends.js"
 import { pluralizeWord } from "./helper/helper.js"
 
@@ -19,7 +19,7 @@ export function processProfile(secondUserProfileUrl) {
     pr.friending_requests_url
 
     pr.cover_url
-    pr.profile_url_round
+    pr.profile_picture_url_round
     pr.first_name
     pr.last_name
     pr.num_friends
@@ -69,7 +69,7 @@ export function processProfile(secondUserProfileUrl) {
         let numFriend = parseInt(pr.num_friends)
         numFriends.innerHTML = numFriend + ' ' + pluralizeWord('friend', 'friends', numFriend)
         let profilePicture = document.querySelector('#profile-picture>img');
-        profilePicture.src = pr.profile_url_round
+        profilePicture.src = pr.profile_picture_url_round
         let coverPhoto = document.querySelector('#cover-photo>img');
         coverPhoto.src = pr.cover_url
         let coverPhotoHome = document.querySelector(`#cover-photo .dropdown`)
@@ -107,14 +107,15 @@ export function processProfile(secondUserProfileUrl) {
                 console.log(response.data.error)
                 return
             }
-            console.log('SUCCESS!!');
+            console.log('Get Profile - SUCCESS!!');
             console.log(response.data.profile)
             process(response.data.profile)
+            return response.data.profile
         })
         .catch(function (err) {
             console.log('FAILURE!!');
             console.log(err)
         });
 
-
 }
+

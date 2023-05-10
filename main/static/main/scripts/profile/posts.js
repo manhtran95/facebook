@@ -1,4 +1,5 @@
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
+import { processProfileLink } from "./../main.js"
 
 export function processPostLoading(indexEndpoint, mainFriendingState) {
     let nextCounter = 0
@@ -27,31 +28,33 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
     function createPostElement(p) {
         curCounter += 1
         const newPost = postTemplate.cloneNode(true);
-        const post = newPost.firstElementChild
-        const postInfo = post.firstElementChild
+        newPost.classList.add(`p${curCounter}`)
+        allPosts.appendChild(newPost)
 
-        const image = postInfo.firstElementChild.firstElementChild
+        let links = document.querySelectorAll(`.p${curCounter} .post-info a`)
+        links.forEach(link => {
+            link.href = p.author_main_url
+            processProfileLink(link)
+        })
+
+        const image = document.querySelector(`.p${curCounter} .post-info img`)
         image.src = p.author_image
-        const info = postInfo.lastElementChild
-        const name = info.firstElementChild
-        name.firstElementChild.innerText = p.author
-        const pubDatetime = info.lastElementChild
+        const name = document.querySelector(`.p${curCounter} .post-info [name='name']`)
+        name.innerText = p.author
+        const pubDatetime = document.querySelector(`.p${curCounter} .post-info [name='datetime']`)
         pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
 
-        const postText = post.lastElementChild
+        const postText = document.querySelector(`.p${curCounter} .post-text`)
         postText.innerText = p.post_text
         window.setTimeout(function () {
             newPost.classList.add('active')
         }, 50);
-        newPost.classList.add(`p${curCounter}`)
         newPost.style.marginTop = '1.25rem'
         newPost.style.marginBottom = '1.25rem'
-
-        return newPost
     }
 
     function showPosts(posts) {
-        posts.forEach(p => allPosts.appendChild(createPostElement(p)))
+        posts.forEach(p => createPostElement(p))
     };
 
     // load next page
@@ -78,10 +81,12 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
                     return
                 }
 
-                console.log('SUCCESS!!');
+                console.log('Get Posts SUCCESS!!');
+                console.log(indexEndpoint);
                 loading.style.display = 'none'
                 noMore.style.display = 'block'
                 nextCounter = response.data.counter
+                console.log(response.data.page);
                 showPosts(response.data.page);
                 // update observer if next page available
                 if (nextCounter > 0) {

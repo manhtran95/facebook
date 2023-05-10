@@ -1,10 +1,7 @@
 
-import { pluralizeWord } from "./helper/helper.js"
+import { pluralizeWord } from "../helper/helper.js"
 
 export function processFriending(friendingClass, friendingState, isMain, urls) {
-
-
-    console.log(1)
     function displayFriendingWithState(state) {
         // DISPLAY the correct state block
         let nonFriendNode = document.querySelector(`.${friendingClass} .friending-non-friend`)
@@ -85,7 +82,6 @@ export function processFriending(friendingClass, friendingState, isMain, urls) {
     }
 
     if (friendingState == window.FRIENDING_STATE.Self) {
-        console.log('stop friending!!')
         return
     }
     processFormButtons();
