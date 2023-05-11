@@ -57,8 +57,8 @@ class LogoutView(LoginRequiredMixin, View):
 
 class SearchView(LoginRequiredMixin, View):
     def get(self, request):
-        current_user = request.user
-        return render(request, 'users/user_search.html', {'current_user': current_user})
+        q = request.GET.get('q')
+        return JsonResponse({'user_list': q})
 
 
 class ProfilePictureView(LoginRequiredMixin, View):

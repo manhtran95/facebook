@@ -3,6 +3,68 @@ body {
     background-color: #F0F2F5;
 }
 
+#search-bar {
+    display: flex;
+}
+
+#search-bar label {
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #e5e5e5;
+}
+
+nav .glass {
+    position: relative;
+    width: 35px;
+    height: 35px;
+}
+
+#search-bar image {
+    width: 14px;
+}
+
+#search-bar form {
+    margin-left: -20px;
+    display: flex;
+    position: relative;
+    background-color: #e5e5e5;
+    border-radius: 25px;
+    display: none;
+}
+
+#search-bar .space {
+    background-color: #e5e5e5;
+    width: 10px;
+
+}
+
+#search-bar input {
+    height: 35px;
+    background-color: #e5e5e5;
+    border-radius: 25px;
+    font-size: 14px;
+}
+
+#search-bar .form-control {
+    border: 0px none;
+    box-shadow: none;
+}
+
+#search-bar .form-control:focus {
+    border: 0px none;
+    box-shadow: none;
+}
+
+nav .glass img {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 nav .dropdown-menu {
     min-width: 8rem;
 }
