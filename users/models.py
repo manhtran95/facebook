@@ -6,6 +6,9 @@ from django.db.models import Q
 from enum import Enum
 import names
 import random
+# from friending.models import Friending
+from django.apps import apps
+from django.urls import reverse
 
 # Create your models here.
 
@@ -36,6 +39,9 @@ class AppUser(AbstractUser):
     def get_profile_picture_mini(self):
         return self.get_profile_picture(40, 40)
 
+    def get_profile_picture_search(self):
+        return self.get_profile_picture(60, 60)
+
     def get_profile_picture_friend(self):
         return self.get_profile_picture(80, 80)
 
@@ -58,3 +64,20 @@ class AppUser(AbstractUser):
         except Exception as e:
             print(e)
         return user
+
+    def get_user_info(self, user):
+        Friending = apps.get_model('friending.Friending')
+        r = {
+            'full_name': user.__str__(),
+            'profile_picture': user.get_profile_picture_friend(),
+            'friend_state': Friending.get_state(self, user),
+            'main_url': reverse('main:main', args=(user.id,)),
+            'urls': {
+                'add_friend': reverse('friending:general', args=(user.id,)),
+                'cancel_request': reverse('friending:delete', args=(user.id,)),
+                'confirm_request': reverse('friending:update', args=(user.id,)),
+                'delete_request': reverse('friending:delete', args=(user.id,)),
+                'unfriend': reverse('friending:delete', args=(user.id,)),
+            }
+        }
+        return r

@@ -3,7 +3,6 @@ from users.models import AppUser
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from typing import List
-from django.urls import reverse
 
 # Create your models here.
 
@@ -146,20 +145,3 @@ class Friending(models.Model):
         else:
             Friending.objects.filter(first_id=smallId, second_id=bigId).update(
                 state=cls.FriendState.PENDING, sent=user.id)
-
-    @classmethod
-    def get_user_info(cls, current_user, user):
-        r = {
-            'full_name': user.__str__(),
-            'profile_picture': user.get_profile_picture_friend(),
-            'friend_state': Friending.get_state(current_user, user),
-            'main_url': reverse('main:main', args=(user.id,)),
-            'urls': {
-                'add_friend': reverse('friending:general', args=(user.id,)),
-                'cancel_request': reverse('friending:delete', args=(user.id,)),
-                'confirm_request': reverse('friending:update', args=(user.id,)),
-                'delete_request': reverse('friending:delete', args=(user.id,)),
-                'unfriend': reverse('friending:delete', args=(user.id,)),
-            }
-        }
-        return r

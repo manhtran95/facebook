@@ -15,8 +15,8 @@ class IndexView(LoginRequiredMixin, View):
         current_user = request.user
         second_user = get_object_or_404(AppUser, pk=second_user_id)
         all_friend_users = Friending.get_all_friend_users(second_user)
-        user_list = [Friending.get_user_info(
-            current_user, user) for user in all_friend_users]
+        user_list = [current_user.get_user_info(
+            user) for user in all_friend_users]
         return JsonResponse({'user_list': user_list})
 
 
@@ -66,8 +66,7 @@ class DeleteView(LoginRequiredMixin, View):
 class RequestIndexView(LoginRequiredMixin, View):
     def get(self, request):
         current_user = request.user
-
         all_friend_requests = Friending.get_friend_requests(current_user)
-        user_list = [Friending.get_user_info(
-            current_user, user) for user in all_friend_requests]
+        user_list = [current_user.get_user_info(
+            user) for user in all_friend_requests]
         return JsonResponse({'user_list': user_list})
