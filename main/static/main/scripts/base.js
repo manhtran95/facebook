@@ -13,9 +13,11 @@ searchInput.onclick = e => {
 }
 
 searchInput.onblur = e => {
-    console.log("bye")
-    searchLabel.style.borderRadius = '50%';
-    searchForm.style.display = 'none';
+    if (searchInput.value == '') {
+        console.log("bye")
+        searchLabel.style.borderRadius = '50%';
+        searchForm.style.display = 'none';
+    }
 }
 
 searchForm.onsubmit = e => {

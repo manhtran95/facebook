@@ -1,4 +1,5 @@
 import { processProfile } from "./profile.js";
+import { resetSearch, processSearch } from "./search/search.js"
 
 window.SectionEnum = {
     'Profile': 'profile',
@@ -23,31 +24,10 @@ function setMainSection(sectionName = 'profile') {
     }
 }
 
-function resetSearch() {
-    let searchForm = document.querySelector('#search-bar form')
-    searchForm.style.display = 'none'
-}
+mainProcessProfile(window.secondUserMainUrl + '/profile', 'Facebook - profile', window.secondUserMainUrl)
+setMainSection('search')
 
-function processSearch(searchUrl) {
-    axios.get(searchUrl, {
-        params: {}
-    })
-        .then(function (response) {
-            if (response.data.error) {
-                console.log('ERROR!')
-                console.log(response.data.error)
-                return
-            }
-            console.log('Search - SUCCESS!!');
-            console.log(response.data.user_list)
-            // process(response.data.user_list)
-            // return response.data.user_list
-        })
-        .catch(function (err) {
-            console.log('FAILURE!!');
-            console.log(err)
-        });
-}
+
 
 export function mainProcessSearch(searchUrl, title = 'Facebook - Search', mainUrl = window.location.href) {
     console.log("process search")
@@ -70,7 +50,6 @@ function mainProcessProfile(profileUrl, title, mainUrl) {
 }
 
 
-mainProcessProfile(window.secondUserMainUrl + '/profile', 'Facebook - profile', window.secondUserMainUrl)
 
 export function processProfileLink(link, procesProfile = processProfile) {
     link.addEventListener('click', e => {

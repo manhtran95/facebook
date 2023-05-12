@@ -65,11 +65,11 @@ class AppUser(AbstractUser):
             print(e)
         return user
 
-    def get_user_info(self, user):
+    def get_user_info(self, user, mode='friend'):
         Friending = apps.get_model('friending.Friending')
         r = {
             'full_name': user.__str__(),
-            'profile_picture': user.get_profile_picture_friend(),
+            'profile_picture': user.get_profile_picture_friend() if mode == 'friend' else user.get_profile_picture_search(),
             'friend_state': Friending.get_state(self, user),
             'main_url': reverse('main:main', args=(user.id,)),
             'urls': {

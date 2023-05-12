@@ -10,6 +10,7 @@ export function showUsers(userList, sectionName, parentIdentifier) {
         let newFriend = friendTemplate.cloneNode(true);
         let thisUserClass = `friend${i}`
         newFriend.classList.add(thisUserClass)
+        newFriend.classList.add(`${sectionName}-user`)
         parent.appendChild(newFriend)
         let img = document.querySelector(`${parentIdentifier} .${thisUserClass} img`)
         img.src = userInfo.profile_picture
