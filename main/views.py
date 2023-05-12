@@ -21,6 +21,8 @@ class MainView(LoginRequiredMixin, View):
     def get(self, request, second_user_id):
         current_user = request.user
         data = {
+            'mode': 'profile',
+            'search_url': reverse('users:search', args=()),
             'current_user': current_user,
             'second_user_main_url': reverse('main:main', args=(second_user_id,))
         }

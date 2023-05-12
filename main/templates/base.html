@@ -26,7 +26,7 @@
                 <label for="search-input">
                     <div class="glass"><img src="{% static 'loupe.png' %}" alt=""></div>
                 </label>
-                <form id="search-form" action="{% url 'users:user_search' %}">
+                <form id="search-form" action="{% url 'users:search_data' %}">
                     <div class="space"></div>
                     <input type="search" id="search-input" class="form-control" />
                 </form>
@@ -91,6 +91,10 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}";
+        window.mode = "{{ mode }}"
+        window.search_data_url = "{{ search_data_url }}"
+        window.search_url = "{{ search_url }}"
+        // window.search_query = "{{ search_query }}"
         window.FRIENDING_STATE = {
             Self: 'SELF',
             NonFriend: 'NON-FRIEND',

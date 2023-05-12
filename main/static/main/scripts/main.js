@@ -24,29 +24,37 @@ function setMainSection(sectionName = 'profile') {
     }
 }
 
-mainProcessProfile(window.secondUserMainUrl + '/profile', 'Facebook - profile', window.secondUserMainUrl)
-setMainSection('search')
+if (window.mode == 'search') {
+    setMainSection('search')
+    mainProcessSearch(window.search_data_url)
+} else {
+    setMainSection('profile')
+    mainProcessProfile(window.secondUserMainUrl + '/profile', window.secondUserMainUrl)
+}
 
 
 
-export function mainProcessSearch(searchUrl, title = 'Facebook - Search', mainUrl = window.location.href) {
-    console.log("process search")
+export function mainProcessSearch(searchDataUrl, searchUrlWithQuery = window.location.href, title = 'Facebook - Search') {
+    console.log("***")
+    console.log("START SEARCHING!!")
+    console.log("***")
     setMainSection(window.SectionEnum.Search)
-    processSearch(searchUrl)
+    processSearch(searchDataUrl)
     document.title = title
-    window.history.pushState({ 'search_url': searchUrl, 'section': window.SectionEnum.Search, 'title': title }, "", mainUrl);
+    window.history.pushState({ 'search_url': searchDataUrl, 'section': window.SectionEnum.Search, 'title': title }, "", searchUrlWithQuery);
     console.log(window.history)
 }
 
-function mainProcessProfile(profileUrl, title, mainUrl) {
-    console.log("process profile")
+function mainProcessProfile(profileUrl, mainUrl, title = 'Facebook - profile') {
+    console.log("***")
+    console.log("START PROFILE!!")
+    console.log("***")
 
     setMainSection()
     processProfile(profileUrl)
     document.title = title
     window.history.pushState({ 'profile_url': profileUrl, 'section': window.SectionEnum.Profile, 'title': title }, "", mainUrl);
     console.log(window.history)
-
 }
 
 
@@ -55,29 +63,30 @@ export function processProfileLink(link, procesProfile = processProfile) {
     link.addEventListener('click', e => {
         e.preventDefault()
         e.stopPropagation()
-        mainProcessProfile(`${link.href}/profile`, 'Facebook - profile', link.href)
+        mainProcessProfile(`${link.href}/profile`, link.href)
     })
 }
 
 window.onpopstate = function (e) {
-    // console.log(e)
     if (e.state) {
-        console.log("HAS STATE!!")
         console.log(e.state)
         if (e.state.section == window.SectionEnum.Profile) {
+            console.log("***")
+            console.log("BACK TO PROFILE!!")
+            console.log("***")
             resetSearch()
             setMainSection(window.SectionEnum.Profile)
             processProfile(e.state.profile_url);
             document.title = e.state.title;
         } else if (e.state.section == window.SectionEnum.Search) {
-            console.log('e state search')
-            console.log(e.state)
+            console.log("***")
+            console.log("BACK TO SEARCH!!")
+            console.log("***")
             setMainSection(window.SectionEnum.Search)
             processSearch(e.state.search_url);
             document.title = e.state.title;
         }
     } else {
         console.log("GO BACK!!")
-        // window.history.back()
     }
 };
