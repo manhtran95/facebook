@@ -73,12 +73,21 @@ export function processFriending(friendingClass, friendingState, isMain, urls) {
         })
     }
 
+
+
     if (isMain) {
-        let friendingTemplate = document.querySelector('.friending')
+        // remove old main Friending
+        let oldMainFriending = document.querySelector('.mainFriending')
+        if (oldMainFriending) {
+            oldMainFriending.parentNode.removeChild(oldMainFriending)
+        }
+
+        let friendingTemplate = document.querySelector('.original-friending')
         let newFriending = friendingTemplate.cloneNode(true)
         let parent = document.querySelector(`#basic-info`)
         parent.appendChild(newFriending)
         newFriending.classList.add(friendingClass)
+        newFriending.classList.remove('original-friending')
     }
 
     if (friendingState == window.FRIENDING_STATE.Self) {

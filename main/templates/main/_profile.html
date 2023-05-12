@@ -1,4 +1,6 @@
 <div id="hidden-info">
+    {% include 'main/components/_friending.html' %}
+    {% include 'main/components/_user.html' %}
 </div>
 
 <section id="section-profile">
@@ -43,8 +45,7 @@
             <div class="full-name"></div>
             <div class="num-friends">friends</div>
         </div>
-        <!-- FRIENDING -->
-        {% include 'main/components/_friending.html' %}
+
 
     </div>
 
@@ -139,14 +140,7 @@
             </div>
             <div class="myselect-content" name="friends">
                 <div name="all-friends" class="row">
-                    <div class="user-template p-3 mb-2 col-6">
-                        <a name="pic" href="">
-                            <img name="profile-picture"
-                                src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_80,w_80/v1/media/profile_pictures/elizabeth_olsen_etrm8v.jpg"
-                                alt="">
-                        </a>
-                        <a name="name" href="#" class="mylink">Manh Tran</a>
-                    </div>
+
                 </div>
                 <div name="friend-requests" class="row"></div>
             </div>

@@ -3,15 +3,16 @@ import { processFriending } from "./friending.js"
 import { processProfileLink } from "../main.js"
 
 export function showUsers(userList, sectionName, parentIdentifier) {
-    let friendTemplate = document.querySelector(`.user-template`);
+    let userTemplate = document.querySelector(`.original-user-template`);
     let parent = document.querySelector(parentIdentifier)
     parent.clearChildren()
     userList.forEach((userInfo, i) => {
-        let newFriend = friendTemplate.cloneNode(true);
-        let thisUserClass = `friend${i}`
-        newFriend.classList.add(thisUserClass)
-        newFriend.classList.add(`${sectionName}-user`)
-        parent.appendChild(newFriend)
+        let newUser = userTemplate.cloneNode(true);
+        newUser.classList.remove('original-user-template')
+        let thisUserClass = `user${i}`
+        newUser.classList.add(thisUserClass)
+        newUser.classList.add(`${sectionName}-user`)
+        parent.appendChild(newUser)
         let img = document.querySelector(`${parentIdentifier} .${thisUserClass} img`)
         img.src = userInfo.profile_picture
         let imageLink = document.querySelector(`${parentIdentifier} .${thisUserClass} a[name='pic']`)
@@ -22,13 +23,14 @@ export function showUsers(userList, sectionName, parentIdentifier) {
         nameLink.innerHTML = userInfo.full_name
         processProfileLink(nameLink)
         // process Friending
-        let friendingTemplate = document.querySelector('.friending')
+        let friendingTemplate = document.querySelector('.original-friending')
         let newFriending = friendingTemplate.cloneNode(true)
+        newFriending.classList.remove('original-friending')
 
-        newFriend.appendChild(newFriending)
+        newUser.appendChild(newFriending)
 
         newFriending.classList.add(`${sectionName}${i}`)
         processFriending(`${sectionName}${i}`, userInfo.friend_state, false, userInfo.urls)
-        newFriend.style.display = 'block'
+        newUser.style.display = 'block'
     });
 }
