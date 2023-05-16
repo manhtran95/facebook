@@ -39,7 +39,7 @@ class GeneralView(LoginRequiredMixin, View):
             new_photo = Photo(author=user, post=newPost,
                               image=img_content)
             new_photo.save()
-            new_photo_urls.append(new_photo.image.url)
+            new_photo_urls.append(new_photo.get_post_image())
         p['photo_urls'] = new_photo_urls
 
         return JsonResponse({'new_post': p})
@@ -64,6 +64,7 @@ class GeneralView(LoginRequiredMixin, View):
             'author_main_url': reverse('main:main', args=(p.author.id,)),
             'author_image': p.author.get_profile_picture_mini(),
             'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
-            'post_text': p.post_text
+            'post_text': p.post_text,
+            'photo_urls': [pt.get_post_image() for pt in p.photo_set.all()],
         } for p in queryset]
         return JsonResponse({'page': l, 'counter': return_counter})

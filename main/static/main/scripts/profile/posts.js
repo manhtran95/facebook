@@ -23,8 +23,8 @@ export function createPostElement(p, mode = 'list') {
         processProfileLink(link)
     })
 
-    const image = document.querySelector(`.p${curCounter} .post-info img`)
-    image.src = p.author_image
+    const authorImage = document.querySelector(`.p${curCounter} .post-info img`)
+    authorImage.src = p.author_image
     const name = document.querySelector(`.p${curCounter} .post-info [name='name']`)
     name.innerText = p.author
     const pubDatetime = document.querySelector(`.p${curCounter} .post-info [name='datetime']`)
@@ -32,6 +32,23 @@ export function createPostElement(p, mode = 'list') {
 
     const postText = document.querySelector(`.p${curCounter} .post-text`)
     postText.innerText = p.post_text
+
+    // process photos
+    let imageTemplate = document.querySelector('#posts .image-template')
+    let imageParent = document.querySelector(`.p${curCounter} .image-parent`)
+    imageParent.clearChildren()
+    console.log('process post photos')
+    p.photo_urls.forEach((url, i) => {
+        let newImage = imageTemplate.cloneNode(true)
+        newImage.classList.remove('image-template')
+        newImage.classList.add(`image${i}`)
+        imageParent.appendChild(newImage)
+        let image = document.querySelector(`.p${curCounter} .image${i}>img`)
+        image.src = url
+        console.log(image.src)
+        newImage.style.display = 'block'
+    })
+
     window.setTimeout(function () {
         newPost.classList.add('active')
     }, 50);

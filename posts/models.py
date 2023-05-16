@@ -33,3 +33,11 @@ class Photo(models.Model):
     image = models.ImageField(upload_to=image_file_name)
     pub_datetime = models.DateTimeField(
         'datetime published', default=timezone.now)
+
+    def get_image(self, h, w):
+        if self.image and 'upload/' in self.image.url:
+            return self.image.url.replace('upload/', f'upload/c_fill,h_{h},w_{w}/')
+        return ''
+
+    def get_post_image(self):
+        return self.get_image(193, 193)

@@ -78,16 +78,14 @@ export function processNewPost(endpoint, mainFriendingState) {
         e.preventDefault()
         e.stopPropagation()
         var formData = new FormData(form);
-        const content = formInput.value;
 
         console.log(inputField.files)
 
         formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
         console.log(formData)
 
-        formInput.value = '';
-        formInput.style.height = "56px";
-        formButton.disabled = true
+        let coverPopup = document.querySelector('#new-post .pop-up')
+        coverPopup.style.display = 'block'
 
         axios.post(endpoint, formData, {
             headers: {
@@ -97,6 +95,10 @@ export function processNewPost(endpoint, mainFriendingState) {
             .then(function (response) {
                 console.log('SUCCESS!');
                 console.log(response.data);
+                formInput.value = '';
+                formInput.style.height = "56px";
+                imageBox.style.display = 'none';
+                coverPopup.style.display = 'none';
                 createPostElement(response.data.new_post, 'new')
             })
             .catch(function (error) {

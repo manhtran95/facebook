@@ -71,49 +71,13 @@
                 <div style="height: 200px"></div>
             </div>
             <div id="posts" class="col-7">
-                <div id="whole-new-post">
-                    <div class="row">
-                        <div id="new-post" class="col-10 offset-1">
-                            <form action="{% url 'posts:create_index' user.id %}" method="post">
-                                <div class="mb-3">
-                                    <textarea class="form-control mb-3" name="content" rows="3"
-                                        placeholder="What's on your mind"></textarea>
-                                    <input class="images-input" type="file" class="form-control" name="images"
-                                        accept="image/*" multiple="multiple" style="display: none;">
-                                    <button type="button" class="photo-button btn"
-                                        onclick="document.querySelector('#new-post .images-input').click();">
-                                        <i data-visualcompletion="css-img"> </i>
-                                        <span>Add
-                                            photos</span></button>
-                                    <div class="col-6 image-preview-template image-preview">
-                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                    </div>
-                                    <div class="image-box">
-                                        <div class="erase-image-container">
-                                            <button type="button" class="erase-image-button">
-                                                <i data-visualcompletion="css-img"></i>
-                                            </button>
-                                        </div>
-                                        <div class="image-preview-parent">
-                                            <!-- <div class="col-6 image-preview">
-                                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                            </div>
-                                            <div class="col-6 image-preview">
-                                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="post-button btn btn-primary font-weight-bold" disabled>Make
-                                    a
-                                    Post!</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                {% include 'main/_newPost.html' %}
 
                 <!-- ALL THE POSTS -->
                 <div class="all-posts">
+                </div>
+                <div class="col-4 image-template image">
+                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
                 </div>
                 <div id="post-template" class="whole-post row">
                     <div class="post col-10 offset-1">
@@ -129,11 +93,28 @@
                                 <div class="pub-date small text-muted" name="datetime">December 4, 2023</div>
                             </div>
                         </div>
-                        <div class="post-text small mt-2">
+                        <div class="post-text small my-2">
                             Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
                             hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
                             a honoured tradition of Vietnamese people where we as descendants visit our homeland,
                             pay tribute to ancestors during warm spring time of the year. </div>
+
+                        <div class="photos">
+                            <div class="image-parent">
+                                <div class="col-4 image">
+                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                </div>
+                                <div class="col-4 image">
+                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                </div>
+                                <div class="col-4 image">
+                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                </div>
+                                <div class="col-4 image">
+                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

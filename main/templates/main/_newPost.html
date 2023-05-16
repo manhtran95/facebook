@@ -1,0 +1,42 @@
+{% load static %}
+<div id="whole-new-post">
+    <div class="row">
+        <div id="new-post" class="col-10 offset-1">
+            <form action="{% url 'posts:create_index' user.id %}" method="post">
+                <div class="mb-3">
+                    <textarea class="form-control mb-3" name="content" rows="3"
+                        placeholder="What's on your mind"></textarea>
+                    <input class="images-input" type="file" class="form-control" name="images" accept="image/*"
+                        multiple="multiple" style="display: none;">
+                    <button type="button" class="photo-button btn"
+                        onclick="document.querySelector('#new-post .images-input').click();">
+                        <i data-visualcompletion="css-img"> </i>
+                        <span>Add
+                            photos</span></button>
+                    <div class="col-6 image-preview-template image-preview">
+                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                    </div>
+                    <div class="image-box">
+                        <div class="erase-image-container">
+                            <button type="button" class="erase-image-button">
+                                <i data-visualcompletion="css-img"></i>
+                            </button>
+                        </div>
+                        <div class="image-preview-parent">
+                            <!-- <div class="col-6 image-preview">
+                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                            </div>
+                            <div class="col-6 image-preview">
+                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="post-button btn btn-primary font-weight-bold" disabled>Make
+                    a
+                    Post!</button>
+            </form>
+            <div class="pop-up"></div>
+        </div>
+    </div>
+</div>

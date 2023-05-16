@@ -1,0 +1,134 @@
+/* *** */
+/* NEW-POST */
+/* *** */
+
+#whole-new-post {
+    margin-bottom: 2em;
+}
+
+#new-post {
+    background-color: white;
+    padding: 1em;
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
+}
+
+#new-post .pop-up {
+    width: 100%;
+    height: 100%;
+    background-color: lightgrey;
+    opacity: 0.3;
+    z-index: 5;
+    box-sizing: content-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+#new-post textarea {
+    overflow: hidden;
+    height: 56px;
+}
+
+/* PHOTO BUTTON */
+
+#new-post .photo-button {
+    background-color: #dedfe0;
+    font-weight: 700;
+    position: relative;
+    border-color: #dedfe0;
+    box-shadow: none;
+}
+
+#new-post .photo-button:hover {
+    background-color: #e8e8e8;
+    border-color: #e8e8e8;
+}
+
+#new-post .photo-button>i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/m7Za9Uuz06h.png);
+    background-position: 0px -326px;
+    background-size: 26px 392px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#new-post .photo-button span {
+    margin-left: 23px;
+}
+
+/* IMAGE PREVIEW */
+#new-post .image-box {
+    position: relative;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    display: none;
+}
+
+#new-post .erase-image-container {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+#new-post .erase-image-button {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    position: relative;
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
+#new-post .erase-image-button:hover {
+    background-color: #F0F2F5;
+}
+
+#new-post .erase-image-button>i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/GSh8eXrNsHf.png);
+    background-position: -132px -88px;
+    background-size: 190px 168px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    filter: invert(39%) sepia(21%) saturate(200%) saturate(109.5%) hue-rotate(174deg) brightness(94%) contrast(86%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+#new-post .image-preview-parent {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 1%;
+}
+
+#new-post .image-preview-template {
+    display: none;
+}
+
+#new-post .image-preview {
+    border: 2px solid white;
+}
+
+#new-post .image-preview>img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+}
+
+#new-post .post-button {
+    font-weight: 700;
+    float: right;
+}
