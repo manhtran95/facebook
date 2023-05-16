@@ -2,6 +2,7 @@
     {% include 'main/components/_friending.html' %}
     {% include 'main/components/_user.html' %}
 </div>
+{% load static %}
 
 <section id="section-profile">
     <!-- COVER-PHOTO -->
@@ -14,7 +15,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <form action="{% url 'users:upload_cover'  %}" method="post" enctype="multipart/form-data">
                     <div class="input-group mb-2">
-                        <input type="file" class="form-control" name="file">
+                        <input type="file" class="form-control" name="file" accept="image/*">
                         <button type="submit" class="input-group-text" disabled>Update</button>
                     </div>
                 </form>
@@ -34,7 +35,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <form action="{% url 'users:upload_profile' %}" method="post" enctype="multipart/form-data">
                         <div class="input-group mb-2">
-                            <input type="file" class="form-control" name="file">
+                            <input type="file" class="form-control" name="file" accept="image/*" multiple="multiple">
                             <button type="submit" class="input-group-text" disabled>Update</button>
                         </div>
                     </form>
@@ -75,10 +76,36 @@
                         <div id="new-post" class="col-10 offset-1">
                             <form action="{% url 'posts:create_index' user.id %}" method="post">
                                 <div class="mb-3">
-                                    <textarea class="form-control" name="content" rows="3"
+                                    <textarea class="form-control mb-3" name="content" rows="3"
                                         placeholder="What's on your mind"></textarea>
+                                    <input class="images-input" type="file" class="form-control" name="images"
+                                        accept="image/*" multiple="multiple" style="display: none;">
+                                    <button type="button" class="photo-button btn"
+                                        onclick="document.querySelector('#new-post .images-input').click();">
+                                        <i data-visualcompletion="css-img"> </i>
+                                        <span>Add
+                                            photos</span></button>
+                                    <div class="col-6 image-preview-template image-preview">
+                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                    </div>
+                                    <div class="image-box">
+                                        <div class="erase-image-container">
+                                            <button type="button" class="erase-image-button">
+                                                <i data-visualcompletion="css-img"></i>
+                                            </button>
+                                        </div>
+                                        <div class="image-preview-parent">
+                                            <!-- <div class="col-6 image-preview">
+                                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                            </div>
+                                            <div class="col-6 image-preview">
+                                                <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                            </div> -->
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary font-weight-bold" disabled>Make a
+                                <button type="submit" class="post-button btn btn-primary font-weight-bold" disabled>Make
+                                    a
                                     Post!</button>
                             </form>
                         </div>
