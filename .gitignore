@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io
 
+temp_images/
+
 ### OSX ###
 .DS_Store
 .AppleDouble
