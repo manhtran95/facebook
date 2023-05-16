@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import datetime
 from users.models import AppUser
 from django.urls import reverse
 from friending.models import Friending
@@ -24,7 +23,7 @@ class MainView(LoginRequiredMixin, View):
             'mode': 'profile',
             'search_url': reverse('users:search', args=()),
             'current_user': current_user,
-            'second_user_main_url': reverse('main:main', args=(second_user_id,))
+            'second_user_main_url': reverse('main:main', args=(second_user_id,)),
         }
         return render(request, 'main/main.html', data)
 

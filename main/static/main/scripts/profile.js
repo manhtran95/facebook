@@ -79,7 +79,7 @@ export function processProfile(secondUserProfileUrl) {
         if (window.currentUserId == pr.second_user_id) {
             processUploadCoverPhoto(pr.upload_cover_photo_url);
             processUploadProfilePicture(pr.upload_profile_picture_url);
-            processNewPost(pr.posts_create_url);
+            processNewPost(pr.posts_create_url, pr.main_friending_state);
             homeSections.forEach(s => {
                 s.style.display = 'block'
             })

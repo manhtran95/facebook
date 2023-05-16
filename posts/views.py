@@ -11,13 +11,14 @@ import time
 from users.models import AppUser
 from friending.models import Friending
 from django import forms
+from helper.helper import compress_image
 
 NUM_LOAD = 8
 
 
 class GeneralView(LoginRequiredMixin, View):
     def post(self, request, second_user_id):
-        """
+        # process post text
         user = request.user
         body = request.POST
         newPost = Post(post_text=body['content'], author=user)
@@ -28,45 +29,20 @@ class GeneralView(LoginRequiredMixin, View):
             'pub_timestamp': datetime.timestamp(newPost.pub_datetime)*1000,
             'post_text': newPost.post_text
         }
-        return JsonResponse({'new_post': p})
-        """
-        user = request.user
-        post = Post.objects.filter(author=user)[3]
+
+        # process post images
         images = request.FILES.getlist('images')
         print(images)
         new_photo_urls = []
-        from pprint import pprint
-        from django.core.files.base import ContentFile
-        from PIL import Image
-        from io import BytesIO
-
         for oimage in images:
-            pprint(vars(oimage))
-            original_file_size = oimage.size
-            filename = oimage._name
-            name, ext = filename.split(".")
-            # Open image with PIL
-            img = Image.open(oimage)
-            print('mode', img.mode)
-            if img.mode == 'RGB':
-                reduced_ratio = max(original_file_size / (100 * 1024), 1)
-                # save image with reduced quality
-                path = f"temp_images/image.jpg"
-                img.save(path, optimize=True,
-                         quality=int(100/reduced_ratio))
-                # read image into img_io
-                img_io = BytesIO()
-                img_io.write(open(path, 'rb').read())
-                img_content = ContentFile(img_io.getvalue(), filename)
-            else:
-                oimage.seek(0)
-                img_content = oimage
-
-            new_photo = Photo(author=user, post=post,
+            img_content = compress_image(oimage)
+            new_photo = Photo(author=user, post=newPost,
                               image=img_content)
             new_photo.save()
             new_photo_urls.append(new_photo.image.url)
-        return JsonResponse({'urls': new_photo_urls})
+        p['photo_urls'] = new_photo_urls
+
+        return JsonResponse({'new_post': p})
 
     def get(self, request, second_user_id):
         user = request.user

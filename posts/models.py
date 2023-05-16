@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 from .managers import CustomUserManager
 from django.utils import timezone
 from users.models import AppUser
-from helper.helper import generateSentence
+from helper.helper import generate_sentence
 
 # Create your models here.
 
@@ -17,7 +17,7 @@ class Post(models.Model):
 
     @classmethod
     def make_post(cls, user):
-        Post(post_text=generateSentence(), author=user).save()
+        Post(post_text=generate_sentence(), author=user).save()
 
 
 def image_file_name(instance, filename):
