@@ -8,8 +8,8 @@ import { pluralizeWord } from "./helper/helper.js"
 
 console.log(window.CSRF_TOKEN)
 
-const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+window.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+window.vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 console.log(vh)
 
 window.ProfileSectionEnum = {
@@ -34,6 +34,8 @@ export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) 
         }
     }
 }
+
+
 
 export function processProfile(secondUserProfileUrl) {
     /*

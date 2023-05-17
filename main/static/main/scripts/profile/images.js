@@ -77,7 +77,6 @@ export function processUploadCoverPhoto(uploadCoverPhotoUrl) {
 
     // 1. add styles to profile picture on hover and click events
     let coverButton = document.querySelector('#cover-photo .dropdown-toggle');
-    console.log(coverButton)
 
     coverButton.addEventListener('mousedown', function (e) {
         coverButton.style.transform = 'scale(0.96)';

@@ -64,7 +64,7 @@ function mainProcessProfile(profileUrl, mainUrl, title = 'Facebook - profile') {
 
 
 
-export function processProfileLink(link, procesProfile = processProfile) {
+export function processProfileLink(link) {
     link.addEventListener('click', e => {
         e.preventDefault()
         e.stopPropagation()

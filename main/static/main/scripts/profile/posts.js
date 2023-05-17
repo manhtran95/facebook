@@ -1,5 +1,6 @@
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
 import { processProfileLink } from "./../main.js"
+import { processPhotoLink } from "./photo.js"
 
 export function createPostElement(p, mode = 'list') {
     const allPosts = document.querySelector('#posts .all-posts')
@@ -37,15 +38,16 @@ export function createPostElement(p, mode = 'list') {
     let imageTemplate = document.querySelector('#posts .image-template')
     let imageParent = document.querySelector(`.p${curCounter} .image-parent`)
     imageParent.clearChildren()
-    console.log('process post photos')
-    p.photo_urls.forEach((url, i) => {
+    p.photos.forEach((pt, i) => {
         let newImage = imageTemplate.cloneNode(true)
         newImage.classList.remove('image-template')
         newImage.classList.add(`image${i}`)
         imageParent.appendChild(newImage)
-        let image = document.querySelector(`.p${curCounter} .image${i}>img`)
-        image.src = url
-        console.log(image.src)
+        let link = document.querySelector(`.p${curCounter} .image${i} a`)
+        link.href = pt.link
+        processPhotoLink(link)
+        let image = document.querySelector(`.p${curCounter} .image${i} img`)
+        image.src = pt.image_url
         newImage.style.display = 'block'
     })
 

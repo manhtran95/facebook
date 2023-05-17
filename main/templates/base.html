@@ -55,7 +55,7 @@
             </div>
         </div>
     </nav>
-    <main class="main">
+    <main id="main">
         <div id="vertical-nav">
             <ul class="nav flex-column">
                 <!-- <li class="nav-item">
@@ -113,6 +113,9 @@
                 }
             });
         }
+        var script = document.createElement('script');
+        script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
+        document.getElementsByTagName('head')[0].appendChild(script);
     </script>
     <script type="module" src="{% static 'main/scripts/base.js' %}"></script>
     <script type="module" src="{% static 'main/scripts/search/search.js' %}"></script>

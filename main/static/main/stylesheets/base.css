@@ -47,7 +47,7 @@ nav {
 
 #search-bar input {
     height: 35px;
-    background-color: #e5e5e5;
+    background-color: #F0F2F5;
     border-radius: 25px;
     font-size: 14px;
 }
@@ -88,10 +88,10 @@ a.navbar-brand {
     padding-left: 0.5rem;
 }
 
-.main {
+#main {
     display: flex;
     background-color: #F0F2F5;
-    min-height: 764px;
+    /* min-height: 807px; */
     flex-wrap: wrap;
 }
 
