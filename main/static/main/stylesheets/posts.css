@@ -27,10 +27,7 @@
     overflow: hidden;
 }
 
-#post-template .author a {
-    color: inherit;
-    text-decoration: none;
-}
+
 
 #post-template .author a:hover {
     text-decoration: underline;
@@ -52,20 +49,25 @@
 
 
 
-#posts .all-posts .post-info {
+.post-info {
     display: flex;
 }
 
-#posts .post-info img {
+.post-info img {
     height: 40px;
     width: 40px;
     border-radius: 50%;
     margin-right: 14px;
 }
 
-#posts .all-posts .author {
+.post-info .author {
     font-size: 14px;
     font-weight: 700;
+}
+
+.post-info .author a {
+    color: inherit;
+    text-decoration: none;
 }
 
 /* PHOTOS */

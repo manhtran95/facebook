@@ -41,3 +41,6 @@ class Photo(models.Model):
 
     def get_post_image(self):
         return self.get_image(193, 193)
+
+    def get_full_image(self):
+        return self.image.url if self.image else ''

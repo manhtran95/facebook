@@ -5,160 +5,167 @@
 {% load static %}
 
 <section id="section-profile">
-    <!-- COVER-PHOTO -->
-    <div id="cover-photo">
-        <img src="" alt="cover-photo">
-        <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">Update cover photo
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form action="{% url 'users:upload_cover'  %}" method="post" enctype="multipart/form-data">
-                    <div class="input-group mb-2">
-                        <input type="file" class="form-control" name="file" accept="image/*">
-                        <button type="submit" class="input-group-text" disabled>Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- BASIC INFO: PROFILE PIC, INFO, FRIENDING -->
-    <div id="basic-info">
-        <div id="profile-picture">
-            <div id="profile-picture-circle"></div>
-            <img src="" alt="profile-picture">
+    {% include 'main/_photo.html' %}
+
+    <section id="section-profile-main">
+        <!-- COVER-PHOTO -->
+        <div id="cover-photo">
+            <img src="" alt="cover-photo">
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                    aria-haspopup="true" aria-expanded="false">Update cover photo
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form action="{% url 'users:upload_profile' %}" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'users:upload_cover'  %}" method="post" enctype="multipart/form-data">
                         <div class="input-group mb-2">
-                            <input type="file" class="form-control" name="file" accept="image/*" multiple="multiple">
+                            <input type="file" class="form-control" name="file" accept="image/*">
                             <button type="submit" class="input-group-text" disabled>Update</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div id="info">
-            <div class="full-name"></div>
-            <div class="num-friends">friends</div>
+
+        <!-- BASIC INFO: PROFILE PIC, INFO, FRIENDING -->
+        <div id="basic-info">
+            <div id="profile-picture">
+                <div id="profile-picture-circle"></div>
+                <img src="" alt="profile-picture">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form action="{% url 'users:upload_profile' %}" method="post" enctype="multipart/form-data">
+                            <div class="input-group mb-2">
+                                <input type="file" class="form-control" name="file" accept="image/*"
+                                    multiple="multiple">
+                                <button type="submit" class="input-group-text" disabled>Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="info">
+                <div class="full-name"></div>
+                <div class="num-friends">friends</div>
+            </div>
+
+
         </div>
 
+        <hr>
+        <!-- SELECT -->
+        <div class="myselect mb-3" name="section">
+            <a class="posts click" href="#">Posts</a>
+            <a class="disabled" href="#">About</a>
+            <a name="friends" href="#">Friends</a>
+            <a class="disabled" href="#">Photos</a>
+            <a class="disabled" href="#">Videos</a>
+            <a class="disabled" href="#">Reel</a>
+            <a class="disabled" href="#">More</a>
+        </div>
+        <hr>
 
-    </div>
-
-    <hr>
-    <!-- SELECT -->
-    <div class="myselect mb-3" name="section">
-        <a class="posts click" href="#">Posts</a>
-        <a class="disabled" href="#">About</a>
-        <a name="friends" href="#">Friends</a>
-        <a class="disabled" href="#">Photos</a>
-        <a class="disabled" href="#">Videos</a>
-        <a class="disabled" href="#">Reel</a>
-        <a class="disabled" href="#">More</a>
-    </div>
-    <hr>
-
-    <!-- SELECT-CONTENT -->
-    <div class="myselect-content" name="section">
-        <div class="section-posts row">
-            <div id="overview" class="col-5">
-                Intro
-                <div style="height: 200px"></div>
-            </div>
-            <div id="posts" class="col-7">
-                {% include 'main/_newPost.html' %}
-
-                <!-- ALL THE POSTS -->
-                <div class="all-posts">
+        <!-- SELECT-CONTENT -->
+        <div class="myselect-content" name="section">
+            <div class="section-posts row">
+                <div id="overview" class="col-5">
+                    Intro
+                    <div style="height: 200px"></div>
                 </div>
-                <div class="col-4 image-template image">
-                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                </div>
-                <div id="post-template" class="whole-post row">
-                    <div class="post col-10 offset-1">
-                        <div class="post-info">
-                            <a href="">
-                                <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
-                                    alt="">
-                            </a>
-                            <div>
-                                <div class="author">
-                                    <a href="" name="name">Manh Tran</a>
+                <div id="posts" class="col-7">
+                    {% include 'main/_newPost.html' %}
+
+                    <!-- ALL THE POSTS -->
+                    <div class="all-posts">
+                    </div>
+                    <div class="col-4 image-template image">
+                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                    </div>
+                    <div id="post-template" class="whole-post row">
+                        <div class="post col-10 offset-1">
+                            <div class="post-info">
+                                <a href="">
+                                    <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
+                                        alt="">
+                                </a>
+                                <div>
+                                    <div class="author">
+                                        <a href="" name="name">Manh Tran</a>
+                                    </div>
+                                    <div class="pub-date small text-muted" name="datetime">December 4, 2023</div>
                                 </div>
-                                <div class="pub-date small text-muted" name="datetime">December 4, 2023</div>
+                            </div>
+                            <div class="post-text small my-2">
+                                Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
+                                hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
+                                a honoured tradition of Vietnamese people where we as descendants visit our homeland,
+                                pay tribute to ancestors during warm spring time of the year. </div>
+
+                            <div class="photos">
+                                <div class="image-parent">
+                                    <div class="col-4 image">
+                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                    </div>
+                                    <div class="col-4 image">
+                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                    </div>
+                                    <div class="col-4 image">
+                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                    </div>
+                                    <div class="col-4 image">
+                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="post-text small my-2">
-                            Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
-                            hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
-                            a honoured tradition of Vietnamese people where we as descendants visit our homeland,
-                            pay tribute to ancestors during warm spring time of the year. </div>
+                    </div>
 
-                        <div class="photos">
-                            <div class="image-parent">
-                                <div class="col-4 image">
-                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                </div>
-                                <div class="col-4 image">
-                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                </div>
-                                <div class="col-4 image">
-                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                </div>
-                                <div class="col-4 image">
-                                    <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                </div>
+                    <div class="row posts-info">
+                        <div class="display">
+                            <div class="loading col-6 offset-3 text-muted">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </div>
+                            <div class="no-more col-6 offset-3 py-4">
+                                <div class="post-text text-muted small">
+                                    There are no more posts to show right now.</div>
+                            </div>
+                        </div>
+                        <div class="non-display">
+                            <div class="no-more col-6 offset-3 py-4">
+                                <div class="post-text">
+                                    Add friend me to view my posts my friend!</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row posts-info">
-                    <div class="display">
-                        <div class="loading col-6 offset-3 text-muted">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Loading...
-                        </div>
-                        <div class="no-more col-6 offset-3 py-4">
-                            <div class="post-text text-muted small">
-                                There are no more posts to show right now.</div>
-                        </div>
+                </div>
+            </div>
+            <div class="section-about row"></div>
+            <div name="friends" class="row">
+                <div class="myselect mb-3" name="friends">
+                    <a name="all-friends" class="active" href="{% url 'friending:index' user.id %}">All friends</a>
+                    <a name="friend-requests" class="home-required" href="{% url 'friending:requests' %}">Friend
+                        requests</a>
+                </div>
+                <div class="myselect-content" name="friends">
+                    <div name="all-friends" class="row">
+
                     </div>
-                    <div class="non-display">
-                        <div class="no-more col-6 offset-3 py-4">
-                            <div class="post-text">
-                                Add friend me to view my posts my friend!</div>
-                        </div>
-                    </div>
+                    <div name="friend-requests" class="row"></div>
                 </div>
 
+
             </div>
+            <div class="section-photos row"></div>
+            <div class="section-videos row"></div>
+            <div class="section-reel row"></div>
+            <div class="section-more row"></div>
         </div>
-        <div class="section-about row"></div>
-        <div name="friends" class="row">
-            <div class="myselect mb-3" name="friends">
-                <a name="all-friends" class="active" href="{% url 'friending:index' user.id %}">All friends</a>
-                <a name="friend-requests" class="home-required" href="{% url 'friending:requests' %}">Friend
-                    requests</a>
-            </div>
-            <div class="myselect-content" name="friends">
-                <div name="all-friends" class="row">
 
-                </div>
-                <div name="friend-requests" class="row"></div>
-            </div>
-
-
-        </div>
-        <div class="section-photos row"></div>
-        <div class="section-videos row"></div>
-        <div class="section-reel row"></div>
-        <div class="section-more row"></div>
-    </div>
+    </section>
 
 </section>

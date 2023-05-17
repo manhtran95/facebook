@@ -72,13 +72,14 @@
     display: none;
 }
 
-#new-post .erase-image-container {
+.erase-image-container {
     position: absolute;
-    right: 1rem;
+    left: 1rem;
     top: 1rem;
+    z-index: 10;
 }
 
-#new-post .erase-image-button {
+.erase-image-button {
     width: 29px;
     height: 29px;
     border-radius: 50%;
@@ -87,11 +88,11 @@
     border: 1px solid lightgrey;
 }
 
-#new-post .erase-image-button:hover {
+.erase-image-button:hover {
     background-color: #F0F2F5;
 }
 
-#new-post .erase-image-button>i {
+.erase-image-button>i {
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/GSh8eXrNsHf.png);
     background-position: -132px -88px;
     background-size: 190px 168px;

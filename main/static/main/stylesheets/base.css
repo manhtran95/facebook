@@ -17,7 +17,7 @@ nav {
     z-index: 2;
     cursor: pointer;
     border-radius: 50%;
-    background-color: #e5e5e5;
+    background-color: #F0F2F5;
 }
 
 #search-bar .glass {
@@ -72,7 +72,10 @@ nav .glass img {
 }
 
 nav .dropdown-menu {
-    min-width: 8rem;
+    /* min-width: 5rem; */
+    --bs-dropdown-min-width: 0rem;
+    right: 0;
+    left: auto !important;
 }
 
 .navbar-brand img {
@@ -88,7 +91,8 @@ a.navbar-brand {
 .main {
     display: flex;
     background-color: #F0F2F5;
-    min-height: 647px;
+    min-height: 764px;
+    flex-wrap: wrap;
 }
 
 #vertical-nav {

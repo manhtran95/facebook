@@ -1,8 +1,17 @@
 #hidden-info {
-    visibility: hidden;
+    display: none;
+}
+
+#section-search,
+#section-profile {
+    display: none;
 }
 
 #section-profile {
+    width: 100%;
+}
+
+#section-profile-main {
     margin-left: 13.5%;
     width: 78%;
 }

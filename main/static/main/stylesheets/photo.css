@@ -1,0 +1,59 @@
+#section-profile-photo {
+    margin-left: 59px;
+    height: 764px;
+}
+
+#section-photo-content {
+    display: flex;
+    height: 100%;
+}
+
+#photo-display {
+    width: 100%;
+    position: relative;
+}
+
+#photo-display .background {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+}
+
+#photo-display .image {
+    position: absolute;
+    z-index: 3;
+    height: 100%;
+    width: auto;
+    top: 0;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+#photo-display .erase-image-container {
+    left: 1.5rem;
+}
+
+#photo-display .erase-image-button {
+    background-color: black;
+    border: 1px solid black;
+}
+
+#photo-display .erase-image-button:hover {
+    background-color: black;
+}
+
+#photo-display .erase-image-button>i {
+    filter: invert(.9);
+}
+
+#photo-info {
+    background-color: white;
+    border-right: 1px solid lightgray;
+    min-width: 360px;
+    padding: 1em;
+}
+
+#photo-chat {
+    min-width: 80px;
+    background-color: white;
+}

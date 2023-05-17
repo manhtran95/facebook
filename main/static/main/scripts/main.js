@@ -8,7 +8,7 @@ window.SectionEnum = {
 
 const sectionMainMap = {
     'profile': document.querySelector('#section-profile'),
-    'search': document.querySelector('#section-search')
+    'search': document.querySelector('#section-search'),
 };
 
 function setMainSection(sectionName = 'profile') {
@@ -24,12 +24,17 @@ function setMainSection(sectionName = 'profile') {
     }
 }
 
-if (window.mode == 'search') {
-    setMainSection('search')
-    mainProcessSearch(window.search_data_url)
-} else {
-    setMainSection('profile')
-    mainProcessProfile(window.secondUserMainUrl + '/profile', window.secondUserMainUrl)
+switch (window.mode) {
+    case window.SectionEnum.Search:
+        setMainSection('search')
+        mainProcessSearch(window.search_data_url)
+        break;
+    case window.SectionEnum.Profile:
+        setMainSection('profile')
+        mainProcessProfile(window.secondUserMainUrl + '/profile', window.secondUserMainUrl)
+        break;
+    default:
+        console.log(`Sorry, something wrong happened.`);
 }
 
 

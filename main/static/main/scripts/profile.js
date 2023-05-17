@@ -3,9 +3,37 @@ import { processNewPost } from "./profile/newPost.js";
 import { processPostLoading } from "./profile/posts.js";
 import { processFriending } from "./components/friending.js"
 import { processSectionFriends } from "./profile/sectionFriends.js"
+import { processPhoto } from "./profile/photo.js"
 import { pluralizeWord } from "./helper/helper.js"
 
 console.log(window.CSRF_TOKEN)
+
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+console.log(vh)
+
+window.ProfileSectionEnum = {
+    'Main': 'main',
+    'Photo': 'photo',
+}
+
+const sectionProfileMap = {
+    'main': document.querySelector('#section-profile-main'),
+    'photo': document.querySelector('#section-profile-photo'),
+};
+
+export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) {
+    if (!(Object.values(window.ProfileSectionEnum).includes(sectionName))) {
+        console.log("ERROR!! INVALID SECTION NAME!!")
+    }
+    for (const [name, section] of Object.entries(sectionProfileMap)) {
+        if (name == sectionName) {
+            section.style.display = 'block'
+        } else {
+            section.style.display = 'none'
+        }
+    }
+}
 
 export function processProfile(secondUserProfileUrl) {
     /*
@@ -90,12 +118,14 @@ export function processProfile(secondUserProfileUrl) {
         }
     }
     function process(pr) {
+        setProfileSection(window.ProfileSectionEnum.Photo)
         processHomeProfile(pr)
         processSelectAndContentAll(pr)
         processFriending('mainFriending', pr.main_friending_state, true, null);
         // append
         processSectionFriends(pr.friending_index_url, pr.friending_requests_url)
         processPostLoading(pr.posts_index_url, pr.main_friending_state);
+        processPhoto();
     }
 
     axios.get(secondUserProfileUrl, {
