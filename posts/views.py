@@ -11,9 +11,31 @@ import time
 from users.models import AppUser
 from friending.models import Friending
 from django import forms
-from helper.helper import compress_image
+from helper.helper import compress_image, MAIN_MODE_ENUM
 
 NUM_LOAD = 8
+
+
+class PhotoDataView(LoginRequiredMixin, View):
+    def get(self, request, photo_id):
+        current_user = request.user
+        # authorization
+        photo = get_object_or_404(Photo, pk=photo_id)
+        state = Friending.get_state(current_user, photo.author)
+        if state != Friending.State.self and state != Friending.State.friend:
+            return JsonResponse({'error': 'Permission denied!'})
+
+        author = photo.author
+        data = {
+            'author': author.__str__(),
+            'author_main_url': reverse('main:main', args=(author.id,)),
+            'author_image': author.get_profile_picture_mini(),
+            'pub_timestamp': datetime.timestamp(photo.pub_datetime)*1000,
+            'full_url': photo.get_full_image(),
+        }
+        return JsonResponse({
+            'photo': data,
+        })
 
 
 class GeneralView(LoginRequiredMixin, View):
@@ -49,7 +71,7 @@ class GeneralView(LoginRequiredMixin, View):
         second_user = get_object_or_404(AppUser, pk=second_user_id)
         state = Friending.get_state(user, second_user)
         if state != Friending.State.self and state != Friending.State.friend:
-            return JsonResponse({'error': 'Bad request'})
+            return JsonResponse({'error': 'Permission denied!'})
 
         counter = int(request.GET['counter'])
         userPosts = Post.objects.filter(author_id=second_user_id)
@@ -65,6 +87,9 @@ class GeneralView(LoginRequiredMixin, View):
             'author_image': p.author.get_profile_picture_mini(),
             'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
             'post_text': p.post_text,
-            'photo_urls': [pt.get_post_image() for pt in p.photo_set.all()],
+            'photos': [{
+                'image_url': pt.get_post_image(),
+                'link': reverse('posts:photo_data', args=(pt.id,)),
+            } for pt in p.photo_set.all()],
         } for p in queryset]
         return JsonResponse({'page': l, 'counter': return_counter})

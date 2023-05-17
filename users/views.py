@@ -65,10 +65,9 @@ class SearchView(LoginRequiredMixin, View):
         search_url = reverse("users:search", args=())
         return render(request, 'main/main.html', {
             'mode': 'search',
-            'search_data_url': f'{search_data_url}?q={query}',
-            'search_url': search_url,
             'current_user': current_user,
-            # 'search_query': query,
+            'search_url': search_url,
+            'search_data_url': f'{search_data_url}?q={query}',
         })
 
 

@@ -1,6 +1,11 @@
 import random
 
 
+class MAIN_MODE_ENUM:
+    Profile = 'profile'
+    Search = 'search'
+
+
 def generate_sentence():
     wordCount = random.randint(20, 60)
     word_file = "/usr/share/dict/words"

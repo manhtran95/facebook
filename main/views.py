@@ -21,8 +21,8 @@ class MainView(LoginRequiredMixin, View):
         current_user = request.user
         data = {
             'mode': 'profile',
-            'search_url': reverse('users:search', args=()),
             'current_user': current_user,
+            'search_url': reverse('users:search', args=()),
             'second_user_main_url': reverse('main:main', args=(second_user_id,)),
         }
         return render(request, 'main/main.html', data)
