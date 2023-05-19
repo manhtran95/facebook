@@ -1,6 +1,52 @@
 import { createPostElement } from "./posts.js"
 
+const newPost = document.querySelector('#section-profile-new-post')
+const remove = document.querySelector('#section-profile-new-post .remove-container')
+const basePopup = document.querySelector('#base-popup')
+const body = document.querySelector('body')
+let numPreviewImages = 0
+const inputField = document.querySelector(`#new-post input`)
+// hold all files
+const dt = new DataTransfer()
+
+export function setModeNewPost() {
+    let scrollTop = $(window).scrollTop()
+    newPost.style.display = 'block'
+    basePopup.style.display = 'block'
+    newPost.style.top = `${scrollTop}px`
+    basePopup.style.top = `${scrollTop}px`
+    body.style.overflow = 'hidden'
+
+    basePopup.onclick = e => {
+        cancelModeNewPost()
+    }
+    remove.onclick = e => {
+        cancelModeNewPost()
+    }
+}
+
+function cancelModeNewPost() {
+    newPost.style.display = 'none'
+    basePopup.style.display = 'none'
+    body.style.overflow = 'auto'
+}
+
 export function processNewPost(endpoint, mainFriendingState) {
+    function processNewPostLink() {
+        const textarea = document.querySelector('#new-post-link textarea')
+        const photoButton = document.querySelector('#new-post-link .photo-button')
+        console.log('DASDASDSADASDASD')
+        console.log(textarea)
+        textarea.addEventListener('click', e => {
+            setModeNewPost()
+        })
+        photoButton.onclick = e => {
+            setModeNewPost()
+        }
+    }
+    processNewPostLink()
+
+
     const imageBox = document.querySelector('#new-post .image-box')
 
     console.log('PROCESSING NEW POST')
@@ -18,24 +64,21 @@ export function processNewPost(endpoint, mainFriendingState) {
             formButton.disabled = true
         }
         this.style.height = 0;
-        this.style.height = (this.scrollHeight + 20) + "px";
+        this.style.height = (this.scrollHeight + 40) + "px";
     });
 
     processImages()
 
     function processImages() {
-        let inputField = document.querySelector(`#new-post input`)
         const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
 
-        // hold all files
-        let dt = new DataTransfer()
-        let numImages = 0
+
 
         // START
         function processRemoveImage(removeIdx) {
             console.log('START REMOVE IMAGE')
             // 1. process input
-            numImages -= 1
+            numPreviewImages -= 1
             const { files } = inputField
             var clonedFiles = structuredClone(files);
 
@@ -53,7 +96,7 @@ export function processNewPost(endpoint, mainFriendingState) {
             // remove image preview
             imagePreviewParent.removeChild(imagePreviewParent.children[removeIdx]);
             // reindex button id
-            for (let i = 0; i < numImages; i++) {
+            for (let i = 0; i < numPreviewImages; i++) {
                 const imagePreview = imagePreviewParent.children[i]
                 imagePreview.id = `image-preview${i}`
                 let removeButton = document.querySelector(`#image-preview${i} button`)
@@ -62,7 +105,7 @@ export function processNewPost(endpoint, mainFriendingState) {
                 }
             }
 
-            if (numImages > 0) {
+            if (numPreviewImages > 0) {
                 imageBox.style.display = 'block';
             } else {
                 imageBox.style.display = 'none';
@@ -78,8 +121,8 @@ export function processNewPost(endpoint, mainFriendingState) {
             // FOR FILE INPUT
             const { files } = inputField
             for (let i = 0; i < files.length; i++) {
-                numImages += 1
-                const newIdx = numImages - 1
+                numPreviewImages += 1
+                const newIdx = numPreviewImages - 1
                 const file = files[i]
                 dt.items.add(file)
                 // add to preview
@@ -122,7 +165,7 @@ export function processNewPost(endpoint, mainFriendingState) {
 
         formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
 
-        let coverPopup = document.querySelector('#new-post .pop-up')
+        let coverPopup = document.querySelector('#section-profile-new-post .pop-up')
         coverPopup.style.display = 'block'
 
         axios.post(endpoint, formData, {
@@ -133,10 +176,18 @@ export function processNewPost(endpoint, mainFriendingState) {
             .then(function (response) {
                 console.log('SUCCESS!');
                 console.log(response.data);
+                // reset
                 formInput.value = '';
-                formInput.style.height = "56px";
+                formInput.style.height = "76px";
                 imageBox.style.display = 'none';
+
+                const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
+                imagePreviewParent.clearChildren()
+                numPreviewImages = 0;
+                dt.clearData()
+
                 coverPopup.style.display = 'none';
+                cancelModeNewPost()
                 createPostElement(response.data.new_post, 'new')
             })
             .catch(function (error) {

@@ -2,19 +2,39 @@
 /* NEW-POST */
 /* *** */
 
-#whole-new-post {
-    margin-bottom: 2em;
+#section-profile-new-post {
+    position: absolute;
+    display: none;
+    z-index: 1500;
+    width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding-top: 0px;
 }
 
-#new-post {
-    background-color: white;
+.new-post-container {
+    position: relative;
     padding: 1em;
     border-radius: 7px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    position: relative;
+    background-color: white;
+    padding-top: 0;
 }
 
-#new-post .pop-up {
+
+#section-profile-new-post .title {
+    font-size: 23px;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.new-post textarea {
+    height: 76px;
+    max-height: 200px;
+}
+
+.new-post-container .pop-up {
     width: 100%;
     height: 100%;
     background-color: lightgrey;
@@ -24,68 +44,75 @@
     position: absolute;
     left: 0;
     top: 0;
+    padding: 0;
     display: none;
 }
 
-#new-post textarea {
-    overflow: hidden;
+#whole-new-post-link {
+    margin-bottom: 2em;
+}
+
+.new-post-wall {
+    padding-top: 1rem;
+}
+
+.new-post-wall textarea {
     height: 56px;
 }
 
-/* PHOTO BUTTON */
-
-#new-post .photo-button {
-    background-color: #dedfe0;
-    font-weight: 700;
-    position: relative;
-    border-color: #dedfe0;
-    box-shadow: none;
-}
-
-#new-post .photo-button:hover {
-    background-color: #e8e8e8;
-    border-color: #e8e8e8;
-}
-
-#new-post .photo-button>i {
-    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/m7Za9Uuz06h.png);
-    background-position: 0px -326px;
-    background-size: 26px 392px;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-#new-post .photo-button span {
-    margin-left: 23px;
-}
-
+/*  */
 /* IMAGE PREVIEW */
-#new-post .image-box {
+/*  */
+
+.new-post .image-preview-parent {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 1%;
+    max-height: 311px;
+    overflow: auto;
+}
+
+.new-post .image-preview {
+    display: none;
+}
+
+.new-post .image-preview {
+    border: 2px solid white;
+    position: relative;
+}
+
+.new-post .image-preview>img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+}
+
+.new-post .image-box {
     position: relative;
     border: 1px solid lightgrey;
     border-radius: 8px;
     display: none;
 }
 
-.remove-image-container {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
-}
+/* CLASSES */
 
-.image-preview .remove-image-container {
+.image-preview .remove-container {
     top: .5rem;
     right: .5rem;
     transform: scale(.8);
 }
 
-.remove-image-button {
+.remove-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    display: flex;
+}
+
+.remove-button {
     width: 29px;
     height: 29px;
     border-radius: 50%;
@@ -94,11 +121,11 @@
     border: 1px solid lightgrey;
 }
 
-.remove-image-button:hover {
+.remove-button:hover {
     background-color: #F0F2F5;
 }
 
-.remove-image-button>i {
+.remove-button>i {
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/GSh8eXrNsHf.png);
     background-position: -132px -88px;
     background-size: 190px 168px;
@@ -113,30 +140,44 @@
     transform: translateY(-50%) translateX(-50%);
 }
 
-#new-post .image-preview-parent {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 1%;
-}
+/* TEMPLATE */
 
-#new-post .image-preview-template {
-    display: none;
-}
-
-#new-post .image-preview {
-    border: 2px solid white;
+.new-post-template {
     position: relative;
 }
 
-#new-post .image-preview>img {
-    width: 100%;
-    object-fit: cover;
-    aspect-ratio: 1 / 1;
-    border-radius: 8px;
+.new-post-template .photo-button {
+    background-color: #dedfe0;
+    font-weight: 700;
+    position: relative;
+    border-color: #dedfe0;
+    box-shadow: none;
 }
 
-#new-post .post-button {
+.new-post-template .photo-button:hover {
+    background-color: #e8e8e8;
+    border-color: #e8e8e8;
+}
+
+.new-post-template .photo-button>i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/m7Za9Uuz06h.png);
+    background-position: 0px -326px;
+    background-size: 26px 392px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.new-post-template .photo-button span {
+    margin-left: 23px;
+}
+
+
+.new-post-template .post-button {
     font-weight: 700;
     float: right;
 }

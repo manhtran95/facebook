@@ -9,6 +9,7 @@
 
 #section-profile {
     width: 100%;
+    position: relative;
 }
 
 #section-profile-main {

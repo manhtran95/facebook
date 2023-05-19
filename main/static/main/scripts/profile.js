@@ -5,6 +5,7 @@ import { processFriending } from "./components/friending.js"
 import { processSectionFriends } from "./profile/sectionFriends.js"
 import { processPhoto } from "./profile/photo.js"
 import { pluralizeWord } from "./helper/helper.js"
+import { setModeNewPost } from "./profile/newPost.js"
 
 console.log(window.CSRF_TOKEN)
 
@@ -15,24 +16,35 @@ console.log(vh)
 window.ProfileSectionEnum = {
     'Main': 'main',
     'Photo': 'photo',
+    'NewPost': 'new-post',
 }
 
+function setModeMain() {
+    const main = document.querySelector('#section-profile-main')
+    const photo = document.querySelector('#section-profile-photo')
+    main.style.display = 'block'
+    photo.style.display = 'none'
+}
+function setModePhoto() {
+    const main = document.querySelector('#section-profile-main')
+    const photo = document.querySelector('#section-profile-photo')
+    main.style.display = 'none'
+    photo.style.display = 'block'
+}
+
+
 const sectionProfileMap = {
-    'main': document.querySelector('#section-profile-main'),
-    'photo': document.querySelector('#section-profile-photo'),
+    'main': setModeMain,
+    'photo': setModePhoto,
+    'new-post': setModeNewPost,
 };
 
 export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) {
     if (!(Object.values(window.ProfileSectionEnum).includes(sectionName))) {
         console.log("ERROR!! INVALID SECTION NAME!!")
     }
-    for (const [name, section] of Object.entries(sectionProfileMap)) {
-        if (name == sectionName) {
-            section.style.display = 'block'
-        } else {
-            section.style.display = 'none'
-        }
-    }
+    const action = sectionProfileMap[sectionName]
+    action()
 }
 
 
@@ -104,7 +116,7 @@ export function processProfile(secondUserProfileUrl) {
         coverPhoto.src = pr.cover_url
         let coverPhotoHome = document.querySelector(`#cover-photo .dropdown`)
         let profilePictureHome = document.querySelector(`#profile-picture .dropdown`)
-        let newPostHome = document.querySelector(`#whole-new-post`)
+        let newPostHome = document.querySelector(`#whole-new-post-link`)
         let homeSections = [coverPhotoHome, profilePictureHome, newPostHome]
         if (window.currentUserId == pr.second_user_id) {
             processUploadCoverPhoto(pr.upload_cover_photo_url);
@@ -120,7 +132,10 @@ export function processProfile(secondUserProfileUrl) {
         }
     }
     function process(pr) {
-        setProfileSection()
+        setTimeout(e => {
+            setProfileSection(window.ProfileSectionEnum.NewPost)
+
+        }, 1000)
         // setProfileSection(window.ProfileSectionEnum.Photo)
         processHomeProfile(pr)
         processSelectAndContentAll(pr)

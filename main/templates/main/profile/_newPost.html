@@ -1,7 +1,17 @@
 {% load static %}
-<div id="whole-new-post">
-    <div class="row">
-        <div id="new-post" class="col-10 offset-1">
+<div id="section-profile-new-post" class="whole-new-post">
+    <div id="" class=" new-post-container row">
+        <div class="col-12 title">
+            Create post
+            <div class="remove-container">
+                <button type="button" class="remove-button">
+                    <i data-visualcompletion="css-img"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        </hr>
+        <div id="new-post" class="new-post new-post-template col-12">
             <form action="{% url 'posts:create_index' user.id %}" method="post">
                 <div class="mb-3">
                     <textarea class="form-control mb-3" name="content" rows="3"
@@ -15,8 +25,8 @@
                             photos</span></button>
                     <div class="col-4 image-preview-template image-preview">
                         <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                        <div class="remove-image-container">
-                            <button type="button" class="remove-image-button">
+                        <div class="remove-container">
+                            <button type="button" class="remove-button">
                                 <i data-visualcompletion="css-img"></i>
                             </button>
                         </div>
@@ -32,11 +42,9 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="post-button btn btn-primary font-weight-bold" disabled>Make
-                    a
-                    Post!</button>
+                <button type="submit" class="post-button btn btn-primary font-weight-bold" disabled>Post</button>
             </form>
-            <div class="pop-up"></div>
         </div>
+        <div class="pop-up"></div>
     </div>
 </div>

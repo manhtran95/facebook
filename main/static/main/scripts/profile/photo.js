@@ -80,7 +80,7 @@ export function processPhotoLink(link) {
 
 export function processPhoto() {
     let background = document.querySelector('#photo-display .background')
-    let escapeButton = document.querySelector('#photo-display .remove-image-button')
+    let escapeButton = document.querySelector('#photo-display .remove-button')
     background.onclick = e => {
         setProfileSection(window.ProfileSectionEnum.Main)
     }
