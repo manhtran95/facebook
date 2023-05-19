@@ -1,6 +1,8 @@
 import { createPostElement } from "./posts.js"
 
 export function processNewPost(endpoint, mainFriendingState) {
+    const imageBox = document.querySelector('#new-post .image-box')
+
     console.log('PROCESSING NEW POST')
     if (mainFriendingState != window.FRIENDING_STATE.Self) {
         return
@@ -19,56 +21,92 @@ export function processNewPost(endpoint, mainFriendingState) {
         this.style.height = (this.scrollHeight + 20) + "px";
     });
 
-    // process file-image input
-    let inputField = document.querySelector(`#new-post input`)
-    // console.log(inputField)
-    // let currentFiles = []
+    processImages()
 
-    let imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
-    let eraseImageButton = document.querySelector('#new-post .erase-image-button')
-    let imageBox = document.querySelector('#new-post .image-box')
+    function processImages() {
+        let inputField = document.querySelector(`#new-post input`)
+        const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
 
-    eraseImageButton.onclick = e => {
-        inputField.value = ''
-        console.log('inputField.files: ')
-        console.log(inputField.files)
-        imagePreviewParent.clearChildren()
-        imageBox.style.display = 'none';
-    };
+        // hold all files
+        let dt = new DataTransfer()
+        let numImages = 0
 
-    inputField.onchange = function (e) {
-        imagePreviewParent.clearChildren()
-        let imagePreviewTemplate = document.querySelector('#new-post .image-preview-template')
-        let allFiles = []
-        console.log('haha')
-        console.log(inputField.files)
-        allFiles.push(...inputField.files)
-        allFiles.forEach((file, i) => {
-            let newImagePreview = imagePreviewTemplate.cloneNode(true)
-            newImagePreview.classList.remove('image-preview-template')
-            newImagePreview.classList.add(`image-preview${i}`)
-            imagePreviewParent.appendChild(newImagePreview)
-            let image = document.querySelector(`#new-post .image-preview${i}>img`)
-            image.src = URL.createObjectURL(file)
-            console.log(image.src)
-            newImagePreview.style.display = 'block'
-        });
-        if (imagePreviewParent.children.length > 0) {
-            imageBox.style.display = 'block';
-            let eraseImageContainer = document.querySelector('#new-post .erase-image-container')
-            if (imagePreviewParent.children.length === 1) {
-                eraseImageContainer.style.right = ''
-                eraseImageContainer.style.left = '1rem'
-            } else {
-                eraseImageContainer.style.right = '1rem'
-                eraseImageContainer.style.left = ''
+        // START
+        function processRemoveImage(removeIdx) {
+            console.log('START REMOVE IMAGE')
+            // 1. process input
+            numImages -= 1
+            const { files } = inputField
+            var clonedFiles = structuredClone(files);
+
+            dt.clearData()
+            for (let i = 0; i < clonedFiles.length; i++) {
+                const file = clonedFiles[i]
+                if (i != removeIdx) {
+                    dt.items.add(file) // here you exclude the file. thus removing it.
+                }
             }
-        } else {
-            imageBox.style.display = 'none';
+            inputField.files = dt.files // Assign the updated list with new photos
+            console.log(inputField.files)
+
+            // 2. process preview
+            // remove image preview
+            imagePreviewParent.removeChild(imagePreviewParent.children[removeIdx]);
+            // reindex button id
+            for (let i = 0; i < numImages; i++) {
+                const imagePreview = imagePreviewParent.children[i]
+                imagePreview.id = `image-preview${i}`
+                let removeButton = document.querySelector(`#image-preview${i} button`)
+                removeButton.onclick = e => {
+                    processRemoveImage(i)
+                }
+            }
+
+            if (numImages > 0) {
+                imageBox.style.display = 'block';
+            } else {
+                imageBox.style.display = 'none';
+            }
         }
-        // if (file2) {
-        //     imagePreview2.src = URL.createObjectURL(file2)
-        // }
+        // END
+
+        inputField.onchange = function (e) {
+            console.log('INPUT CHANGED!!')
+            let imagePreviewTemplate = document.querySelector('#new-post .image-preview-template')
+
+            // PROCESS ADDING PHOTOS
+            // FOR FILE INPUT
+            const { files } = inputField
+            for (let i = 0; i < files.length; i++) {
+                numImages += 1
+                const newIdx = numImages - 1
+                const file = files[i]
+                dt.items.add(file)
+                // add to preview
+                let newImagePreview = imagePreviewTemplate.cloneNode(true)
+                newImagePreview.classList.remove('image-preview-template')
+                newImagePreview.id = `image-preview${newIdx}`
+                imagePreviewParent.appendChild(newImagePreview)
+                let image = document.querySelector(`#image-preview${newIdx}>img`)
+                image.src = URL.createObjectURL(file)
+                // remove button with id
+                let removeButton = document.querySelector(`#image-preview${newIdx} button`)
+                removeButton.onclick = e => {
+                    processRemoveImage(newIdx)
+                }
+                newImagePreview.style.display = 'block'
+            }
+            inputField.files = dt.files // Assign the updated list with new photos
+
+            console.log(inputField.files)
+
+            if (imagePreviewParent.children.length > 0) {
+                imageBox.style.display = 'block';
+            } else {
+                imageBox.style.display = 'none';
+            }
+        }
+
     }
 
     formButton.addEventListener('click', function (e) {
@@ -79,10 +117,10 @@ export function processNewPost(endpoint, mainFriendingState) {
         e.stopPropagation()
         var formData = new FormData(form);
 
+        console.log("SUBMITING REQUEST!")
         console.log(inputField.files)
 
         formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
-        console.log(formData)
 
         let coverPopup = document.querySelector('#new-post .pop-up')
         coverPopup.style.display = 'block'

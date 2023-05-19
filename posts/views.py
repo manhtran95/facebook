@@ -43,6 +43,7 @@ class GeneralView(LoginRequiredMixin, View):
         # process post text
         user = request.user
         body = request.POST
+
         newPost = Post(post_text=body['content'], author=user)
         newPost.save()
         p = {
@@ -55,14 +56,18 @@ class GeneralView(LoginRequiredMixin, View):
         # process post images
         images = request.FILES.getlist('images')
         print(images)
-        new_photo_urls = []
+
+        new_photos = []
         for oimage in images:
             img_content = compress_image(oimage)
             new_photo = Photo(author=user, post=newPost,
                               image=img_content)
             new_photo.save()
-            new_photo_urls.append(new_photo.get_post_image())
-        p['photo_urls'] = new_photo_urls
+            new_photos.append({
+                'image_url': new_photo.get_post_image(),
+                'link': reverse('posts:photo_data', args=(new_photo.id,)),
+            })
+        p['photos'] = new_photos
 
         return JsonResponse({'new_post': p})
 

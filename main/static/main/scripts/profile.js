@@ -120,7 +120,8 @@ export function processProfile(secondUserProfileUrl) {
         }
     }
     function process(pr) {
-        setProfileSection(window.ProfileSectionEnum.Photo)
+        setProfileSection()
+        // setProfileSection(window.ProfileSectionEnum.Photo)
         processHomeProfile(pr)
         processSelectAndContentAll(pr)
         processFriending('mainFriending', pr.main_friending_state, true, null);

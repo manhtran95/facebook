@@ -72,14 +72,20 @@
     display: none;
 }
 
-.erase-image-container {
+.remove-image-container {
     position: absolute;
-    left: 1rem;
     top: 1rem;
+    right: 1rem;
     z-index: 10;
 }
 
-.erase-image-button {
+.image-preview .remove-image-container {
+    top: .5rem;
+    right: .5rem;
+    transform: scale(.8);
+}
+
+.remove-image-button {
     width: 29px;
     height: 29px;
     border-radius: 50%;
@@ -88,11 +94,11 @@
     border: 1px solid lightgrey;
 }
 
-.erase-image-button:hover {
+.remove-image-button:hover {
     background-color: #F0F2F5;
 }
 
-.erase-image-button>i {
+.remove-image-button>i {
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/GSh8eXrNsHf.png);
     background-position: -132px -88px;
     background-size: 190px 168px;
@@ -120,6 +126,7 @@
 
 #new-post .image-preview {
     border: 2px solid white;
+    position: relative;
 }
 
 #new-post .image-preview>img {

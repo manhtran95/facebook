@@ -29,20 +29,20 @@
     transform: translatex(-50%) translatey(-50%);
 }
 
-#photo-display .erase-image-container {
+#photo-display .remove-image-container {
     left: 1.5rem;
 }
 
-#photo-display .erase-image-button {
+#photo-display .remove-image-button {
     background-color: black;
     border: 1px solid black;
 }
 
-#photo-display .erase-image-button:hover {
+#photo-display .remove-image-button:hover {
     background-color: black;
 }
 
-#photo-display .erase-image-button>i {
+#photo-display .remove-image-button>i {
     filter: invert(.9);
 }
 

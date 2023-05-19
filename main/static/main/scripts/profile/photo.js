@@ -6,6 +6,11 @@ import { getFacebookDatetimeStr } from "./../helper/helper.js"
 function profileProcessPhoto(photoDataUrl) {
     console.log('processing' + photoDataUrl)
 
+    window.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    window.vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+    let section = document.querySelector('#section-profile-photo')
+    section.style.height = '' + (window.vh - 55) + 'px'
     let ptWidth = window.vw - 59 - 440
     let ptHeight = window.vh - 55
     let widthToHeight = ptWidth / ptHeight
@@ -16,10 +21,6 @@ function profileProcessPhoto(photoDataUrl) {
         image.addEventListener('load', e => {
             let w = image.clientWidth
             let h = image.clientHeight
-            console.log(w)
-            console.log(h)
-            console.log(w / h)
-            console.log(widthToHeight)
             if (w / h > widthToHeight) {
                 image.style.width = '100%';
                 image.style.height = 'auto';
@@ -78,11 +79,8 @@ export function processPhotoLink(link) {
 }
 
 export function processPhoto() {
-    let section = document.querySelector('#section-profile-photo')
-    section.style.height = '' + (window.vh - 55) + 'px'
-
     let background = document.querySelector('#photo-display .background')
-    let escapeButton = document.querySelector('#photo-display .erase-image-button')
+    let escapeButton = document.querySelector('#photo-display .remove-image-button')
     background.onclick = e => {
         setProfileSection(window.ProfileSectionEnum.Main)
     }
@@ -90,5 +88,4 @@ export function processPhoto() {
     escapeButton.onclick = e => {
         setProfileSection(window.ProfileSectionEnum.Main)
     }
-
 }
