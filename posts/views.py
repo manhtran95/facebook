@@ -95,6 +95,7 @@ class GeneralView(LoginRequiredMixin, View):
             'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
             'post_text': p.post_text,
             'post_edit_url': reverse('posts:edit', args=(p.id,)) if state == Friending.State.self else '',
+            'post_delete_url': reverse('posts:delete', args=(p.id,)) if state == Friending.State.self else '',
             'photos': [{
                 'image_url': pt.get_post_image(),
                 'link': reverse('posts:photo_data', args=(pt.id,)),
@@ -156,3 +157,15 @@ class UpdateView(LoginRequiredMixin, View):
             } for pt in post.photo_set.all()],
         }
         return JsonResponse({'updated_post': data})
+
+
+class DeleteView(LoginRequiredMixin, View):
+    def post(self, request, post_id):
+        user = request.user
+        post = get_object_or_404(Post, pk=post_id)
+        if post.author.id != user.id:
+            return JsonResponse({'error': 'Permission denied!'})
+
+        post.delete()
+
+        return JsonResponse({'deleted_post_id': post_id})

@@ -24,7 +24,8 @@
     transition: opacity 1s ease-out;
     opacity: 0;
     height: 0;
-    overflow: hidden;
+    position: relative;
+    /* overflow: hidden; */
 }
 
 .post-instance .dropdown {
@@ -34,8 +35,6 @@
 .post-instance .author a:hover {
     text-decoration: underline;
 }
-
-
 
 .post-instance.active {
     opacity: 1;

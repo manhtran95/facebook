@@ -4,10 +4,10 @@ import { processPhotoLink } from "./photo.js"
 import { processEditLink } from "./newPost.js"
 
 const imageTemplate = document.querySelector('#posts .image-template')
+const allPosts = document.querySelector('#posts .all-posts')
 
 
 export function createPostElement(p, mode = 'list') {
-    const allPosts = document.querySelector('#posts .all-posts')
     const postTemplate = document.querySelector('.post-template');
     let curCounter = window.curCounter
     window.curCounter += 1
@@ -47,6 +47,10 @@ export function createPostElement(p, mode = 'list') {
         const editLink = document.querySelector(`#${postId} .edit-link`)
         editLink.href = p.post_edit_url
         processEditLink(editLink)
+
+        const deleteLink = document.querySelector(`#${postId} .delete-link`)
+        deleteLink.href = p.post_delete_url
+        processDeleteLink(deleteLink)
     }
 
     const postText = document.querySelector(`#${postId} .post-text`)
@@ -74,6 +78,35 @@ export function createPostElement(p, mode = 'list') {
     }, 50);
     newPost.style.marginTop = '1.25rem'
     newPost.style.marginBottom = '1.25rem'
+}
+
+function processDeleteLink(link) {
+    link.onclick = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        axios.post(link.href, {
+            csrfmiddlewaretoken: window.CSRF_TOKEN
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(function (response) {
+                if (response.data.error) {
+                    console.log('ERROR!')
+                    console.log(response.data.error)
+                    return
+                }
+                console.log('Post - Delete Post - SUCCESS!!');
+                console.log(response.data.deleted_post_id)
+                const post = document.querySelector(`#post${response.data.deleted_post_id}`)
+                allPosts.removeChild(post)
+            })
+            .catch(function (err) {
+                console.log('FAILURE!!');
+                console.log(err)
+            });
+    }
 }
 
 export function editPostElement(postInfo) {

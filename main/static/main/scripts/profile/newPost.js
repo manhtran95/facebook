@@ -72,8 +72,6 @@ export function processEditLink(link) {
     link.onclick = e => {
         e.preventDefault()
         e.stopPropagation()
-        console.log('HEREEEEE')
-        console.log(link.href)
         axios.get(link.href, {
             params: {}
         })
