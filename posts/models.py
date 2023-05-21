@@ -5,7 +5,8 @@ from .managers import CustomUserManager
 from django.utils import timezone
 from users.models import AppUser
 from helper.helper import generate_sentence
-
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 # Create your models here.
 
 
@@ -44,3 +45,8 @@ class Photo(models.Model):
 
     def get_full_image(self):
         return self.image.url if self.image else ''
+
+
+@receiver(pre_delete, sender=Photo)
+def delete_image(sender, instance, using, **kwargs):
+    instance.image.delete()

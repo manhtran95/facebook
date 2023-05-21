@@ -135,7 +135,6 @@ class UpdateView(LoginRequiredMixin, View):
         # remove old images
         for removed_photo_id in json.loads(body['removedPhotoIds']):
             photo = get_object_or_404(Photo, pk=removed_photo_id)
-            photo.image.delete()
             photo.delete()
 
         # add new images
