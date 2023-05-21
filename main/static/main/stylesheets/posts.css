@@ -20,24 +20,24 @@
     padding: 1em;
 }
 
-#post-template {
+.post-instance {
     transition: opacity 1s ease-out;
     opacity: 0;
     height: 0;
     overflow: hidden;
 }
 
-#post-template .dropdown {
+.post-instance .dropdown {
     display: none;
 }
 
-#post-template .author a:hover {
+.post-instance .author a:hover {
     text-decoration: underline;
 }
 
 
 
-#post-template.active {
+.post-instance.active {
     opacity: 1;
     height: auto;
 }

@@ -1,4 +1,4 @@
-import { createPostElement } from "./posts.js"
+import { createPostElement, editPostElement } from "./posts.js"
 
 
 const newPost = document.querySelector('#section-profile-new-post')
@@ -86,8 +86,7 @@ export function processEditLink(link) {
                 console.log('Get Edit Post - SUCCESS!!');
                 console.log(response.data.post)
                 setModeNewOrEditPost(MODE.EDIT)
-                const p = response.data.post
-                processNewOrEditPost(window.FRIENDING_STATE.Self, true, p.post_update_url, p.photos, p.post_text)
+                processNewOrEditPost(window.FRIENDING_STATE.Self, true, response.data.post.post_update_url, response.data.post)
             })
             .catch(function (err) {
                 console.log('FAILURE!!');
@@ -118,14 +117,19 @@ function updateImageBox() {
 }
 
 // main function
-export function processNewOrEditPost(mainFriendingState, isEdit, endpoint, editPhotos = null, editText = null) {
+export function processNewOrEditPost(mainFriendingState, isEdit, endpoint, editInfo = null) {
     console.log('PROCESSING NEW POST')
     if (mainFriendingState != window.FRIENDING_STATE.Self) {
         return
     }
 
+    let editPhotos = null
+    let editText = null
+
     // 1. process edit part
     if (isEdit) {
+        editPhotos = editInfo.photos
+        editText = editInfo.post_text
         numOldImages = editPhotos.length
         function removeOldImage(photo_id) {
             imagePreviewParent.removeChild(document.querySelector(`#old-image${photo_id}`));
@@ -277,7 +281,11 @@ export function processNewOrEditPost(mainFriendingState, isEdit, endpoint, editP
 
                 coverPopup.style.display = 'none';
                 cancelModeNewOrEditPost()
-                createPostElement(response.data.new_post, 'new')
+                if (isEdit) {
+                    editPostElement(response.data.updated_post)
+                } else {
+                    createPostElement(response.data.new_post, 'new')
+                }
             })
             .catch(function (error) {
                 console.log('ERROR!');

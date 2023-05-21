@@ -88,6 +88,7 @@ class GeneralView(LoginRequiredMixin, View):
         return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
 
         l = [{
+            'id': p.id,
             'author': p.author.__str__(),
             'author_main_url': reverse('main:main', args=(p.author.id,)),
             'author_image': p.author.get_profile_picture_mini(),
@@ -109,6 +110,7 @@ class EditView(LoginRequiredMixin, View):
         if post.author.id != user.id:
             return JsonResponse({'error': 'Permission denied!'})
         data = {
+            'post_id': post.id,
             'post_text': post.post_text,
             'post_update_url': reverse('posts:update', args=(post.id,)),
             'photos': [{
@@ -147,6 +149,7 @@ class UpdateView(LoginRequiredMixin, View):
             new_photo.save()
 
         data = {
+            'post_id': post.id,
             'post_text': post.post_text,
             'photos': [{
                 'image_url': pt.get_post_image(),

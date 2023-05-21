@@ -3,13 +3,21 @@ import { processProfileLink } from "./../main.js"
 import { processPhotoLink } from "./photo.js"
 import { processEditLink } from "./newPost.js"
 
+const imageTemplate = document.querySelector('#posts .image-template')
+
+
 export function createPostElement(p, mode = 'list') {
     const allPosts = document.querySelector('#posts .all-posts')
-    const postTemplate = document.querySelector('#post-template');
+    const postTemplate = document.querySelector('.post-template');
     let curCounter = window.curCounter
     window.curCounter += 1
     const newPost = postTemplate.cloneNode(true);
+    newPost.classList.remove(`post-template`)
+    newPost.classList.add(`post-instance`)
     newPost.classList.add(`p${curCounter}`)
+
+    const postId = `post${p.id}`
+    newPost.id = postId
     if (mode === 'list') {
         allPosts.appendChild(newPost)
     } else if (mode === 'new') {
@@ -19,44 +27,43 @@ export function createPostElement(p, mode = 'list') {
         return
     }
 
-    let links = document.querySelectorAll(`.p${curCounter} .post-info profile-link`)
+    let links = document.querySelectorAll(`#${postId} .post-info profile-link`)
     links.forEach(link => {
         link.href = p.author_main_url
         processProfileLink(link)
     })
 
-    const authorImage = document.querySelector(`.p${curCounter} .post-info img`)
+    const authorImage = document.querySelector(`#${postId} .post-info img`)
     authorImage.src = p.author_image
-    const name = document.querySelector(`.p${curCounter} .post-info [name='name']`)
+    const name = document.querySelector(`#${postId} .post-info [name='name']`)
     name.innerText = p.author
-    const pubDatetime = document.querySelector(`.p${curCounter} .post-info [name='datetime']`)
+    const pubDatetime = document.querySelector(`#${postId} .post-info [name='datetime']`)
     pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
 
     // display edit/delete option
     if (mode === 'list' && p.post_edit_url) {
-        const dropdown = document.querySelector(`.p${curCounter} .dropdown`)
+        const dropdown = document.querySelector(`#${postId} .dropdown`)
         dropdown.style.display = 'block'
-        const editLink = document.querySelector(`.p${curCounter} .edit-link`)
+        const editLink = document.querySelector(`#${postId} .edit-link`)
         editLink.href = p.post_edit_url
         processEditLink(editLink)
     }
 
-    const postText = document.querySelector(`.p${curCounter} .post-text`)
+    const postText = document.querySelector(`#${postId} .post-text`)
     postText.innerText = p.post_text
 
     // process photos
-    let imageTemplate = document.querySelector('#posts .image-template')
-    let imageParent = document.querySelector(`.p${curCounter} .image-parent`)
+    let imageParent = document.querySelector(`#${postId} .image-parent`)
     imageParent.clearChildren()
     p.photos.forEach((pt, i) => {
         let newImage = imageTemplate.cloneNode(true)
         newImage.classList.remove('image-template')
         newImage.classList.add(`image${i}`)
         imageParent.appendChild(newImage)
-        let link = document.querySelector(`.p${curCounter} .image${i} a`)
+        let link = document.querySelector(`#${postId} .image${i} a`)
         link.href = pt.link
         processPhotoLink(link)
-        let image = document.querySelector(`.p${curCounter} .image${i} img`)
+        let image = document.querySelector(`#${postId} .image${i} img`)
         image.src = pt.image_url
 
         newImage.style.display = 'block'
@@ -69,6 +76,29 @@ export function createPostElement(p, mode = 'list') {
     newPost.style.marginBottom = '1.25rem'
 }
 
+export function editPostElement(postInfo) {
+    const postId = `post${postInfo.post_id}`
+    const postText = document.querySelector(`#${postId} .post-text`)
+    postText.innerText = postInfo.post_text
+
+    // process photos
+    let imageParent = document.querySelector(`#${postId} .image-parent`)
+    imageParent.clearChildren()
+    postInfo.photos.forEach((pt, i) => {
+        let newImage = imageTemplate.cloneNode(true)
+        newImage.classList.remove('image-template')
+        newImage.classList.add(`image${i}`)
+        imageParent.appendChild(newImage)
+        let link = document.querySelector(`#${postId} .image${i} a`)
+        link.href = pt.link
+        processPhotoLink(link)
+        let image = document.querySelector(`#${postId} .image${i} img`)
+        image.src = pt.image_url
+
+        newImage.style.display = 'block'
+    })
+}
+
 export function processPostLoading(indexEndpoint, mainFriendingState) {
     // reset parameters
     window.curCounter = 0;
@@ -77,7 +107,6 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
     let curObserve = 5
     const allPosts = document.querySelector('#posts .all-posts')
     allPosts.clearChildren()
-    const postTemplate = document.querySelector('#post-template');
     const observer = new IntersectionObserver(function (entries) {
         // isIntersecting is true when element and viewport are overlapping
         // isIntersecting is false when element and viewport don't overlap
