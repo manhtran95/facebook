@@ -1,0 +1,12 @@
+.btn.show {
+    border: none;
+}
+
+.popup-shadow {
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+}
+
+.non-link {
+    color: black;
+    text-decoration: none;
+}

@@ -63,7 +63,6 @@
             <a name="friends" href="#">Friends</a>
             <a class="disabled" href="#">Photos</a>
             <a class="disabled" href="#">Videos</a>
-            <a class="disabled" href="#">Reel</a>
             <a class="disabled" href="#">More</a>
         </div>
         <hr>
@@ -75,94 +74,8 @@
                     Intro
                     <div style="height: 200px"></div>
                 </div>
-                <div id="posts" class="col-7">
-                    <div id="whole-new-post-link" class="">
-                        <div class="row">
-                            <div id="new-post-link"
-                                class="new-post-container new-post-template new-post-wall col-10 offset-1">
-                                <form action="{% url 'posts:create_index' user.id %}" method="post">
-                                    <div class="mb-3">
-                                        <textarea class="form-control mb-3" name="content" rows="3"
-                                            placeholder="What's on your mind"></textarea>
-                                        <button type="button" class="photo-button btn">
-                                            <i data-visualcompletion="css-img"> </i>
-                                            <span>Add
-                                                photos</span>
-                                        </button>
-                                    </div>
-                                    <button type="submit" class="post-button btn btn-primary font-weight-bold"
-                                        disabled>Post</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ALL THE POSTS -->
-                    <div class="all-posts">
-                    </div>
-                    <div class="col-4 image-template image">
-                        <a href="">
-                            <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                        </a>
-                    </div>
-                    <div id="post-template" class="whole-post row">
-                        <div class="post col-10 offset-1">
-                            <div class="post-info">
-                                <a href="">
-                                    <img src="https://res.cloudinary.com/dtgokkyl1/image/upload/c_fill,h_40,w_40/v1/media/profile_pictures/casemiro_xwaave"
-                                        alt="">
-                                </a>
-                                <div>
-                                    <div class="author">
-                                        <a href="" name="name">Manh Tran</a>
-                                    </div>
-                                    <div class="pub-date small text-muted" name="datetime">December 4, 2023</div>
-                                </div>
-                            </div>
-                            <div class="post-text small my-2">
-                                Today is Sunday April 23rd. Our big family, Mr Phung's descendants took a trip to our
-                                hometown at Hao Lai town, Cap Tien Commune, Tien Lang district, Hai Phong city. This is
-                                a honoured tradition of Vietnamese people where we as descendants visit our homeland,
-                                pay tribute to ancestors during warm spring time of the year. </div>
+                {% include 'main/profile/_posts.html' %}
 
-                            <div class="photos">
-                                <div class="image-parent">
-                                    <div class="col-4 image">
-                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                    </div>
-                                    <div class="col-4 image">
-                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                    </div>
-                                    <div class="col-4 image">
-                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                    </div>
-                                    <div class="col-4 image">
-                                        <img src="{% static 'posts/images/default-cover-photo.jpg' %}" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row posts-info">
-                        <div class="display">
-                            <div class="loading col-6 offset-3 text-muted">
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                Loading...
-                            </div>
-                            <div class="no-more col-6 offset-3 py-4">
-                                <div class="post-text text-muted small">
-                                    There are no more posts to show right now.</div>
-                            </div>
-                        </div>
-                        <div class="non-display">
-                            <div class="no-more col-6 offset-3 py-4">
-                                <div class="post-text">
-                                    Add friend me to view my posts my friend!</div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
             <div class="section-about row"></div>
             <div name="friends" class="row">
@@ -182,7 +95,6 @@
             </div>
             <div class="section-photos row"></div>
             <div class="section-videos row"></div>
-            <div class="section-reel row"></div>
             <div class="section-more row"></div>
         </div>
 

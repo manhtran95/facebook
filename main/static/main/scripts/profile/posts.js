@@ -1,6 +1,7 @@
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
 import { processProfileLink } from "./../main.js"
 import { processPhotoLink } from "./photo.js"
+import { processEditLink } from "./newPost.js"
 
 export function createPostElement(p, mode = 'list') {
     const allPosts = document.querySelector('#posts .all-posts')
@@ -18,7 +19,7 @@ export function createPostElement(p, mode = 'list') {
         return
     }
 
-    let links = document.querySelectorAll(`.p${curCounter} .post-info a`)
+    let links = document.querySelectorAll(`.p${curCounter} .post-info profile-link`)
     links.forEach(link => {
         link.href = p.author_main_url
         processProfileLink(link)
@@ -30,6 +31,15 @@ export function createPostElement(p, mode = 'list') {
     name.innerText = p.author
     const pubDatetime = document.querySelector(`.p${curCounter} .post-info [name='datetime']`)
     pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
+
+    // display edit/delete option
+    if (mode === 'list' && p.post_edit_url) {
+        const dropdown = document.querySelector(`.p${curCounter} .dropdown`)
+        dropdown.style.display = 'block'
+        const editLink = document.querySelector(`.p${curCounter} .edit-link`)
+        editLink.href = p.post_edit_url
+        processEditLink(editLink)
+    }
 
     const postText = document.querySelector(`.p${curCounter} .post-text`)
     postText.innerText = p.post_text
@@ -48,6 +58,7 @@ export function createPostElement(p, mode = 'list') {
         processPhotoLink(link)
         let image = document.querySelector(`.p${curCounter} .image${i} img`)
         image.src = pt.image_url
+
         newImage.style.display = 'block'
     })
 

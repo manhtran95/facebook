@@ -112,6 +112,16 @@
     display: flex;
 }
 
+.remove-button-grey {
+    background-color: #F0F2F5 !important;
+    border: 1px solid #F0F2F5 !important;
+}
+
+.remove-button-grey:hover {
+    background-color: #E4E6EB !important;
+    border: 1px solid #E4E6EB !important;
+}
+
 .remove-button {
     width: 29px;
     height: 29px;

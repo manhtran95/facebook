@@ -1,15 +1,48 @@
 import { createPostElement } from "./posts.js"
 
+
 const newPost = document.querySelector('#section-profile-new-post')
 const remove = document.querySelector('#section-profile-new-post .remove-container')
 const basePopup = document.querySelector('#base-popup')
 const body = document.querySelector('body')
-let numPreviewImages = 0
-const inputField = document.querySelector(`#new-post input`)
+const imageBox = document.querySelector('#new-post .image-box')
 // hold all files
+const form = document.querySelector('#new-post form')
+const inputField = document.querySelector(`#new-post input`)
 const dt = new DataTransfer()
+const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
+const imagePreviewTemplate = document.querySelector('#new-post .image-preview-template')
+const title = document.querySelector(`#section-profile-new-post .title`)
+const formButton = document.querySelector('#new-post .post-button')
+const formTextInput = document.querySelector('#new-post textarea')
+let numNewImages = 0
+// for edit
+let numOldImages = 0    // used in part 1 and 4
+const removedOldPhotoIds = []
+let lastMode = ''
 
-export function setModeNewPost() {
+const MODE = {
+    EDIT: 'edit',
+    NEW: 'new',
+}
+
+
+// START
+// profile level functions
+function setModeNewOrEditPost(mode) {
+    if (mode == MODE.EDIT || lastMode == MODE.EDIT && mode == MODE.NEW) {
+        resetForm()
+    }
+    lastMode = mode
+
+    if (mode === MODE.EDIT) {
+        title.innerText = 'Edit Post'
+        formButton.innerText = 'Update'
+    } else {
+        title.innerText = 'Create Post'
+        formButton.innerText = 'Post'
+    }
+
     let scrollTop = $(window).scrollTop()
     newPost.style.display = 'block'
     basePopup.style.display = 'block'
@@ -17,68 +50,128 @@ export function setModeNewPost() {
     basePopup.style.top = `${scrollTop}px`
     body.style.overflow = 'hidden'
 
+    formTextInput.focus()
+
     basePopup.onclick = e => {
-        cancelModeNewPost()
+        cancelModeNewOrEditPost()
     }
     remove.onclick = e => {
-        cancelModeNewPost()
+        cancelModeNewOrEditPost()
     }
 }
-
-function cancelModeNewPost() {
+function cancelModeNewOrEditPost() {
     newPost.style.display = 'none'
     basePopup.style.display = 'none'
     body.style.overflow = 'auto'
 }
+// END
+// profile level functions
 
-export function processNewPost(endpoint, mainFriendingState) {
-    function processNewPostLink() {
-        const textarea = document.querySelector('#new-post-link textarea')
-        const photoButton = document.querySelector('#new-post-link .photo-button')
-        console.log('DASDASDSADASDASD')
-        console.log(textarea)
-        textarea.addEventListener('click', e => {
-            setModeNewPost()
+// process edit initiation
+export function processEditLink(link) {
+    link.onclick = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        console.log('HEREEEEE')
+        console.log(link.href)
+        axios.get(link.href, {
+            params: {}
         })
-        photoButton.onclick = e => {
-            setModeNewPost()
-        }
+            .then(function (response) {
+                if (response.data.error) {
+                    console.log('ERROR!')
+                    console.log(response.data.error)
+                    return
+                }
+                console.log('Get Edit Post - SUCCESS!!');
+                console.log(response.data.post)
+                setModeNewOrEditPost(MODE.EDIT)
+                const p = response.data.post
+                processNewOrEditPost(window.FRIENDING_STATE.Self, true, p.post_update_url, p.photos, p.post_text)
+            })
+            .catch(function (err) {
+                console.log('FAILURE!!');
+                console.log(err)
+            });
     }
-    processNewPostLink()
+}
 
+function resetForm() {
+    formTextInput.value = '';
+    formTextInput.style.height = "76px";
+    imageBox.style.display = 'none';
+    imagePreviewParent.clearChildren()
+    updateImageBox()
+    dt.clearData()
+    numNewImages = 0
+    numOldImages = 0
+    removedOldPhotoIds.length = 0
+    form.classList.remove('was-validated')
+}
 
-    const imageBox = document.querySelector('#new-post .image-box')
+function updateImageBox() {
+    if (imagePreviewParent.children.length > 0) {
+        imageBox.style.display = 'block';
+    } else {
+        imageBox.style.display = 'none';
+    }
+}
 
+// main function
+export function processNewOrEditPost(mainFriendingState, isEdit, endpoint, editPhotos = null, editText = null) {
     console.log('PROCESSING NEW POST')
     if (mainFriendingState != window.FRIENDING_STATE.Self) {
         return
     }
-    let charCount = 0
-    // add style to #new-post submit button
-    let formButton = document.querySelector('#new-post .post-button')
-    let formInput = document.querySelector('#new-post textarea')
-    formInput.addEventListener('input', function (e) {
-        if (this.value.length > 0) {
-            formButton.disabled = false
-        } else {
-            formButton.disabled = true
+
+    // 1. process edit part
+    if (isEdit) {
+        numOldImages = editPhotos.length
+        function removeOldImage(photo_id) {
+            imagePreviewParent.removeChild(document.querySelector(`#old-image${photo_id}`));
+            removedOldPhotoIds.push(photo_id)
+            numOldImages -= 1
+            updateImageBox()
         }
+        // set post text value
+        formTextInput.value = editText
+        // add old photos to image parent
+        editPhotos.forEach((photo, i) => {
+            // add to preview
+            let newImagePreview = imagePreviewTemplate.cloneNode(true)
+            newImagePreview.classList.remove('image-preview-template')
+            newImagePreview.id = `old-image${photo.id}`
+            imagePreviewParent.appendChild(newImagePreview)
+            let image = document.querySelector(`#old-image${photo.id}>img`)
+            image.src = photo.image_url
+            // remove button with id
+            let removeButton = document.querySelector(`#old-image${photo.id} button`)
+            removeButton.onclick = e => {
+                removeOldImage(photo.id)
+            }
+            newImagePreview.style.display = 'block'
+        })
+        updateImageBox()
+    }
+
+    // click new-post part on wall -> will open new-post popup
+    processNewPostLink()
+
+
+    // c. add style to #new-post submit button
+    formTextInput.addEventListener('input', function (e) {
         this.style.height = 0;
         this.style.height = (this.scrollHeight + 40) + "px";
     });
 
+    // 2
     processImages()
-
     function processImages() {
-        const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
-
-
-
         // START
         function processRemoveImage(removeIdx) {
             console.log('START REMOVE IMAGE')
             // 1. process input
-            numPreviewImages -= 1
+            numNewImages -= 1
             const { files } = inputField
             var clonedFiles = structuredClone(files);
 
@@ -94,10 +187,11 @@ export function processNewPost(endpoint, mainFriendingState) {
 
             // 2. process preview
             // remove image preview
-            imagePreviewParent.removeChild(imagePreviewParent.children[removeIdx]);
+            const parentRemoveIdx = removeIdx + numOldImages
+            imagePreviewParent.removeChild(imagePreviewParent.children[parentRemoveIdx]);
             // reindex button id
-            for (let i = 0; i < numPreviewImages; i++) {
-                const imagePreview = imagePreviewParent.children[i]
+            for (let i = 0; i < numNewImages; i++) {
+                const imagePreview = imagePreviewParent.children[i + numOldImages]
                 imagePreview.id = `image-preview${i}`
                 let removeButton = document.querySelector(`#image-preview${i} button`)
                 removeButton.onclick = e => {
@@ -105,7 +199,7 @@ export function processNewPost(endpoint, mainFriendingState) {
                 }
             }
 
-            if (numPreviewImages > 0) {
+            if (numNewImages > 0) {
                 imageBox.style.display = 'block';
             } else {
                 imageBox.style.display = 'none';
@@ -113,16 +207,15 @@ export function processNewPost(endpoint, mainFriendingState) {
         }
         // END
 
+        // PROCESS ADD IMAGES
         inputField.onchange = function (e) {
             console.log('INPUT CHANGED!!')
-            let imagePreviewTemplate = document.querySelector('#new-post .image-preview-template')
 
-            // PROCESS ADDING PHOTOS
             // FOR FILE INPUT
             const { files } = inputField
             for (let i = 0; i < files.length; i++) {
-                numPreviewImages += 1
-                const newIdx = numPreviewImages - 1
+                numNewImages += 1
+                const newIdx = numNewImages - 1
                 const file = files[i]
                 dt.items.add(file)
                 // add to preview
@@ -143,26 +236,29 @@ export function processNewPost(endpoint, mainFriendingState) {
 
             console.log(inputField.files)
 
-            if (imagePreviewParent.children.length > 0) {
-                imageBox.style.display = 'block';
-            } else {
-                imageBox.style.display = 'none';
-            }
+            updateImageBox()
+
         }
 
     }
-
-    formButton.addEventListener('click', function (e) {
-        let form = document.querySelector('#new-post form')
-        let inputField = document.querySelector(`#new-post input`)
-        const allPosts = document.querySelector('#posts .all-posts')
+    // 3. PROCESS NEW POST SUBMIT
+    formButton.onclick = function (e) {
         e.preventDefault()
         e.stopPropagation()
+        form.classList.add('was-validated')
+        if (!form.checkValidity()) {
+            return
+        }
         var formData = new FormData(form);
 
         console.log("SUBMITING REQUEST!")
         console.log(inputField.files)
 
+        if (isEdit) {
+            formData.append("removedPhotoIds", JSON.stringify(removedOldPhotoIds))
+            console.log("removed Old Photos")
+            console.log(removedOldPhotoIds)
+        }
         formData.append("csrfmiddlewaretoken", window.CSRF_TOKEN)
 
         let coverPopup = document.querySelector('#section-profile-new-post .pop-up')
@@ -177,23 +273,28 @@ export function processNewPost(endpoint, mainFriendingState) {
                 console.log('SUCCESS!');
                 console.log(response.data);
                 // reset
-                formInput.value = '';
-                formInput.style.height = "76px";
-                imageBox.style.display = 'none';
-
-                const imagePreviewParent = document.querySelector('#new-post .image-preview-parent')
-                imagePreviewParent.clearChildren()
-                numPreviewImages = 0;
-                dt.clearData()
+                resetForm()
 
                 coverPopup.style.display = 'none';
-                cancelModeNewPost()
+                cancelModeNewOrEditPost()
                 createPostElement(response.data.new_post, 'new')
             })
             .catch(function (error) {
                 console.log('ERROR!');
                 console.log(error);
             });
-    })
+    }
+
+    function processNewPostLink() {
+        const textarea = document.querySelector('#new-post-link textarea')
+        const photoButton = document.querySelector('#new-post-link .photo-button')
+        textarea.addEventListener('click', e => {
+            setModeNewOrEditPost(MODE.NEW)
+        })
+        photoButton.onclick = e => {
+            setModeNewOrEditPost(MODE.NEW)
+        }
+    }
+
 
 };

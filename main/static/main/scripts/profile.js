@@ -1,11 +1,10 @@
 import { processUploadCoverPhoto, processUploadProfilePicture } from "./profile/images.js"
-import { processNewPost } from "./profile/newPost.js";
+import { processNewOrEditPost } from "./profile/newPost.js";
 import { processPostLoading } from "./profile/posts.js";
 import { processFriending } from "./components/friending.js"
 import { processSectionFriends } from "./profile/sectionFriends.js"
 import { processPhoto } from "./profile/photo.js"
 import { pluralizeWord } from "./helper/helper.js"
-import { setModeNewPost } from "./profile/newPost.js"
 
 console.log(window.CSRF_TOKEN)
 
@@ -16,7 +15,6 @@ console.log(vh)
 window.ProfileSectionEnum = {
     'Main': 'main',
     'Photo': 'photo',
-    'NewPost': 'new-post',
 }
 
 function setModeMain() {
@@ -36,7 +34,6 @@ function setModePhoto() {
 const sectionProfileMap = {
     'main': setModeMain,
     'photo': setModePhoto,
-    'new-post': setModeNewPost,
 };
 
 export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) {
@@ -118,10 +115,11 @@ export function processProfile(secondUserProfileUrl) {
         let profilePictureHome = document.querySelector(`#profile-picture .dropdown`)
         let newPostHome = document.querySelector(`#whole-new-post-link`)
         let homeSections = [coverPhotoHome, profilePictureHome, newPostHome]
+        // home profile
         if (window.currentUserId == pr.second_user_id) {
             processUploadCoverPhoto(pr.upload_cover_photo_url);
             processUploadProfilePicture(pr.upload_profile_picture_url);
-            processNewPost(pr.posts_create_url, pr.main_friending_state);
+            processNewOrEditPost(pr.main_friending_state, false, pr.posts_create_url);
             homeSections.forEach(s => {
                 s.style.display = 'block'
             })
@@ -132,10 +130,9 @@ export function processProfile(secondUserProfileUrl) {
         }
     }
     function process(pr) {
-        setTimeout(e => {
-            setProfileSection(window.ProfileSectionEnum.NewPost)
-
-        }, 1000)
+        setProfileSection()
+        // setTimeout(e => {
+        // }, 1000)
         // setProfileSection(window.ProfileSectionEnum.Photo)
         processHomeProfile(pr)
         processSelectAndContentAll(pr)
