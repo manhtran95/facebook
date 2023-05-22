@@ -15,6 +15,7 @@ class Post(models.Model):
     pub_datetime = models.DateTimeField(
         'datetime published', default=timezone.now, blank=True)
     author = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(AppUser, related_name='liked_post')
 
     @classmethod
     def make_post(cls, user):
