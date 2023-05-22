@@ -114,6 +114,10 @@
     background-color: #F0F2F5;
 }
 
+.post hr {
+    margin: .25rem 0;
+}
+
 /* PHOTOS */
 
 #posts .image-parent {
@@ -134,4 +138,46 @@
     width: 100%;
     object-fit: cover;
     aspect-ratio: 1 / 1;
+}
+
+/* REACTIONS */
+
+
+
+.reactions i {
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+.reactions .like-button i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/8pg-MwJViWw.png);
+    background-position: 0px -354px;
+    background-size: 26px 936px;
+}
+
+.reactions .share-button i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yo/r/wCYFlez1mkJ.png);
+    background-position: 0px -278px;
+    background-size: 26px 770px;
+    /* disabled color */
+    filter: invert(39%)
+}
+
+.reactions .icon {
+    position: relative;
+    width: 25px;
+}
+
+.reactions .like-button.active .text {
+    color: #0d6efd;
+}
+
+.reactions .like-button.active i {
+    background-position: 0px -334px !important;
+    filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg) brightness(97%) contrast(96%);
 }
