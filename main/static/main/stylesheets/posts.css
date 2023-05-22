@@ -134,6 +134,10 @@
     border: 1px solid white;
 }
 
+#posts .photos img {
+    max-width: 100%;
+}
+
 #posts .image>img {
     width: 100%;
     object-fit: cover;
@@ -158,6 +162,7 @@
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/8pg-MwJViWw.png);
     background-position: 0px -354px;
     background-size: 26px 936px;
+    filter: invert(25%)
 }
 
 .reactions .share-button i {
