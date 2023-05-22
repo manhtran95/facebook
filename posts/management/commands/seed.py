@@ -86,6 +86,23 @@ def generate():
                 pass
 
 
+def generate_likes():
+    all_users = AppUser.objects.all()
+    users_count = all_users.count()
+    for i in range(users_count):
+        user = all_users[i]
+        all_friends = Friending.get_all_friend_users(user)
+        num_friends = int(len(all_friends) / 2)
+        for j in range(num_friends):
+            friend = all_friends[random.randint(0, len(all_friends)-1)]
+            all_posts_qs = friend.post_set.all()
+            num_posts = int(all_posts_qs.count() / 2)
+            for k in range(num_posts):
+                idx = random.randint(0, all_posts_qs.count() - 1)
+                post = all_posts_qs[idx]
+                post.likes.add(user)
+
+
 def update_profile_picture():
     all_users = AppUser.objects.all()
     for i in range(all_users.count()):
@@ -113,7 +130,11 @@ def run_seed(self, mode):
     :param mode: generate
     :return:
     """
-    if mode != MODE_GENERATE:
-        return
-    # generate()
-    generate_friend_requests()
+
+    match mode:
+        case "like":
+            print("Generating likes!!")
+            generate_likes()
+
+
+# python manage.py seed --mode=like

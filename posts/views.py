@@ -96,6 +96,10 @@ class GeneralView(LoginRequiredMixin, View):
             'post_text': p.post_text,
             'post_edit_url': reverse('posts:edit', args=(p.id,)) if state == Friending.State.self else '',
             'post_delete_url': reverse('posts:delete', args=(p.id,)) if state == Friending.State.self else '',
+            'like_number': p.likes.count(),
+            'like_state': p.likes.filter(id=user.id).exists(),
+            'like_create_url': reverse('posts:like_create_index', args=(p.id,)),
+            'like_delete_url': reverse('posts:like_delete', args=(p.id,)),
             'photos': [{
                 'image_url': pt.get_post_image(),
                 'link': reverse('posts:photo_data', args=(pt.id,)),
@@ -169,3 +173,43 @@ class DeleteView(LoginRequiredMixin, View):
         post.delete()
 
         return JsonResponse({'deleted_post_id': post_id})
+
+
+class LikeView(LoginRequiredMixin, View):
+    def post(self, request, post_id):
+        user = request.user
+        post = get_object_or_404(Post, pk=post_id)
+        second_user = post.author
+        state = Friending.get_state(user, second_user)
+        if state != Friending.State.self and state != Friending.State.friend:
+            return JsonResponse({'error': 'Permission denied!'})
+
+        if post.likes.filter(id=user.id).exists():
+            return JsonResponse({'error': 'Bad request!'})
+
+        post.likes.add(user)
+
+        return JsonResponse({
+            'liked_users': post.likes.count(),
+            'post_id': post.id,
+        })
+
+
+class UnlikeView(LoginRequiredMixin, View):
+    def post(self, request, post_id):
+        user = request.user
+        post = get_object_or_404(Post, pk=post_id)
+        second_user = post.author
+        state = Friending.get_state(user, second_user)
+        if state != Friending.State.self and state != Friending.State.friend:
+            return JsonResponse({'error': 'Permission denied!'})
+
+        if not post.likes.filter(id=user.id).exists():
+            return JsonResponse({'error': 'Bad request!'})
+
+        post.likes.remove(user)
+
+        return JsonResponse({
+            'liked_users': post.likes.count(),
+            'post_id': post.id,
+        })

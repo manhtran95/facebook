@@ -107,6 +107,7 @@
         }
         window.currentUserId = "{{ current_user.id }}"
         window.secondUserMainUrl = "{{ second_user_main_url }}"
+        // define ele.clearChildren()
         if (typeof Element.prototype.clearChildren === 'undefined') {
             Object.defineProperty(Element.prototype, 'clearChildren', {
                 configurable: true,
@@ -116,6 +117,25 @@
                 }
             });
         }
+        if (typeof Element.prototype.displayBlock === 'undefined') {
+            Object.defineProperty(Element.prototype, 'displayBlock', {
+                configurable: true,
+                enumerable: false,
+                value: function () {
+                    this.style.display = 'block'
+                }
+            });
+        }
+        if (typeof Element.prototype.displayNone === 'undefined') {
+            Object.defineProperty(Element.prototype, 'displayNone', {
+                configurable: true,
+                enumerable: false,
+                value: function () {
+                    this.style.display = 'none'
+                }
+            });
+        }
+
         var script = document.createElement('script');
         script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
         document.getElementsByTagName('head')[0].appendChild(script);

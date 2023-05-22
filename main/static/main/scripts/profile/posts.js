@@ -2,6 +2,7 @@ import { getFacebookDatetimeStr } from "./../helper/helper.js"
 import { processProfileLink } from "./../main.js"
 import { processPhotoLink } from "./photo.js"
 import { processEditLink } from "./newPost.js"
+import { processLikeLink, setLikeActive, setLikeInactive, updateLikeNumber } from "./likes.js"
 
 const imageTemplate = document.querySelector('#posts .image-template')
 const allPosts = document.querySelector('#posts .all-posts')
@@ -16,8 +17,8 @@ export function createPostElement(p, mode = 'list') {
     newPost.classList.add(`post-instance`)
     newPost.classList.add(`p${curCounter}`)
 
-    const postId = `post${p.id}`
-    newPost.id = postId
+    const elePostId = `post${p.id}`
+    newPost.id = elePostId
     if (mode === 'list') {
         allPosts.appendChild(newPost)
     } else if (mode === 'new') {
@@ -27,51 +28,65 @@ export function createPostElement(p, mode = 'list') {
         return
     }
 
-    let links = document.querySelectorAll(`#${postId} .post-info profile-link`)
+    let links = document.querySelectorAll(`#${elePostId} .post-info profile-link`)
     links.forEach(link => {
         link.href = p.author_main_url
         processProfileLink(link)
     })
 
-    const authorImage = document.querySelector(`#${postId} .post-info img`)
+    const authorImage = document.querySelector(`#${elePostId} .post-info img`)
     authorImage.src = p.author_image
-    const name = document.querySelector(`#${postId} .post-info [name='name']`)
+    const name = document.querySelector(`#${elePostId} .post-info [name='name']`)
     name.innerText = p.author
-    const pubDatetime = document.querySelector(`#${postId} .post-info [name='datetime']`)
+    const pubDatetime = document.querySelector(`#${elePostId} .post-info [name='datetime']`)
     pubDatetime.innerText = getFacebookDatetimeStr(new Date(p.pub_timestamp))
 
     // display edit/delete option
     if (mode === 'list' && p.post_edit_url) {
-        const dropdown = document.querySelector(`#${postId} .dropdown`)
+        const dropdown = document.querySelector(`#${elePostId} .dropdown`)
         dropdown.style.display = 'block'
-        const editLink = document.querySelector(`#${postId} .edit-link`)
+        const editLink = document.querySelector(`#${elePostId} .edit-link`)
         editLink.href = p.post_edit_url
         processEditLink(editLink)
 
-        const deleteLink = document.querySelector(`#${postId} .delete-link`)
+        const deleteLink = document.querySelector(`#${elePostId} .delete-link`)
         deleteLink.href = p.post_delete_url
         processDeleteLink(deleteLink)
     }
 
-    const postText = document.querySelector(`#${postId} .post-text`)
+    const postText = document.querySelector(`#${elePostId} .post-text`)
     postText.innerText = p.post_text
 
     // process photos
-    let imageParent = document.querySelector(`#${postId} .image-parent`)
+    const imageParent = document.querySelector(`#${elePostId} .image-parent`)
     imageParent.clearChildren()
     p.photos.forEach((pt, i) => {
         let newImage = imageTemplate.cloneNode(true)
         newImage.classList.remove('image-template')
         newImage.classList.add(`image${i}`)
         imageParent.appendChild(newImage)
-        let link = document.querySelector(`#${postId} .image${i} a`)
+        let link = document.querySelector(`#${elePostId} .image${i} a`)
         link.href = pt.link
         processPhotoLink(link)
-        let image = document.querySelector(`#${postId} .image${i} img`)
+        let image = document.querySelector(`#${elePostId} .image${i} img`)
         image.src = pt.image_url
 
         newImage.style.display = 'block'
     })
+
+    // process LIKES
+    const likeLink = document.querySelector(`#${elePostId} .like-button`)
+    const unlikeLink = document.querySelector(`#${elePostId} .like-button.active`)
+    likeLink.href = p.like_create_url
+    unlikeLink.href = p.like_delete_url
+    processLikeLink(likeLink, 'like')
+    processLikeLink(unlikeLink, 'unlike')
+    if (p.like_state) {
+        setLikeActive(p.id)
+    } else {
+        setLikeInactive(p.id)
+    }
+    updateLikeNumber(p.id, p.like_number)
 
     window.setTimeout(function () {
         newPost.classList.add('active')
@@ -110,22 +125,22 @@ function processDeleteLink(link) {
 }
 
 export function editPostElement(postInfo) {
-    const postId = `post${postInfo.post_id}`
-    const postText = document.querySelector(`#${postId} .post-text`)
+    const elePostId = `post${postInfo.post_id}`
+    const postText = document.querySelector(`#${elePostId} .post-text`)
     postText.innerText = postInfo.post_text
 
     // process photos
-    let imageParent = document.querySelector(`#${postId} .image-parent`)
+    let imageParent = document.querySelector(`#${elePostId} .image-parent`)
     imageParent.clearChildren()
     postInfo.photos.forEach((pt, i) => {
         let newImage = imageTemplate.cloneNode(true)
         newImage.classList.remove('image-template')
         newImage.classList.add(`image${i}`)
         imageParent.appendChild(newImage)
-        let link = document.querySelector(`#${postId} .image${i} a`)
+        let link = document.querySelector(`#${elePostId} .image${i} a`)
         link.href = pt.link
         processPhotoLink(link)
-        let image = document.querySelector(`#${postId} .image${i} img`)
+        let image = document.querySelector(`#${elePostId} .image${i} img`)
         image.src = pt.image_url
 
         newImage.style.display = 'block'
