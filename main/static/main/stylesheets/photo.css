@@ -1,6 +1,9 @@
-#section-profile-photo {
+#section-photo {
     margin-left: 59px;
     height: 807px;
+    position: absolute;
+    width: -webkit-fill-available;
+    display: none;
 }
 
 #section-photo-content {
@@ -31,6 +34,7 @@
 
 #photo-display .remove-container {
     left: 1.5rem;
+    right: auto;
 }
 
 #photo-display .remove-button {
@@ -56,4 +60,16 @@
 #photo-chat {
     min-width: 80px;
     background-color: white;
+}
+
+.noscroll {
+    position: fixed;
+    inline-size: 100%;
+    overflow-y: scroll
+}
+
+.scroll {
+    position: static;
+    overflow-y: auto;
+    /* top: auto; */
 }

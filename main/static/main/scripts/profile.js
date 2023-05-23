@@ -15,26 +15,15 @@ console.log(vh)
 
 window.ProfileSectionEnum = {
     'Main': 'main',
-    'Photo': 'photo',
 }
 
 function setModeMain() {
     const main = document.querySelector('#section-profile-main')
-    const photo = document.querySelector('#section-profile-photo')
     main.style.display = 'block'
-    photo.style.display = 'none'
 }
-function setModePhoto() {
-    const main = document.querySelector('#section-profile-main')
-    const photo = document.querySelector('#section-profile-photo')
-    main.style.display = 'none'
-    photo.style.display = 'block'
-}
-
 
 const sectionProfileMap = {
     'main': setModeMain,
-    'photo': setModePhoto,
 };
 
 export function processProfileLink(link) {
