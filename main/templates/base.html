@@ -105,10 +105,6 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}";
-        window.mode = "{{ mode }}"
-        window.search_data_url = "{{ search_data_url }}"
-        window.search_url = "{{ search_url }}"
-        // window.search_query = "{{ search_query }}"
         window.FRIENDING_STATE = {
             Self: 'SELF',
             NonFriend: 'NON-FRIEND',
@@ -116,8 +112,17 @@
             RequestReceived: 'REQUEST-RECEIVED',
             Friend: 'FRIEND',
         }
+
         window.currentUserId = "{{ current_user.id }}"
+        window.mode = "{{ mode }}"
+        window.searchDataUrl = "{{ search_data_url }}"
+        window.searchUrl = "{{ search_url }}"
         window.secondUserMainUrl = "{{ second_user_main_url }}"
+        window.secondUserProfileUrl = "{{ second_user_profile_url }}"
+        window.newsfeedDataUrl = "{{ newsfeed_data_url }}"
+        window.newsfeedUrl = "{{ newsfeed_url }}"
+
+
         // define ele.clearChildren()
         if (typeof Element.prototype.clearChildren === 'undefined') {
             Object.defineProperty(Element.prototype, 'clearChildren', {

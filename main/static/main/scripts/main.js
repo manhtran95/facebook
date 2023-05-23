@@ -1,14 +1,17 @@
-import { processProfile } from "./profile.js";
 import { resetSearch, processSearch } from "./search/search.js"
+import { processProfile } from "./profile.js";
+import { processNewsfeed } from "./newsfeed.js";
 
 window.SectionEnum = {
     'Profile': 'profile',
     'Search': 'search',
+    'Newsfeed': 'newsfeed',
 }
 
 const sectionMainMap = {
     'profile': document.querySelector('#section-profile'),
     'search': document.querySelector('#section-search'),
+    'newsfeed': document.querySelector('#section-newsfeed'),
 };
 
 function setMainSection(sectionName = 'profile') {
@@ -26,12 +29,16 @@ function setMainSection(sectionName = 'profile') {
 
 switch (window.mode) {
     case window.SectionEnum.Search:
-        setMainSection('search')
-        mainProcessSearch(window.search_data_url)
+        setMainSection(window.SectionEnum.Search)
+        mainProcessSearch(window.searchDataUrl)
         break;
     case window.SectionEnum.Profile:
-        setMainSection('profile')
-        mainProcessProfile(window.secondUserMainUrl + '/profile', window.secondUserMainUrl)
+        setMainSection(window.SectionEnum.Profile)
+        mainProcessProfile(window.secondUserProfileUrl, window.secondUserMainUrl)
+        break;
+    case window.SectionEnum.Newsfeed:
+        setMainSection(window.SectionEnum.Newsfeed)
+        mainProcessNewsfeed(window.newsfeedDataUrl, window.newsfeedUrl)
         break;
     default:
         console.log(`Sorry, something wrong happened.`);
@@ -46,11 +53,10 @@ export function mainProcessSearch(searchDataUrl, searchUrlWithQuery = window.loc
     setMainSection(window.SectionEnum.Search)
     processSearch(searchDataUrl)
     document.title = title
-    window.history.pushState({ 'search_url': searchDataUrl, 'section': window.SectionEnum.Search, 'title': title }, "", searchUrlWithQuery);
-    console.log(window.history)
+    window.history.pushState({ 'searchUrl': searchDataUrl, 'section': window.SectionEnum.Search, 'title': title }, "", searchUrlWithQuery);
 }
 
-function mainProcessProfile(profileUrl, mainUrl, title = 'Facebook - profile') {
+export function mainProcessProfile(profileUrl, mainUrl, title = 'Facebook - profile') {
     console.log("***")
     console.log("START PROFILE!!")
     console.log("***")
@@ -59,38 +65,45 @@ function mainProcessProfile(profileUrl, mainUrl, title = 'Facebook - profile') {
     processProfile(profileUrl)
     document.title = title
     window.history.pushState({ 'profile_url': profileUrl, 'section': window.SectionEnum.Profile, 'title': title }, "", mainUrl);
-    console.log(window.history)
+}
+
+export function mainProcessNewsfeed(newsfeedDataUrl, newsfeedUrl, title = 'Facebook - Home') {
+    console.log("***")
+    console.log("START NEWSFEED!!")
+    console.log("***")
+
+    setMainSection(window.SectionEnum.Newsfeed)
+    processNewsfeed(newsfeedDataUrl)
+    document.title = title
+    window.history.pushState({ 'newsfeedDataUrl': newsfeedDataUrl, 'section': window.SectionEnum.Newsfeed, 'title': title }, "", newsfeedUrl);
 }
 
 
 
-export function processProfileLink(link) {
-    link.addEventListener('click', e => {
-        e.preventDefault()
-        e.stopPropagation()
-        mainProcessProfile(`${link.href}/profile`, link.href)
-    })
-}
-
+// HISTORY
 window.onpopstate = function (e) {
     if (e.state) {
         console.log(e.state)
-        if (e.state.section == window.SectionEnum.Profile) {
-            console.log("***")
-            console.log("BACK TO PROFILE!!")
-            console.log("***")
-            resetSearch()
-            setMainSection(window.SectionEnum.Profile)
-            processProfile(e.state.profile_url);
-            document.title = e.state.title;
-        } else if (e.state.section == window.SectionEnum.Search) {
-            console.log("***")
-            console.log("BACK TO SEARCH!!")
-            console.log("***")
-            setMainSection(window.SectionEnum.Search)
-            processSearch(e.state.search_url);
-            document.title = e.state.title;
+        switch (e.state.section) {
+            case window.SectionEnum.Profile:
+                resetSearch()
+                setMainSection(window.SectionEnum.Profile)
+                processProfile(e.state.profile_url);
+                break;
+            case window.SectionEnum.Search:
+                setMainSection(window.SectionEnum.Search)
+                processSearch(e.state.searchUrl);
+                break;
+            case window.SectionEnum.Newsfeed:
+                setMainSection(window.SectionEnum.Newsfeed)
+                processSearch(e.state.newsfeedDataUrl);
+                break;
+            default:
+                console.log('Invalid popstate state')
         }
+
+        document.title = e.state.title;
+
     } else {
         console.log("GO BACK!!")
     }

@@ -1,6 +1,6 @@
 
 import { processFriending } from "./friending.js"
-import { processProfileLink } from "../main.js"
+import { processProfileLink } from "../profile.js"
 
 export function showUsers(userList, sectionName, parentIdentifier) {
     let userTemplate = document.querySelector(`.original-user-template`);

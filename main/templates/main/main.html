@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{% static 'main/stylesheets/components/components.css' %}">
 <link rel="stylesheet" href="{% static 'main/stylesheets/main.css' %}">
 <link rel="stylesheet" href="{% static 'main/stylesheets/profile.css' %}">
+<link rel="stylesheet" href="{% static 'main/stylesheets/newsfeed.css' %}">
 <link rel="stylesheet" href="{% static 'main/stylesheets/newPost.css' %}">
 <link rel="stylesheet" href="{% static 'main/stylesheets/posts.css' %}">
 <link rel="stylesheet" href="{% static 'main/stylesheets/search.css' %}">
@@ -17,8 +18,9 @@
 
 {% block content %}
 
-{% include 'main/_profile.html' %}
 {% include 'main/_search.html' %}
+{% include 'main/_profile.html' %}
+{% include 'main/_newsfeed.html' %}
 
 {% endblock %}
 

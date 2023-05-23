@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 from .views import GeneralView, PhotoDataView, EditView, UpdateView, DeleteView, \
     LikeView, UnlikeView
+from .newsfeed_views import NewsfeedDataView
 
 app_name = 'posts'
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path('likes/<int:post_id>', LikeView.as_view(), name='like_create_index'),
     path('likes/<int:post_id>/delete', UnlikeView.as_view(), name='like_delete'),
 
+    path('newsfeed_data', NewsfeedDataView.as_view(), name='newsfeed_data'),
 ]

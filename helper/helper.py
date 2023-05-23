@@ -4,6 +4,7 @@ import random
 class MAIN_MODE_ENUM:
     Profile = 'profile'
     Search = 'search'
+    Newsfeed = 'newsfeed'
 
 
 def generate_sentence():

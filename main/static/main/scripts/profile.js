@@ -5,6 +5,7 @@ import { processFriending } from "./components/friending.js"
 import { processSectionFriends } from "./profile/sectionFriends.js"
 import { processPhoto } from "./profile/photo.js"
 import { pluralizeWord } from "./helper/helper.js"
+import { mainProcessProfile } from "./main.js"
 
 console.log(window.CSRF_TOKEN)
 
@@ -36,6 +37,14 @@ const sectionProfileMap = {
     'photo': setModePhoto,
 };
 
+export function processProfileLink(link) {
+    link.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        mainProcessProfile(`${link.href}/profile`, link.href)
+    })
+}
+
 export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) {
     if (!(Object.values(window.ProfileSectionEnum).includes(sectionName))) {
         console.log("ERROR!! INVALID SECTION NAME!!")
@@ -47,23 +56,6 @@ export function setProfileSection(sectionName = window.ProfileSectionEnum.Main) 
 
 
 export function processProfile(secondUserProfileUrl) {
-    /*
-    pr.second_user_id
-
-    pr.posts_index_url
-    pr.posts_create_url
-    pr.upload_cover_photo_url
-    pr.upload_profile_picture_url
-    pr.friending_index_url
-    pr.friending_requests_url
-
-    pr.cover_url
-    pr.profile_picture_url_round
-    pr.first_name
-    pr.last_name
-    pr.num_friends
-    pr.main_friending_state
-*/
 
     function processSelectAndContentAll(pr) {
         function processSelectAndContent(selectParent, selectContentParent) {
@@ -139,7 +131,7 @@ export function processProfile(secondUserProfileUrl) {
         processFriending('mainFriending', pr.main_friending_state, true, null);
         // append
         processSectionFriends(pr.friending_index_url, pr.friending_requests_url)
-        processPostLoading(pr.posts_index_url, pr.main_friending_state);
+        processPostLoading(window.PostsSectionEnum.Profile, pr.posts_index_url, pr.main_friending_state);
         processPhoto();
     }
 

@@ -7,13 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from users.models import AppUser
 from django.urls import reverse
 from friending.models import Friending
-from django.contrib.auth.decorators import login_required
-
-
-@login_required
-def index(request):
-    user = request.user
-    return HttpResponseRedirect(reverse('main:main', args=(user.id,)))
+from helper.helper import MAIN_MODE_ENUM
 
 
 class MainView(LoginRequiredMixin, View):
@@ -26,8 +20,27 @@ class MainView(LoginRequiredMixin, View):
                 'id': user.id,
                 'picture_mini': user.get_profile_picture_mini(),
             },
+            'newsfeed_url': reverse('main:newsfeed', args=()),
             'search_url': reverse('users:search', args=()),
             'second_user_main_url': reverse('main:main', args=(second_user_id,)),
+            'second_user_profile_url': reverse('main:profile', args=(second_user_id,)),
+        }
+        return render(request, 'main/main.html', data)
+
+
+class NewsfeedView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        data = {
+            'mode': MAIN_MODE_ENUM.Newsfeed,
+            'current_user': {
+                'full_name': user.__str__(),
+                'id': user.id,
+                'picture_mini': user.get_profile_picture_mini(),
+            },
+            'newsfeed_url': reverse('main:newsfeed', args=()),
+            'newsfeed_data_url': reverse('posts:newsfeed_data', args=()),
+            'search_url': reverse('users:search', args=()),
         }
         return render(request, 'main/main.html', data)
 

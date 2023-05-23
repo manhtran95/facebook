@@ -1,4 +1,4 @@
-import { createPostElement, editPostElement } from "./posts.js"
+import { createPostElement, updatePostElement } from "./posts.js"
 
 
 const newPost = document.querySelector('#section-profile-new-post')
@@ -280,7 +280,7 @@ export function processNewOrEditPost(mainFriendingState, isEdit, endpoint, editI
                 coverPopup.style.display = 'none';
                 cancelModeNewOrEditPost()
                 if (isEdit) {
-                    editPostElement(response.data.updated_post)
+                    updatePostElement(response.data.updated_post)
                 } else {
                     createPostElement(response.data.new_post, 'new')
                 }

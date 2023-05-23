@@ -24,7 +24,7 @@ searchInput.onblur = e => {
 searchForm.onsubmit = e => {
     e.preventDefault()
     e.stopPropagation()
-    mainProcessSearch(`${searchForm.action}?q=${searchInput.value}`, `${window.search_url}?q=${searchInput.value}`)
+    mainProcessSearch(`${searchForm.action}?q=${searchInput.value}`, `${window.searchUrl}?q=${searchInput.value}`)
 }
 
 export function resetSearch() {

@@ -1,21 +1,26 @@
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
-import { processProfileLink } from "./../main.js"
+import { processProfileLink } from "./../profile.js"
 import { processPhotoLink } from "./photo.js"
 import { processEditLink } from "./newPost.js"
 import { processLikeLink, setLikeActive, setLikeInactive, updateLikeNumber } from "./likes.js"
 
-const imageTemplate = document.querySelector('#posts .image-template')
-const allPosts = document.querySelector('#posts .all-posts')
+const imageTemplate = document.querySelector('.post-image-template')
+let allPosts
+const NUM_LOAD = 8
+let curCounter
+const postTemplate = document.querySelector('.post-template');
 
+window.PostsSectionEnum = {
+    'Profile': 'profile',
+    'Newsfeed': 'newsfeed',
+}
 
 export function createPostElement(p, mode = 'list') {
-    const postTemplate = document.querySelector('.post-template');
-    let curCounter = window.curCounter
-    window.curCounter += 1
     const newPost = postTemplate.cloneNode(true);
     newPost.classList.remove(`post-template`)
     newPost.classList.add(`post-instance`)
     newPost.classList.add(`p${curCounter}`)
+    curCounter += 1
 
     const elePostId = `post${p.id}`
     newPost.id = elePostId
@@ -124,7 +129,7 @@ function processDeleteLink(link) {
     }
 }
 
-export function editPostElement(postInfo) {
+export function updatePostElement(postInfo) {
     const elePostId = `post${postInfo.post_id}`
     const postText = document.querySelector(`#${elePostId} .post-text`)
     postText.innerText = postInfo.post_text
@@ -147,14 +152,32 @@ export function editPostElement(postInfo) {
     })
 }
 
-export function processPostLoading(indexEndpoint, mainFriendingState) {
+const profileAllPosts = document.querySelector('#posts .all-posts')
+const newsfeedAllPosts = document.querySelector('#newsfeed .all-posts')
+
+export function processPostLoading(section, indexEndpoint, mainFriendingState) {
     // reset parameters
-    window.curCounter = 0;
-    let nextCounter = 0
-    const NUM_LOAD = 8
-    let curObserve = 5
-    const allPosts = document.querySelector('#posts .all-posts')
-    allPosts.clearChildren()
+    curCounter = 0;     // counter used as index for post
+    let nextCounter = 0     // next post counter to get - received from server
+    let curObserve = 5      // current post index to observe
+    profileAllPosts.clearChildren()
+    newsfeedAllPosts.clearChildren()
+    let sectionId
+
+    switch (section) {
+        case window.PostsSectionEnum.Profile:
+            allPosts = profileAllPosts
+            sectionId = '#posts'
+            break;
+        case window.PostsSectionEnum.Newsfeed:
+            allPosts = newsfeedAllPosts
+            sectionId = '#newsfeed'
+            break;
+        default:
+            console.log('Invalid PostsSectionEnum')
+    }
+
+    // FUNCTIONS
     const observer = new IntersectionObserver(function (entries) {
         // isIntersecting is true when element and viewport are overlapping
         // isIntersecting is false when element and viewport don't overlap
@@ -165,26 +188,19 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
         }
     }, { threshold: [0] });
 
-    (function () {
-        function observe() {
-        }
-        window.setTimeout(observe, 50);
-    })();
-
     function showPosts(posts) {
         posts.forEach(p => createPostElement(p))
     };
 
     // load next page
     function loadPosts() {
-        const loading = document.querySelector('#posts .loading');
-        const noMore = document.querySelector('#posts .no-more');
+        const loading = document.querySelector(`${sectionId} .loading`);
+        const noMore = document.querySelector(`${sectionId} .no-more`);
 
         console.log('LOADING NEXT PAGE!');
         loading.style.display = 'block'
         noMore.style.display = 'none'
         var formData = new FormData();
-        let form = document.querySelector(`#hidden-info .index-form`)
 
         formData.append("counter", nextCounter);
         axios.get(indexEndpoint, {
@@ -199,7 +215,7 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
                     return
                 }
 
-                console.log('Get Posts SUCCESS!!');
+                console.log(`Get Posts SUCCESS: ${section}`);
                 console.log(indexEndpoint);
                 loading.style.display = 'none'
                 noMore.style.display = 'block'
@@ -208,7 +224,7 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
                 showPosts(response.data.page);
                 // update observer if next page available
                 if (nextCounter > 0) {
-                    observer.observe(document.querySelector(`#posts .all-posts .p${curObserve}`));
+                    observer.observe(document.querySelector(`${sectionId} .all-posts .p${curObserve}`));
                     curObserve += NUM_LOAD
                 } else {
                     noMore.style.display = 'block'
@@ -220,19 +236,20 @@ export function processPostLoading(indexEndpoint, mainFriendingState) {
             });
     };
 
-    // first load
-    (function () {
-        let nonDisplayInfoNode = document.querySelector('#posts .posts-info .non-display')
-        let displayInfoNode = document.querySelector('#posts .posts-info .display')
-        if (mainFriendingState == window.FRIENDING_STATE.Self || mainFriendingState == window.FRIENDING_STATE.Friend) {
-            nonDisplayInfoNode.style.display = 'none'
-            displayInfoNode.style.display = 'block'
-            loadPosts();
-        } else {
-            nonDisplayInfoNode.style.display = 'block'
-            displayInfoNode.style.display = 'none'
-            return
-        }
-    })();
+    // INITIATION
+    const displayInfoNode = document.querySelector(`${sectionId} .posts-info .display`)
+    const nonDisplayInfoNode = document.querySelector(`${sectionId} .posts-info .non-display`)
+
+    const profileNonDisplay = section == window.PostsSectionEnum.Profile && mainFriendingState != window.FRIENDING_STATE.Self && mainFriendingState != window.FRIENDING_STATE.Friend
+
+    if (profileNonDisplay) {
+        nonDisplayInfoNode.displayBlock()
+        displayInfoNode.displayNone()
+        return
+    }
+
+    nonDisplayInfoNode.displayNone()
+    displayInfoNode.displayBlock()
+    loadPosts();
 
 }

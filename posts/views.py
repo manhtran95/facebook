@@ -1,16 +1,12 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from .models import Post, Photo
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
-import time
 from users.models import AppUser
 from friending.models import Friending
-from django import forms
 from helper.helper import compress_image, MAIN_MODE_ENUM
 import json
 
@@ -87,24 +83,7 @@ class GeneralView(LoginRequiredMixin, View):
         total_num = userPosts.count()
         return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
 
-        l = [{
-            'id': p.id,
-            'author': p.author.__str__(),
-            'author_main_url': reverse('main:main', args=(p.author.id,)),
-            'author_image': p.author.get_profile_picture_mini(),
-            'pub_timestamp': datetime.timestamp(p.pub_datetime)*1000,
-            'post_text': p.post_text,
-            'post_edit_url': reverse('posts:edit', args=(p.id,)) if state == Friending.State.self else '',
-            'post_delete_url': reverse('posts:delete', args=(p.id,)) if state == Friending.State.self else '',
-            'like_number': p.likes.count(),
-            'like_state': p.likes.filter(id=user.id).exists(),
-            'like_create_url': reverse('posts:like_create_index', args=(p.id,)),
-            'like_delete_url': reverse('posts:like_delete', args=(p.id,)),
-            'photos': [{
-                'image_url': pt.get_post_image(),
-                'link': reverse('posts:photo_data', args=(pt.id,)),
-            } for pt in p.photo_set.all()],
-        } for p in queryset]
+        l = [p.get_info(user) for p in queryset]
         return JsonResponse({'page': l, 'counter': return_counter})
 
 

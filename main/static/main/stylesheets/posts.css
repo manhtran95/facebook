@@ -2,15 +2,15 @@
 /* ALL-POSTS */
 /* *** */
 
-#posts .posts-info .non-display {
+.posts-info .non-display {
     display: none;
 }
 
-#posts .posts-info .display {
+.posts-info .display {
     display: none;
 }
 
-#posts .loading {
+.loading {
     text-align: center;
     padding: 1em;
 }
@@ -41,7 +41,7 @@
     height: auto;
 }
 
-#posts .post {
+.post {
     background-color: white;
     border-radius: 7px;
     padding: 1em;
@@ -120,25 +120,25 @@
 
 /* PHOTOS */
 
-#posts .image-parent {
+.image-parent {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
 }
 
-#posts .image-template {
+.post-image-template {
     display: none;
 }
 
-#posts .image {
+.post-image {
     border: 1px solid white;
 }
 
-#posts .photos img {
+.photos img {
     max-width: 100%;
 }
 
-#posts .image>img {
+.image>img {
     width: 100%;
     object-fit: cover;
     aspect-ratio: 1 / 1;

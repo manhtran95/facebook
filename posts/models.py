@@ -7,6 +7,9 @@ from users.models import AppUser
 from helper.helper import generate_sentence
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.urls import reverse
+from datetime import datetime
+
 # Create your models here.
 
 
@@ -20,6 +23,27 @@ class Post(models.Model):
     @classmethod
     def make_post(cls, user):
         Post(post_text=generate_sentence(), author=user).save()
+
+    def get_info(self, user):
+        data = {
+            'id': self.id,
+            'author': self.author.__str__(),
+            'author_main_url': reverse('main:main', args=(self.author.id,)),
+            'author_image': self.author.get_profile_picture_mini(),
+            'pub_timestamp': datetime.timestamp(self.pub_datetime)*1000,
+            'post_text': self.post_text,
+            'post_edit_url': reverse('posts:edit', args=(self.id,)) if self.author.id == user.id else '',
+            'post_delete_url': reverse('posts:delete', args=(self.id,)) if self.author.id == user.id else '',
+            'like_number': self.likes.count(),
+            'like_state': self.likes.filter(id=user.id).exists(),
+            'like_create_url': reverse('posts:like_create_index', args=(self.id,)),
+            'like_delete_url': reverse('posts:like_delete', args=(self.id,)),
+            'photos': [{
+                'image_url': pt.get_post_image(),
+                'link': reverse('posts:photo_data', args=(pt.id,)),
+            } for pt in self.photo_set.all()],
+        }
+        return data
 
 
 def image_file_name(instance, filename):

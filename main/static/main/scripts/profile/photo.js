@@ -1,5 +1,5 @@
 import { setProfileSection } from "./../profile.js"
-import { processProfileLink } from "../main.js"
+import { processProfileLink } from "../profile.js"
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
 
 

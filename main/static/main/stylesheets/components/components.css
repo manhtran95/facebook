@@ -39,3 +39,7 @@ a.disabled {
 .secondary-button-bg {
     background-color: #E4E6EB;
 }
+
+.img-round {
+    border-radius: 50%;
+}
