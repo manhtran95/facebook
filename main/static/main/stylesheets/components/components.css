@@ -35,3 +35,7 @@ a.disabled {
     display: flex !important;
     justify-content: center;
 }
+
+.secondary-button-bg {
+    background-color: #E4E6EB;
+}

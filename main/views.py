@@ -18,10 +18,14 @@ def index(request):
 
 class MainView(LoginRequiredMixin, View):
     def get(self, request, second_user_id):
-        current_user = request.user
+        user = request.user
         data = {
             'mode': 'profile',
-            'current_user': current_user,
+            'current_user': {
+                'full_name': user.__str__(),
+                'id': user.id,
+                'picture_mini': user.get_profile_picture_mini(),
+            },
             'search_url': reverse('users:search', args=()),
             'second_user_main_url': reverse('main:main', args=(second_user_id,)),
         }

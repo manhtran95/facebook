@@ -91,6 +91,54 @@ a.navbar-brand {
     padding-left: 0.5rem;
 }
 
+/* DROPDOWN */
+.pic-dropdown {
+    margin-right: .25rem;
+}
+
+.pic-dropdown button {
+    padding: 0;
+    border: none;
+}
+
+.pic-dropdown img {
+    border-radius: 50%;
+}
+
+.pic-dropdown form button {
+    min-width: 90px;
+    padding: .25rem 1rem;
+    text-align: end;
+}
+
+.pic-dropdown .dropdown-toggle::after {
+    display: none;
+}
+
+.pic-dropdown .icon-container {
+    background-color: #E4E6EB;
+    border-radius: 50%;
+    display: flex;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    justify-content: center;
+}
+
+.pic-dropdown svg {
+    width: 12px;
+}
+
+.pic-dropdown .dropdown-menu.show {
+    padding: .5rem 0rem;
+    /* min-width: 100px; */
+    display: flex;
+    justify-content: end;
+}
+
+
 #main {
     display: flex;
     background-color: #F0F2F5;

@@ -38,15 +38,26 @@
             <div class="collapse navbar-collapse me-auto" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li>
-                        <div class="dropdown">
+                        <div class="dropdown pic-dropdown">
                             <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Hi, {{ current_user.first_name}}
+                                <img src="{{ current_user.picture_mini }}" alt="">
+                                <div class="icon-container">
+                                    <svg fill="currentColor" viewBox="0 0 16 16" width="1em" height="1em"
+                                        class="x1lliihq x1k90msu x2h7rmj x1qfuztq x198g3q0 x1kpxq89 xsmyaan">
+                                        <g fill-rule="evenodd" transform="translate(-448 -544)">
+                                            <path fill-rule="nonzero"
+                                                d="M452.707 549.293a1 1 0 0 0-1.414 1.414l4 4a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L456 552.586l-3.293-3.293z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                </div>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <form action="{% url 'users:logout' %}" method="post">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-link btn-logout dropdown-item">Logout</button>
+                                    <button type="submit"
+                                        class="btn btn-link btn-logout dropdown-item text-15">Logout</button>
                                 </form>
                             </div>
                         </div>
