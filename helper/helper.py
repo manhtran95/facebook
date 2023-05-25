@@ -7,6 +7,31 @@ class MAIN_MODE_ENUM:
     Newsfeed = 'newsfeed'
 
 
+def get_cloudinary_image(url, h, w):
+    if url and 'upload/' in url:
+        return url.replace('upload/', f'upload/c_fill,h_{h},w_{w}/')
+    else:
+        return url
+
+
+def get_profile_picture(url, h, w):
+    if url and 'upload/' in url:
+        return url.replace('upload/', f'upload/c_fill,h_{h},w_{w}/')
+    else:
+        return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470568/media/basic_images/default-profile-picture_me5ztx.jpg'
+
+
+def get_profile_picture_mini(url):
+    return get_cloudinary_image(url, 40, 40)
+
+
+def get_cover_photo(url):
+    if url and 'upload/' in url:
+        return url.replace('upload/', f'upload/c_fill,h_463,w_1241/')
+    else:
+        return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470571/media/basic_images/default-cover-photo_furh0o.jpg'
+
+
 def generate_sentence():
     wordCount = random.randint(20, 60)
     word_file = "/usr/share/dict/words"

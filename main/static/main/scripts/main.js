@@ -27,6 +27,7 @@ function setMainSection(sectionName = 'profile') {
     }
 }
 
+// INITIALIZATION
 switch (window.mode) {
     case window.SectionEnum.Search:
         setMainSection(window.SectionEnum.Search)
@@ -43,6 +44,10 @@ switch (window.mode) {
     default:
         console.log(`Sorry, something wrong happened.`);
 }
+
+import { processNewsfeedLink } from './newsfeed.js'
+const newsfeedLink = document.querySelector('.navbar-brand')
+processNewsfeedLink(newsfeedLink)
 
 
 

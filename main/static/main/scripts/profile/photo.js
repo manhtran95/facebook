@@ -3,6 +3,16 @@ import { processProfileLink } from "../profile.js"
 import { getFacebookDatetimeStr } from "./../helper/helper.js"
 
 const nav = document.querySelector('nav')
+const photo = document.querySelector('#section-photo')
+const basePopup = document.querySelector('#base-popup')
+const background = document.querySelector('#photo-display .background')
+const escapeButton = document.querySelector('#photo-display .remove-button')
+const body = document.querySelector('body')
+
+function escapePhoto(e) {
+    photo.displayNone()
+    body.style.overflow = 'initial'
+}
 
 function profileProcessPhoto(photoDataUrl) {
     console.log('processing' + photoDataUrl)
@@ -37,6 +47,7 @@ function profileProcessPhoto(photoDataUrl) {
         links.forEach(link => {
             link.href = photo.author_main_url
             processProfileLink(link)
+            link.addEventListener('click', escapePhoto)
         })
 
         const authorImage = document.querySelector(`#photo-info .post-info img`)
@@ -70,11 +81,7 @@ function profileProcessPhoto(photoDataUrl) {
         });
 }
 
-const photo = document.querySelector('#section-photo')
-const basePopup = document.querySelector('#base-popup')
-const background = document.querySelector('#photo-display .background')
-const escapeButton = document.querySelector('#photo-display .remove-button')
-const body = document.querySelector('body')
+
 
 function popupPhoto() {
 
@@ -83,16 +90,8 @@ function popupPhoto() {
     photo.style.top = `${scrollTop}px`
     body.style.overflow = 'hidden'
 
-    background.onclick = e => {
-        photo.displayNone()
-        body.style.overflow = 'initial'
-
-    }
-    escapeButton.onclick = e => {
-        photo.displayNone()
-        body.style.overflow = 'initial'
-
-    }
+    background.onclick = escapePhoto
+    escapeButton.onclick = escapePhoto
 }
 
 export function processPhotoLink(link) {

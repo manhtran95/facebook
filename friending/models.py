@@ -3,6 +3,7 @@ from users.models import AppUser
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from typing import List
+from django.db import connection
 
 # Create your models here.
 
@@ -101,6 +102,12 @@ class Friending(models.Model):
         l = [AppUser.objects.get(pk=id)
              for id in ids]
         return l
+
+        # with connection.cursor() as cursor:
+        #     cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
+
+        #     columns = [col[0] for col in cursor.description]
+        #     return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     @classmethod
     def get_all_friendings(cls, user) -> List:

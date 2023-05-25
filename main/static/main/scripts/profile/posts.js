@@ -33,7 +33,7 @@ export function createPostElement(p, mode = 'list') {
         return
     }
 
-    let links = document.querySelectorAll(`#${elePostId} .post-info profile-link`)
+    let links = document.querySelectorAll(`#${elePostId} .post-info .profile-link`)
     links.forEach(link => {
         link.href = p.author_main_url
         processProfileLink(link)
