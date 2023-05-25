@@ -158,7 +158,7 @@ const newsfeedAllPosts = document.querySelector('#newsfeed .all-posts')
 export function processPostLoading(section, indexEndpoint, mainFriendingState) {
     // reset parameters
     curCounter = 0;     // counter used as index for post
-    let nextCounter = 0     // next post counter to get - received from server
+    let offset = 0     // next post counter to get - received from server
     let curObserve = 5      // current post index to observe
     profileAllPosts.clearChildren()
     newsfeedAllPosts.clearChildren()
@@ -200,12 +200,10 @@ export function processPostLoading(section, indexEndpoint, mainFriendingState) {
         console.log('LOADING NEXT PAGE!');
         loading.style.display = 'block'
         noMore.style.display = 'none'
-        var formData = new FormData();
 
-        formData.append("counter", nextCounter);
         axios.get(indexEndpoint, {
             params: {
-                counter: nextCounter
+                offset: offset
             }
         })
             .then(function (response) {
@@ -219,11 +217,11 @@ export function processPostLoading(section, indexEndpoint, mainFriendingState) {
                 console.log(indexEndpoint);
                 loading.style.display = 'none'
                 noMore.style.display = 'block'
-                nextCounter = response.data.counter
+                offset = response.data.next_offset
                 console.log(response.data.page);
                 showPosts(response.data.page);
                 // update observer if next page available
-                if (nextCounter > 0) {
+                if (offset > 0) {
                     observer.observe(document.querySelector(`${sectionId} .all-posts .p${curObserve}`));
                     curObserve += NUM_LOAD
                 } else {

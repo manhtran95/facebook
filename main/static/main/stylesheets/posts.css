@@ -20,6 +20,10 @@
     padding: 1em;
 }
 
+.post-template {
+    display: none;
+}
+
 .post-instance {
     transition: opacity 1s ease-out;
     opacity: 0;

@@ -10,7 +10,7 @@ from friending.models import Friending
 from helper.helper import compress_image, MAIN_MODE_ENUM
 import json
 
-NUM_LOAD = 8
+NUM_POSTS_LOAD = 8
 
 
 class PhotoDataView(LoginRequiredMixin, View):
@@ -68,6 +68,7 @@ class GeneralView(LoginRequiredMixin, View):
 
         return JsonResponse({'new_post': p})
 
+    # get posts of @second_user
     def get(self, request, second_user_id):
         user = request.user
         second_user = get_object_or_404(AppUser, pk=second_user_id)
@@ -75,16 +76,18 @@ class GeneralView(LoginRequiredMixin, View):
         if state != Friending.State.self and state != Friending.State.friend:
             return JsonResponse({'error': 'Permission denied!'})
 
-        counter = int(request.GET['counter'])
-        userPosts = Post.objects.filter(author_id=second_user_id)
-        queryset = userPosts.order_by(
-            '-pub_datetime')[counter:counter+NUM_LOAD]
+        offset = int(request.GET['offset'])
 
-        total_num = userPosts.count()
-        return_counter = counter + NUM_LOAD if total_num >= counter + NUM_LOAD else -1
+        posts = Post.objects.select_related('author').prefetch_related('photo_set').prefetch_related('likes')   \
+            .filter(author_id=second_user_id).order_by(
+            '-pub_datetime')
 
-        l = [p.get_info(user) for p in queryset]
-        return JsonResponse({'page': l, 'counter': return_counter})
+        total_num = len(posts)
+        next_offset = offset + NUM_POSTS_LOAD if total_num > offset + NUM_POSTS_LOAD else -1
+
+        l = [post.get_post_data(user)
+             for post in posts[offset:offset+NUM_POSTS_LOAD]]
+        return JsonResponse({'page': l, 'next_offset': next_offset})
 
 
 class EditView(LoginRequiredMixin, View):
