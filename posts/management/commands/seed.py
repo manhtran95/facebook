@@ -1,4 +1,5 @@
 # <project>/<app>/management/commands/seed.py
+import time
 from django.core.management.base import BaseCommand
 import random
 import logging
@@ -124,6 +125,36 @@ def generate_friend_requests():
                 pass
 
 
+def randomize_datetimes():
+    from random import randrange
+    from datetime import timedelta, datetime
+    import pytz
+
+    def random_date(start, end):
+        """
+        This function will return a random datetime between two datetime 
+        objects.
+        """
+        delta = end - start
+        int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
+        random_second = randrange(int_delta)
+        return (start + timedelta(seconds=random_second)).replace(tzinfo=pytz.utc)
+
+    d1 = datetime.strptime('1/1/2008 1:30 PM', '%m/%d/%Y %I:%M %p')
+    d2 = datetime.strptime('5/25/2023 4:50 AM', '%m/%d/%Y %I:%M %p')
+
+    start_time = time.time()
+
+    counter = 0
+    posts = Post.objects.all()
+    for post in posts:
+        post.pub_datetime = random_date(d1, d2)
+        # post.save()
+    Post.objects.bulk_update(posts, ["pub_datetime"])
+
+    print("--- %.2f seconds ---" % (time.time() - start_time))
+
+
 def run_seed(self, mode):
     """ Seed database based on mode
 
@@ -132,9 +163,9 @@ def run_seed(self, mode):
     """
 
     match mode:
-        case "like":
-            print("Generating likes!!")
-            generate_likes()
+        case "dt":
+            print("Generating datetimes!!")
+            randomize_datetimes()
 
 
-# python manage.py seed --mode=like
+# python manage.py seed --mode=dt
