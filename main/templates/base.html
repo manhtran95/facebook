@@ -68,20 +68,22 @@
     </nav>
     <main id="main">
         <div id="vertical-nav">
-            <ul class="nav flex-column">
-                <!-- <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Feeds</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Profile</a>
-                </li>
+            <div class="nav flex-column">
+
+                <a class="nav-link newsfeed-link" href="{% url 'posts:newsfeed_data' %}">
+                    <i class="child-centre" data-visualcompletion="css-img"></i>
+                </a>
+                <a class="nav-link profile-link" href="{% url 'main:main' current_user.id %}">
+                    <img src="{{ current_user.picture_mini }}" class="child-centre" alt="">
+                </a>
+                <!--
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Video</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Game</a>
                 </li> -->
-            </ul>
+            </div>
         </div>
         {% block content %}
         {% endblock %}

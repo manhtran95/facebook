@@ -1,5 +1,5 @@
 import { resetSearch, processSearch } from "./search/search.js"
-import { processProfile } from "./profile.js";
+import { processProfile, processProfileLink } from "./profile.js";
 import { processNewsfeed } from "./newsfeed.js";
 
 window.SectionEnum = {
@@ -46,9 +46,12 @@ switch (window.mode) {
 }
 
 import { processNewsfeedLink } from './newsfeed.js'
-const newsfeedLink = document.querySelector('.navbar-brand')
+const newsfeedBrandLink = document.querySelector('.navbar-brand')
+const newsfeedLink = document.querySelector('#vertical-nav .newsfeed-link')
 processNewsfeedLink(newsfeedLink)
-
+processNewsfeedLink(newsfeedBrandLink)
+const profileLink = document.querySelector('#vertical-nav .profile-link')
+processProfileLink(profileLink)
 
 
 export function mainProcessSearch(searchDataUrl, searchUrlWithQuery = window.location.href, title = 'Facebook - Search') {
@@ -101,7 +104,7 @@ window.onpopstate = function (e) {
                 break;
             case window.SectionEnum.Newsfeed:
                 setMainSection(window.SectionEnum.Newsfeed)
-                processSearch(e.state.newsfeedDataUrl);
+                processNewsfeed(e.state.newsfeedDataUrl);
                 break;
             default:
                 console.log('Invalid popstate state')

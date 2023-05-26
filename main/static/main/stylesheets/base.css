@@ -146,6 +146,8 @@ a.navbar-brand {
     flex-wrap: wrap;
 }
 
+/* VERTICAL */
+
 #vertical-nav {
     position: fixed;
     height: 100%;
@@ -156,7 +158,38 @@ a.navbar-brand {
     z-index: 5;
 }
 
+#vertical-nav .nav {
+    margin-top: .75rem;
+}
 
+#vertical-nav .profile-link img {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+}
+
+.nav-link {
+    padding: 0;
+    position: relative;
+    width: 40px;
+    height: 42px;
+    border-radius: 8px;
+    align-self: center;
+}
+
+.nav-link:hover {
+    background-color: #F0F2F5;
+}
+
+#vertical-nav .newsfeed-link i {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/ZvmmhxKUgAQ.png);
+    background-position: 0 -44px;
+    background-size: 22px 276px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
 
 /*  */
 

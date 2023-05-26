@@ -1,3 +1,11 @@
+.very-light-grey {
+    background-color: #F0F2F5;
+}
+
+.grey {
+    background-color: #F0F2F5;
+}
+
 .btn.show {
     border: none;
 }
@@ -42,4 +50,16 @@ a.disabled {
 
 .img-round {
     border-radius: 50%;
+}
+
+/*  */
+/* parent: 
+    position: relative
+*/
+
+.child-centre {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
 }
