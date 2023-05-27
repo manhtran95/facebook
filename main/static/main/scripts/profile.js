@@ -119,7 +119,7 @@ export function processProfile(secondUserProfileUrl) {
         // setProfileSection(window.ProfileSectionEnum.Photo)
         processHomeProfile(pr)
         processSelectAndContentAll(pr)
-        processFriending('mainFriending', pr.main_friending_state, true, null);
+        processFriending('mainFriending', pr.main_friending_state, true, pr.friending_urls);
         // append
         processSectionFriends(pr.friending_index_url, pr.friending_requests_url)
         processPostLoading(window.PostsSectionEnum.Profile, pr.posts_index_url, pr.main_friending_state);

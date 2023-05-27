@@ -33,13 +33,13 @@ def get_cover_photo(url):
 
 
 def generate_sentence():
-    wordCount = random.randint(20, 60)
+    wordCount = random.randint(20, 40)
     word_file = "/usr/share/dict/words"
     WORDS = open(word_file).read().splitlines()
     l = len(WORDS)
     s = ''
     for i in range(wordCount):
-        i = random.randint(0, l)
+        i = random.randint(0, l-1)
         s += WORDS[i] + ' '
     s += '.'
     return s

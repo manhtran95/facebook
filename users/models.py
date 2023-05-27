@@ -51,20 +51,6 @@ class AppUser(AbstractUser):
         else:
             return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470571/media/basic_images/default-cover-photo_furh0o.jpg'
 
-    @classmethod
-    def make_user(cls):
-        first_name = names.get_first_name()
-        last_name = names.get_last_name()
-        username = first_name.lower() + str(random.randint(100, 10000))
-        email = username + "@gmail.com"
-        password = 'abc123'
-        try:
-            user = AppUser.objects.create_user(
-                username, email, password, first_name=first_name, last_name=last_name)
-        except Exception as e:
-            print(e)
-        return user
-
     """
     NEW
     """
@@ -136,8 +122,45 @@ class AppUser(AbstractUser):
             'last_name': second_user.last_name,
             'num_friends': len(fr_ids),
             'main_friending_state': Friending.get_friend_state(current_user, current_user_raw_friending),
+            'friending_urls': {
+                'add_friend': reverse('friending:general', args=(second_user_id,)),
+                'cancel_request': reverse('friending:delete', args=(second_user_id,)),
+                'confirm_request': reverse('friending:update', args=(second_user_id,)),
+                'delete_request': reverse('friending:delete', args=(second_user_id,)),
+                'unfriend': reverse('friending:delete', args=(second_user_id,)),
+            }
         }
         return data
+
+    """
+    FOR SEEDING
+    """
+    @classmethod
+    def make_user(cls):
+        images = [
+            'media/profile_pictures/anne-hathaway_wtefas.jpg',
+            'media/profile_pictures//tuong_san_pzuffr.jpg',
+            'media/profile_pictures/A-Hau-Tuong-San-2-01_zyvldm.jpg',
+            'media/profile_pictures/tang_thanh_ha_rbryku.jpg',
+            'media/profile_pictures/chris_e9yeky.jpg',
+            'media/profile_pictures/casemiro_xwaave.jpg',
+            'media/profile_pictures/elizabeth_olsen_etrm8v.jpg',
+            'media/profile_pictures/Cristiano_Ronaldo_2018_llglx2.jpg',
+            'media/profile_pictures/scarlett_johansson_p7ctuy.jpg',
+            'media/profile_pictures/katheryn_winnick_i00jun.jpg',
+        ]
+        first_name = names.get_first_name()
+        last_name = names.get_last_name()
+        username = first_name.lower() + str(random.randint(100, 10000))
+        email = username + "@gmail.com"
+        password = 'abc123'
+        try:
+            user = AppUser.objects.create_user(
+                username, email, password, first_name=first_name, last_name=last_name, profile_picture=images[random.randint(0, len(images)-1)])
+        except Exception as e:
+            print(e)
+            return None
+        return user
 
     """
     OLD
