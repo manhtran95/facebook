@@ -157,13 +157,13 @@ class Friending(models.Model):
 
     @classmethod
     def get_friend_requests(cls, user) -> List[AppUser]:
+        data = []
         all_received_pending_friendings = cls.get_all_friendings(user).filter(
-            state=cls.FriendState.PENDING).filter(~Q(sent=user.id))
-        sent_ids = [fr.second_id if fr.first_id ==
-                    user.id else fr.first_id for fr in all_received_pending_friendings]
-        sent_users = [AppUser.objects.get(pk=id)
-                      for id in sent_ids]
-        return sent_users
+            state=cls.FriendState.PENDING).filter(~Q(sent=user.id)).select_related('first').select_related('second')
+        for friending in all_received_pending_friendings:
+            data.append(friending.first if friending.second.id ==
+                        user.id else friending.second)
+        return data
 
     """
     BELOW: NOT USING
@@ -172,15 +172,6 @@ class Friending(models.Model):
     def are_friends(cls, user1, user2):
         smallId, bigId = min(user1.id, user2.id), max(user1.id, user2.id)
         return cls.objects.filter(first_id=smallId, second_id=bigId).filter(state=cls.FriendState.FRIENDED).exists()
-
-    @classmethod
-    def get_all_friend_users_OLD(cls, user) -> List[AppUser]:
-        all_friendings = cls.get_all_friend_friendings(user)
-        ids = [fr.second_id if fr.first_id ==
-               user.id else fr.first_id for fr in all_friendings]
-        l = [AppUser.objects.get(pk=id)
-             for id in ids]
-        return l
 
     """
     BELOW: FOR SEEDING PURPOSE

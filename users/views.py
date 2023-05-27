@@ -88,9 +88,9 @@ class SearchDataView(LoginRequiredMixin, View):
                 satisfied_users.append(user)
         sorted_users = sorted(
             satisfied_users, key=lambda x: x.query_trigram_score, reverse=True)
-        r = [current_user.get_user_info(u) for u in sorted_users]
+        data = AppUser.get_users_data(current_user, sorted_users)
 
-        return JsonResponse({"user_list": r})
+        return JsonResponse({"user_list": data})
 
 
 class ProfilePictureView(LoginRequiredMixin, View):

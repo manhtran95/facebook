@@ -66,6 +66,5 @@ class RequestIndexView(LoginRequiredMixin, View):
     def get(self, request):
         current_user = request.user
         all_friend_requests = Friending.get_friend_requests(current_user)
-        user_list = [current_user.get_user_info(
-            user) for user in all_friend_requests]
-        return JsonResponse({'user_list': user_list})
+        data = AppUser.get_users_data(current_user, all_friend_requests)
+        return JsonResponse({'user_list': data})

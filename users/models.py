@@ -143,6 +143,8 @@ class AppUser(AbstractUser):
     OLD
     """
 
+
+"""
     def get_user_info(self, user, mode='friend'):
         Friending = apps.get_model('friending.Friending')
         r = {
@@ -159,3 +161,4 @@ class AppUser(AbstractUser):
             }
         }
         return r
+"""

@@ -181,7 +181,8 @@
 }
 
 #overview {
-    background-color: white;
+    /* background-color: white; */
+    /* display: none; */
 }
 
 
