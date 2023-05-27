@@ -53,7 +53,9 @@ export function processProfile(secondUserProfileUrl) {
             Array.from(selectLinks).forEach((link, i) => {
                 if (Array.from(link.classList).includes('home-required')) {
                     if (window.currentUserId != pr.second_user_id) {
-                        link.style.display = 'none'
+                        link.displayNone()
+                    } else {
+                        link.style.display = 'inline'
                     }
                 }
                 link.addEventListener('click', e => {

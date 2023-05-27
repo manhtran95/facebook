@@ -8,32 +8,32 @@ export function processSectionFriends(friendingIndexEndpoint, friendingRequestsE
         links.push(sectionFriendsLink)
         if (parentSection) {
             let parentFriendsLink = document.querySelector(`.myselect[name=${parentSection}] [name="${sectionName}"]`)
-            links.push(parentFriendsLink)
+            parentFriendsLink.onclick = e => {
+                sectionFriendsLink.click()
+            }
         }
 
-        links.forEach(link => {
-            link.onclick = e => {
-                e.preventDefault()
-                e.stopPropagation()
-                axios.get(friendingEndpoint, {
-                    params: {}
+        sectionFriendsLink.onclick = e => {
+            e.preventDefault()
+            e.stopPropagation()
+            axios.get(friendingEndpoint, {
+                params: {}
+            })
+                .then(function (response) {
+                    if (response.data.error) {
+                        console.log('ERROR!')
+                        console.log(response.data.error)
+                        return
+                    }
+                    console.log(`get Friends ${friendingEndpoint} SUCCESS!!`);
+                    console.log(response.data)
+                    showUsers(response.data.user_list, friendingClass, parentIdentifier);
                 })
-                    .then(function (response) {
-                        if (response.data.error) {
-                            console.log('ERROR!')
-                            console.log(response.data.error)
-                            return
-                        }
-                        console.log(`get Friends ${friendingEndpoint} SUCCESS!!`);
-                        console.log(response.data)
-                        showUsers(response.data.user_list, friendingClass, parentIdentifier);
-                    })
-                    .catch(function (err) {
-                        console.log('FAILURE!!');
-                        console.log(err)
-                    });
-            }
-        })
+                .catch(function (err) {
+                    console.log('FAILURE!!');
+                    console.log(err)
+                });
+        }
 
     }
 
