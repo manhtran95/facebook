@@ -15,9 +15,8 @@ class IndexView(LoginRequiredMixin, View):
         current_user = request.user
         second_user = get_object_or_404(AppUser, pk=second_user_id)
         all_friend_users = Friending.get_all_friend_users(second_user)
-        user_list = [current_user.get_user_info(
-            user) for user in all_friend_users]
-        return JsonResponse({'user_list': user_list})
+        data = AppUser.get_users_data(current_user, all_friend_users)
+        return JsonResponse({'user_list': data})
 
 
 class GeneralView(LoginRequiredMixin, View):
