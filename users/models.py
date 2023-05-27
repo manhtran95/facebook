@@ -65,6 +65,29 @@ class AppUser(AbstractUser):
             print(e)
         return user
 
+    @classmethod
+    def get_users_data(cls, current_user, users, mode='friend'):
+        Friending = apps.get_model('friending.Friending')
+        friending_states = Friending.get_friend_states_from_users(
+            current_user, users)
+        data = []
+        for user in users:
+            user_info = {
+                'full_name': user.__str__(),
+                'profile_picture': user.get_profile_picture_friend() if mode == 'friend' else user.get_profile_picture_search(),
+                'friend_state': friending_states[user.id],
+                'main_url': reverse('main:main', args=(user.id,)),
+                'urls': {
+                    'add_friend': reverse('friending:general', args=(user.id,)),
+                    'cancel_request': reverse('friending:delete', args=(user.id,)),
+                    'confirm_request': reverse('friending:update', args=(user.id,)),
+                    'delete_request': reverse('friending:delete', args=(user.id,)),
+                    'unfriend': reverse('friending:delete', args=(user.id,)),
+                }
+            }
+            data.append(user_info)
+        return data
+
     def get_user_info(self, user, mode='friend'):
         Friending = apps.get_model('friending.Friending')
         r = {
