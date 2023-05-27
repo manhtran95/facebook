@@ -23,6 +23,10 @@ class Post(models.Model):
     likes = models.ManyToManyField(AppUser, related_name='liked_post')
 
     @classmethod
+    def make_post_object(cls, user):
+        return Post(post_text=generate_sentence(), author=user)
+
+    @classmethod
     def make_post(cls, user):
         Post(post_text=generate_sentence(), author=user).save()
 
@@ -109,6 +113,32 @@ class Post(models.Model):
 
         return data, next_offset
 
+    """
+        FOR SEEDING
+    """
+    @classmethod
+    def get_friend_post_ids(cls, user):
+        post_list = []
+
+        # get all posts that belong to user's friends
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                    SELECT p.id as pid
+                    FROM posts_post p INNER JOIN users_appuser u 
+                    ON author_id = u.id INNER JOIN friending_friending fr ON
+                    (u.id=fr.second_id AND fr.first_id=%s OR fr.second_id=%s AND u.id=first_id) AND fr.state='FR'
+                    ORDER BY p.pub_datetime DESC;
+                """, [user.id, user.id]
+            )
+            columns = [col[0] for col in cursor.description]
+            post_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+        pid_list = []
+        for post_data in post_list:
+            pid_list.append(post_data['pid'])
+        return pid_list
+
     @classmethod
     def test(cls):
         kwargs = {'pk__in': [3, 2]}
@@ -155,4 +185,5 @@ class Photo(models.Model):
 
 @receiver(pre_delete, sender=Photo)
 def delete_image(sender, instance, using, **kwargs):
-    instance.image.delete()
+    # instance.image.delete()
+    pass
