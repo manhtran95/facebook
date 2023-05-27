@@ -10,11 +10,17 @@ from friending.models import Friending
 from helper.helper import MAIN_MODE_ENUM
 
 
+"""
+    1st-level views: main, search, newsfeed
+    newsfeed_url, search_url: required at all 1st-level views
+"""
+
+
 class MainView(LoginRequiredMixin, View):
     def get(self, request, second_user_id):
         user = request.user
         data = {
-            'mode': 'profile',
+            'mode': MAIN_MODE_ENUM.Profile,
             'current_user': {
                 'full_name': user.__str__(),
                 'id': user.id,
@@ -48,24 +54,10 @@ class NewsfeedView(LoginRequiredMixin, View):
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request, second_user_id):
         current_user = request.user
-        second_user = get_object_or_404(AppUser, pk=second_user_id)
-        data = {
-            'second_user_id': second_user_id,
-            # urls
-            'posts_index_url': reverse('posts:create_index', args=(second_user_id,)),
-            'posts_create_url': reverse('posts:create_index', args=(second_user_id,)),
-            'upload_cover_photo_url': reverse('users:upload_cover', args=()),
-            'upload_profile_picture_url': reverse('users:upload_profile', args=()),
-            'friending_index_url': reverse('friending:index', args=(second_user_id,)),
-            'friending_requests_url': reverse('friending:requests', args=()),
-            # profile info
-            'profile_picture_url_round': second_user.get_profile_picture_round(),
-            'cover_url': second_user.get_cover_photo(),
-            'first_name': second_user.first_name,
-            'last_name': second_user.last_name,
-            'num_friends': Friending.get_all_friend_friendings(second_user).count(),
-            'main_friending_state': Friending.get_state(current_user, second_user),
-        }
+        data = AppUser.get_profile_data(current_user, second_user_id)
+        if not data:
+            return JsonResponse({'error': 'Bad request.'})
+
         return JsonResponse({'profile': data})
 
 

@@ -14,9 +14,9 @@ class Friending(models.Model):
         FRIENDED = "FR", _("Friended")
 
     first = models.ForeignKey(
-        AppUser, related_name='first_friending', on_delete=models.CASCADE)
+        AppUser, related_name='first_friending_set', on_delete=models.CASCADE)
     second = models.ForeignKey(
-        AppUser, related_name='second_friending', on_delete=models.CASCADE)
+        AppUser, related_name='second_friending_set', on_delete=models.CASCADE)
     sent = models.BigIntegerField('request_sent_user')
     state = models.CharField(
         max_length=2,
@@ -34,11 +34,6 @@ class Friending(models.Model):
         indexes = [
             models.Index(fields=('first', 'second')),
         ]
-
-    @classmethod
-    def are_friends(cls, user1, user2):
-        smallId, bigId = min(user1.id, user2.id), max(user1.id, user2.id)
-        return cls.objects.filter(first_id=smallId, second_id=bigId).filter(state=cls.FriendState.FRIENDED).exists()
 
     class State:
         self = 'SELF'
@@ -65,6 +60,14 @@ class Friending(models.Model):
         else:
             return cls.State.request_received
 
+    """
+        friending_raw_data:
+        {
+            'uid': Integer,
+            'state': String/None,
+            'sent': Integer/None,
+        }
+    """
     @classmethod
     def get_friend_state(cls, current_user, friending_raw_data: Dict):
         if friending_raw_data['uid'] == current_user.id:
@@ -149,21 +152,6 @@ class Friending(models.Model):
                                         state=cls.FriendState.FRIENDED)
 
     @classmethod
-    def get_all_friend_users_OLD(cls, user) -> List[AppUser]:
-        all_friendings = cls.get_all_friend_friendings(user)
-        ids = [fr.second_id if fr.first_id ==
-               user.id else fr.first_id for fr in all_friendings]
-        l = [AppUser.objects.get(pk=id)
-             for id in ids]
-        return l
-
-        # with connection.cursor() as cursor:
-        #     cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
-
-        #     columns = [col[0] for col in cursor.description]
-        #     return [dict(zip(columns, row)) for row in cursor.fetchall()]
-
-    @classmethod
     def get_all_friendings(cls, user) -> List:
         return Friending.objects.filter(Q(first_id=user.id) | Q(second_id=user.id))
 
@@ -177,6 +165,26 @@ class Friending(models.Model):
                       for id in sent_ids]
         return sent_users
 
+    """
+    BELOW: NOT USING
+    """
+    @classmethod
+    def are_friends(cls, user1, user2):
+        smallId, bigId = min(user1.id, user2.id), max(user1.id, user2.id)
+        return cls.objects.filter(first_id=smallId, second_id=bigId).filter(state=cls.FriendState.FRIENDED).exists()
+
+    @classmethod
+    def get_all_friend_users_OLD(cls, user) -> List[AppUser]:
+        all_friendings = cls.get_all_friend_friendings(user)
+        ids = [fr.second_id if fr.first_id ==
+               user.id else fr.first_id for fr in all_friendings]
+        l = [AppUser.objects.get(pk=id)
+             for id in ids]
+        return l
+
+    """
+    BELOW: FOR SEEDING PURPOSE
+    """
     @classmethod
     def make_friends(cls, user, second_user):
         smallId, bigId = min(user.id, second_user.id), max(

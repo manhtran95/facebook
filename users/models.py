@@ -65,6 +65,9 @@ class AppUser(AbstractUser):
             print(e)
         return user
 
+    """
+    NEW
+    """
     @classmethod
     def get_users_data(cls, current_user, users, mode='friend'):
         Friending = apps.get_model('friending.Friending')
@@ -87,6 +90,58 @@ class AppUser(AbstractUser):
             }
             data.append(user_info)
         return data
+
+    @classmethod
+    def get_profile_data(cls, current_user, second_user_id):
+        Friending = apps.get_model('friending.Friending')
+
+        qs = AppUser.objects.filter(pk=second_user_id)
+        if not qs:
+            return None
+        second_user = qs.get()
+        current_user_raw_friending = {
+            'uid': second_user_id,
+            'state': None,
+            'sent': None,
+        }
+
+        def get_friend_ids(set):
+            data = []
+            for fr in set:
+                if fr.second_id == current_user.id or fr.first_id == current_user.id:
+                    current_user_raw_friending['state'] = fr.state
+                    current_user_raw_friending['sent'] = fr.sent
+                if fr.state == Friending.FriendState.FRIENDED:
+                    data.append(fr.first_id if fr.second_id ==
+                                second_user_id else fr.second_id)
+            return data
+
+        all_friendings = Friending.get_all_friendings(second_user)
+        fr_ids = get_friend_ids(
+            all_friendings)
+
+        data = {
+            'second_user_id': second_user_id,
+            # urls
+            'posts_index_url': reverse('posts:create_index', args=(second_user_id,)),
+            'posts_create_url': reverse('posts:create_index', args=(second_user_id,)),
+            'upload_cover_photo_url': reverse('users:upload_cover', args=()),
+            'upload_profile_picture_url': reverse('users:upload_profile', args=()),
+            'friending_index_url': reverse('friending:index', args=(second_user_id,)),
+            'friending_requests_url': reverse('friending:requests', args=()),
+            # profile info
+            'profile_picture_url_round': second_user.get_profile_picture_round(),
+            'cover_url': second_user.get_cover_photo(),
+            'first_name': second_user.first_name,
+            'last_name': second_user.last_name,
+            'num_friends': len(fr_ids),
+            'main_friending_state': Friending.get_friend_state(current_user, current_user_raw_friending),
+        }
+        return data
+
+    """
+    OLD
+    """
 
     def get_user_info(self, user, mode='friend'):
         Friending = apps.get_model('friending.Friending')

@@ -155,6 +155,20 @@ def randomize_datetimes():
     print("--- %.2f seconds ---" % (time.time() - start_time))
 
 
+def test_bulk():
+    ids = [u.id for u in Post.objects.all()]
+
+    start_time = time.time()
+    for id in ids:
+        n = Post.objects.filter(pk=id).get().post_text
+    print("--- %.2f seconds ---" % (time.time() - start_time))
+
+    start_time = time.time()
+    for u in Post.objects.filter(pk__in=ids):
+        n = u.post_text
+    print("--- %.2f seconds ---" % (time.time() - start_time))
+
+
 def run_seed(self, mode):
     """ Seed database based on mode
 
@@ -163,9 +177,9 @@ def run_seed(self, mode):
     """
 
     match mode:
-        case "dt":
-            print("Generating datetimes!!")
-            randomize_datetimes()
+        case "test":
+            # print("Generating datetimes!!")
+            test_bulk()
 
 
 # python manage.py seed --mode=dt
