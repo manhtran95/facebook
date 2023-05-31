@@ -193,15 +193,10 @@ class Friending(models.Model):
                 state=cls.FriendState.FRIENDED)
 
     @classmethod
-    def make_friend_requests(cls, user, second_user):
+    def make_friend_request(cls, user, second_user):
         smallId, bigId = min(user.id, second_user.id), max(
             user.id, second_user.id)
         if smallId == bigId:
-            raise Exception('Can not befriend with oneself.')
-        state = cls.get_state(user, second_user)
-        if state == cls.State.non_friend:
-            Friending(first_id=smallId, second_id=bigId,
-                      state=cls.FriendState.PENDING, sent=user.id).save()
-        else:
-            Friending.objects.filter(first_id=smallId, second_id=bigId).update(
-                state=cls.FriendState.PENDING, sent=user.id)
+            return None
+        return Friending(first_id=smallId, second_id=bigId,
+                         state=cls.FriendState.PENDING, sent=user.id)

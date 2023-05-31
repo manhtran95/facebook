@@ -1,4 +1,5 @@
 import random
+import requests
 
 
 class MAIN_MODE_ENUM:
@@ -32,11 +33,18 @@ def get_cover_photo(url):
         return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470571/media/basic_images/default-cover-photo_furh0o.jpg'
 
 
+r = requests.get(
+    url="https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt", params={})
+WORDS = []
+for word in r.text.split():
+    WORDS.append(word)
+l = len(WORDS)
+
+
 def generate_sentence():
     wordCount = random.randint(20, 40)
-    word_file = "/usr/share/dict/words"
-    WORDS = open(word_file).read().splitlines()
-    l = len(WORDS)
+
+    # extracting data in json format
     s = ''
     for i in range(wordCount):
         i = random.randint(0, l-1)

@@ -47,7 +47,8 @@ class GeneralView(LoginRequiredMixin, View):
             'author': newPost.author.__str__(),
             'author_image': newPost.author.get_profile_picture_mini(),
             'pub_timestamp': datetime.timestamp(newPost.pub_datetime)*1000,
-            'post_text': newPost.post_text
+            'post_text': newPost.post_text,
+            'like_number': 0,
         }
 
         # process post images

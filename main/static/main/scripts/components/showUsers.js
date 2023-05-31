@@ -3,6 +3,7 @@ import { processFriending } from "./friending.js"
 import { processProfileLink } from "../profile.js"
 
 export function showUsers(userList, sectionName, parentIdentifier) {
+    const maxZIndex = 50000;
     let userTemplate = document.querySelector(`.original-user-template`);
     let parent = document.querySelector(parentIdentifier)
     parent.clearChildren()
@@ -12,6 +13,7 @@ export function showUsers(userList, sectionName, parentIdentifier) {
         let thisUserClass = `user${i}`
         newUser.classList.add(thisUserClass)
         newUser.classList.add(`${sectionName}-user`)
+        newUser.style.zIndex = `${maxZIndex - i}`
         parent.appendChild(newUser)
         let img = document.querySelector(`${parentIdentifier} .${thisUserClass} img`)
         img.src = userInfo.profile_picture

@@ -28,10 +28,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--mode', type=str, help="Mode")
+        parser.add_argument('--num-users', type=str, help="Mode")
 
     def handle(self, *args, **options):
         self.stdout.write('seeding data...')
-        run_seed(self, options['mode'])
+        num_users = int(options['num_users']) if options['num_users'] else 0
+        run_seed(self, options['mode'], num_users)
         self.stdout.write('done.')
 
 
@@ -40,7 +42,7 @@ def clear_data():
     print('Clearing data!!')
 
 
-NUM_USERS = 30
+# NUM_USERS = 30
 NUM_POSTS_MIN = 10
 NUM_POSTS_MAX = 50
 NUM_FRIENDS_MIN = 15
@@ -94,11 +96,11 @@ def random_date(start, end):
     return (start + timedelta(seconds=random_second)).replace(tzinfo=pytz.utc)
 
 
-def generateUsersAndPosts():
+def generateUsersAndPosts(num_users):
     start_time = time.time()
     print("Generate Users and Posts")
     # make users and posts
-    NUM_USERS = 80
+    NUM_USERS = num_users
     users = []
     d1 = datetime.strptime('6/1/2022 1:30 PM', '%m/%d/%Y %I:%M %p')
     d2 = datetime.strptime('5/25/2023 4:50 AM', '%m/%d/%Y %I:%M %p')
@@ -150,6 +152,7 @@ def generate_friendings():
             friendings.append(new_fr)
     Friending.objects.bulk_create(
         friendings, batch_size=1000, ignore_conflicts=True)
+    generate_friend_requests()
     print("--- all users: %.2f seconds ---" % (time.time() - start_time))
 
 
@@ -162,7 +165,7 @@ def generate_likes():
     for user in all_users:
         post_ids = Post.get_friend_post_ids(user)
         random.shuffle(post_ids)
-        liked_post_ids = post_ids[:len(post_ids)//4]
+        liked_post_ids = post_ids[:len(post_ids)//6]
         for post_id in liked_post_ids:
             new_like = Post.likes.through(post_id=post_id, appuser_id=user.id)
             likes.append(new_like)
@@ -181,16 +184,27 @@ def update_profile_picture():
 
 
 def generate_friend_requests():
-    all_users = AppUser.objects.all()
-    users_count = all_users.count()
+    all_users = AppUser.objects.all().order_by('pk')
+    users_count = len(all_users)
+    d = {}
+    requests = []
     for i in range(users_count):
         current_user = all_users[i]
-        for j in range(3):
+        for j in range(4):
             other_user = all_users[random.randint(0, users_count-1)]
-            try:
-                Friending.make_friend_requests(current_user, other_user)
-            except Exception:
-                pass
+            smallId, bigId = min(current_user.id, other_user.id), max(
+                current_user.id, other_user.id)
+            if (smallId == bigId or (smallId, bigId) in d):
+                continue
+            d[(smallId, bigId)] = 1
+            r = Friending.make_friend_request(current_user, other_user)
+            if r:
+                requests.append(r)
+    Friending.objects.bulk_create(
+        requests,
+        update_conflicts=True,
+        unique_fields=['first', 'second'],
+        update_fields=['state', 'sent'],)
 
 
 def randomize_datetimes():
@@ -224,7 +238,7 @@ def test_bulk():
     print("--- %.2f seconds ---" % (time.time() - start_time))
 
 
-def run_seed(self, mode):
+def run_seed(self, mode, num_users):
     """ Seed database based on mode
 
     :param mode: generate
@@ -233,11 +247,13 @@ def run_seed(self, mode):
 
     match mode:
         case "generate":
-            generateUsersAndPosts()
+            generateUsersAndPosts(num_users)
         case "friending":
             generate_friendings()
         case "like":
             generate_likes()
+        case "rq":
+            generate_friend_requests()
 
 
 # python manage.py seed --mode=dt
