@@ -180,3 +180,6 @@ CLOUDINARY_STORAGE = {
     'API_KEY': env('CLOUDINARY_API_KEY'),
     'API_SECRET': env('CLOUDINARY_API_SECRET')
 }
+
+CSRF_TRUSTED_ORIGINS = ['http://*.mydomain.com',
+                        'http://*.127.0.0.1', 'http://localhost:1337']

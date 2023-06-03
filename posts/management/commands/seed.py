@@ -95,7 +95,12 @@ def random_date(start, end):
     return (start + timedelta(seconds=random_second)).replace(tzinfo=pytz.utc)
 
 
-def generateUsersAndPosts(num_users):
+def generateTest():
+    print("Generate Test User")
+    AppUser.make_user(True)
+
+
+def generateAll(num_users):
     start_time = time.time()
     print("Generate Users and Posts")
     # make users and posts
@@ -128,8 +133,12 @@ def generateUsersAndPosts(num_users):
         Photo.objects.bulk_create(new_photos)
     print("--- all users: %.2f seconds ---" % (time.time() - start_time))
 
+    generate_friendings()
+    generate_likes()
 
 # each user has 15 - 35 friends
+
+
 def generate_friendings():
     start_time = time.time()
     print("Generate Friendings")
@@ -229,8 +238,10 @@ def run_seed(self, mode, num_users):
     """
 
     match mode:
+        case "generateTest":
+            generateTest()
         case "generate":
-            generateUsersAndPosts(num_users)
+            generateAll(num_users)
         case "friending":
             generate_friendings()
         case "like":

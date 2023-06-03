@@ -136,7 +136,7 @@ class AppUser(AbstractUser):
     FOR SEEDING
     """
     @classmethod
-    def make_user(cls):
+    def make_user(cls, isTestUser=False):
         images = [
             'media/profile_pictures/anne-hathaway_wtefas.jpg',
             'media/profile_pictures//tuong_san_pzuffr.jpg',
@@ -149,11 +149,18 @@ class AppUser(AbstractUser):
             'media/profile_pictures/scarlett_johansson_p7ctuy.jpg',
             'media/profile_pictures/katheryn_winnick_i00jun.jpg',
         ]
-        first_name = names.get_first_name()
-        last_name = names.get_last_name()
-        username = first_name.lower() + str(random.randint(100, 10000))
-        email = username + "@gmail.com"
-        password = 'abc123'
+        if isTestUser:
+            first_name = 'Test'
+            last_name = 'User'
+            username = 'test'
+            email = username + "@gmail.com"
+            password = 'test1234'
+        else:
+            first_name = names.get_first_name()
+            last_name = names.get_last_name()
+            username = first_name.lower() + str(random.randint(100, 10000))
+            email = username + "@gmail.com"
+            password = 'abc123'
         try:
             user = AppUser.objects.create_user(
                 username, email, password, first_name=first_name, last_name=last_name, profile_picture=images[random.randint(0, len(images) - 1)])
