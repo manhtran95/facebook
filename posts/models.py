@@ -36,7 +36,7 @@ class Post(models.Model):
             'author': self.author.__str__(),
             'author_main_url': reverse('main:main', args=(self.author.id,)),
             'author_image': self.author.get_profile_picture_mini(),
-            'pub_timestamp': datetime.timestamp(self.pub_datetime)*1000,
+            'pub_timestamp': datetime.timestamp(self.pub_datetime) * 1000,
             'post_text': self.post_text,
             'post_edit_url': reverse('posts:edit', args=(self.id,)) if self.author.id == user.id else '',
             'post_delete_url': reverse('posts:delete', args=(self.id,)) if self.author.id == user.id else '',
@@ -66,7 +66,7 @@ class Post(models.Model):
             'author': author.__str__(),
             'author_main_url': reverse('main:main', args=(author.id,)),
             'author_image': author.get_profile_picture_mini(),
-            'pub_timestamp': datetime.timestamp(self.pub_datetime)*1000,
+            'pub_timestamp': datetime.timestamp(self.pub_datetime) * 1000,
             'post_text': self.post_text,
             'post_edit_url': reverse('posts:edit', args=(self.id,)) if author.id == user.id else '',
             'post_delete_url': reverse('posts:delete', args=(self.id,)) if author.id == user.id else '',
@@ -90,7 +90,7 @@ class Post(models.Model):
             cursor.execute(
                 """
                     SELECT p.id as pid
-                    FROM posts_post p INNER JOIN users_appuser u 
+                    FROM posts_post p INNER JOIN users_appuser u
                     ON author_id = u.id INNER JOIN friending_friending fr ON
                     (u.id=fr.second_id AND fr.first_id=%s OR fr.second_id=%s AND u.id=first_id) AND fr.state='FR'
                     ORDER BY p.pub_datetime DESC;
@@ -108,7 +108,7 @@ class Post(models.Model):
         # get all posts' necessary data
         data = []
         for post in Post.objects.select_related('author').prefetch_related('photo_set').prefetch_related('likes')   \
-                .filter(pk__in=pid_list).order_by('-pub_datetime')[offset:offset+limit]:
+                .filter(pk__in=pid_list).order_by('-pub_datetime')[offset:offset + limit]:
             data.append(post.get_post_data(user))
 
         return data, next_offset
@@ -125,7 +125,7 @@ class Post(models.Model):
             cursor.execute(
                 """
                     SELECT p.id as pid
-                    FROM posts_post p INNER JOIN users_appuser u 
+                    FROM posts_post p INNER JOIN users_appuser u
                     ON author_id = u.id INNER JOIN friending_friending fr ON
                     (u.id=fr.second_id AND fr.first_id=%s OR fr.second_id=%s AND u.id=first_id) AND fr.state='FR'
                     ORDER BY p.pub_datetime DESC;
@@ -143,18 +143,6 @@ class Post(models.Model):
     def test(cls):
         kwargs = {'pk__in': [3, 2]}
         return Post.objects.prefetch_related('photo_set').prefetch_related('likes').filter(**kwargs)
-
-    @classmethod
-    def get_likes(cls):
-        l = [1, 2]
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM posts_post_likes WHERE post_id = %s OR post_id = %s", [
-                    1, 2]
-                # "SELECT * FROM posts_post_likes WHERE post_id = ANY(%s)", [l]
-            )
-            columns = [col[0] for col in cursor.description]
-            return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
 def image_file_name(instance, filename):

@@ -156,7 +156,7 @@ class AppUser(AbstractUser):
         password = 'abc123'
         try:
             user = AppUser.objects.create_user(
-                username, email, password, first_name=first_name, last_name=last_name, profile_picture=images[random.randint(0, len(images)-1)])
+                username, email, password, first_name=first_name, last_name=last_name, profile_picture=images[random.randint(0, len(images) - 1)])
         except Exception as e:
             print(e)
             return None

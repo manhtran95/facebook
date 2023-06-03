@@ -29,7 +29,7 @@ class LoginView(View):
         user = authenticate(request, username=username, password=password)
         if user is None:
             messages.error(request, "Invalid username and/or password!")
-            return render(request, 'users/login.html',  {})
+            return render(request, 'users/login.html', {})
         else:
             login(request, user)
             return HttpResponseRedirect(reverse('main:main', args=(user.id,)))
@@ -43,7 +43,7 @@ class RegisterView(View):
         try:
             user = AppUser.objects.create_user(
                 username, email, password, first_name=body['first_name'], last_name=body['last_name'])
-        except IntegrityError as e:
+        except IntegrityError:
             return JsonResponse({'error': 'Username already exists.'})
 
         login(request, user)

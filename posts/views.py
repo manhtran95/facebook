@@ -27,7 +27,7 @@ class PhotoDataView(LoginRequiredMixin, View):
             'author': author.__str__(),
             'author_main_url': reverse('main:main', args=(author.id,)),
             'author_image': author.get_profile_picture_mini(),
-            'pub_timestamp': datetime.timestamp(photo.pub_datetime)*1000,
+            'pub_timestamp': datetime.timestamp(photo.pub_datetime) * 1000,
             'full_url': photo.get_full_image(),
         }
         return JsonResponse({
@@ -46,7 +46,7 @@ class GeneralView(LoginRequiredMixin, View):
         p = {
             'author': newPost.author.__str__(),
             'author_image': newPost.author.get_profile_picture_mini(),
-            'pub_timestamp': datetime.timestamp(newPost.pub_datetime)*1000,
+            'pub_timestamp': datetime.timestamp(newPost.pub_datetime) * 1000,
             'post_text': newPost.post_text,
             'like_number': 0,
         }
@@ -86,9 +86,9 @@ class GeneralView(LoginRequiredMixin, View):
         total_num = len(posts)
         next_offset = offset + NUM_POSTS_LOAD if total_num > offset + NUM_POSTS_LOAD else -1
 
-        l = [post.get_post_data(user)
-             for post in posts[offset:offset+NUM_POSTS_LOAD]]
-        return JsonResponse({'page': l, 'next_offset': next_offset})
+        data = [post.get_post_data(user)
+                for post in posts[offset:offset + NUM_POSTS_LOAD]]
+        return JsonResponse({'page': data, 'next_offset': next_offset})
 
 
 class EditView(LoginRequiredMixin, View):

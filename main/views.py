@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from users.models import AppUser
-from django.urls import reverse
 from friending.models import Friending
 from helper.helper import MAIN_MODE_ENUM
 

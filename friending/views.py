@@ -7,7 +7,6 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from users.models import AppUser
-from django.urls import reverse
 
 
 class IndexView(LoginRequiredMixin, View):

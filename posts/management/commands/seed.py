@@ -9,7 +9,6 @@ import logging
 from users.models import AppUser
 from posts.models import Post, Photo
 from friending.models import Friending
-import random
 
 logger = logging.getLogger('simple_example')
 logger.setLevel(logging.DEBUG)
@@ -87,7 +86,7 @@ num_photo_images = len(photo_images)
 
 def random_date(start, end):
     """
-    This function will return a random datetime between two datetime 
+    This function will return a random datetime between two datetime
     objects.
     """
     delta = end - start
@@ -101,7 +100,6 @@ def generateUsersAndPosts(num_users):
     print("Generate Users and Posts")
     # make users and posts
     NUM_USERS = num_users
-    users = []
     d1 = datetime.strptime('6/1/2022 1:30 PM', '%m/%d/%Y %I:%M %p')
     d2 = datetime.strptime('5/25/2023 4:50 AM', '%m/%d/%Y %I:%M %p')
     for i in range(NUM_USERS):
@@ -124,7 +122,7 @@ def generateUsersAndPosts(num_users):
             for j in range(num_photos):
                 new_photo = Photo(author=post.author, post=post,
                                   image=photo_images[random.randint(
-                                      0, num_photo_images-1)],
+                                      0, num_photo_images - 1)],
                                   pub_datetime=post.pub_datetime)
                 new_photos.append(new_photo)
         Photo.objects.bulk_create(new_photos)
@@ -144,7 +142,7 @@ def generate_friendings():
             NUM_FRIENDS_MIN, NUM_FRIENDS_MAX)
 
         for j in range(n):
-            second_user = all_users[random.randint(0, users_count-1)]
+            second_user = all_users[random.randint(0, users_count - 1)]
             smallId, bigId = min(user.id, second_user.id), max(
                 user.id, second_user.id)
             new_fr = Friending(first_id=smallId, second_id=bigId, sent=user.id,
@@ -165,7 +163,7 @@ def generate_likes():
     for user in all_users:
         post_ids = Post.get_friend_post_ids(user)
         random.shuffle(post_ids)
-        liked_post_ids = post_ids[:len(post_ids)//6]
+        liked_post_ids = post_ids[:len(post_ids) // 6]
         for post_id in liked_post_ids:
             new_like = Post.likes.through(post_id=post_id, appuser_id=user.id)
             likes.append(new_like)
@@ -179,7 +177,7 @@ def update_profile_picture():
     all_users = AppUser.objects.all()
     for i in range(all_users.count()):
         user = all_users[i]
-        user.profile_picture = images[random.randint(0, len(images)-1)]
+        user.profile_picture = images[random.randint(0, len(images) - 1)]
         user.save()
 
 
@@ -191,7 +189,7 @@ def generate_friend_requests():
     for i in range(users_count):
         current_user = all_users[i]
         for j in range(4):
-            other_user = all_users[random.randint(0, users_count-1)]
+            other_user = all_users[random.randint(0, users_count - 1)]
             smallId, bigId = min(current_user.id, other_user.id), max(
                 current_user.id, other_user.id)
             if (smallId == bigId or (smallId, bigId) in d):
@@ -214,27 +212,12 @@ def randomize_datetimes():
 
     start_time = time.time()
 
-    counter = 0
     posts = Post.objects.all()
     for post in posts:
         post.pub_datetime = random_date(d1, d2)
         # post.save()
     Post.objects.bulk_update(posts, ["pub_datetime"])
 
-    print("--- %.2f seconds ---" % (time.time() - start_time))
-
-
-def test_bulk():
-    ids = [u.id for u in Post.objects.all()]
-
-    start_time = time.time()
-    for id in ids:
-        n = Post.objects.filter(pk=id).get().post_text
-    print("--- %.2f seconds ---" % (time.time() - start_time))
-
-    start_time = time.time()
-    for u in Post.objects.filter(pk__in=ids):
-        n = u.post_text
     print("--- %.2f seconds ---" % (time.time() - start_time))
 
 

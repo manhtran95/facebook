@@ -118,7 +118,7 @@ class Friending(models.Model):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                    SELECT u.id as uid, fr.state, fr.sent FROM 
+                    SELECT u.id as uid, fr.state, fr.sent FROM
                     (SELECT id FROM users_appuser u0 WHERE u0.id = ANY(%s)) as u
                     LEFT JOIN friending_friending fr ON
                     (u.id=fr.second_id AND fr.first_id=%s OR fr.second_id=%s AND u.id=first_id)

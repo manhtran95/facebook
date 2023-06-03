@@ -6,6 +6,7 @@ class MAIN_MODE_ENUM:
     Profile = 'profile'
     Search = 'search'
     Newsfeed = 'newsfeed'
+    # comment
 
 
 def get_cloudinary_image(url, h, w):
@@ -28,7 +29,7 @@ def get_profile_picture_mini(url):
 
 def get_cover_photo(url):
     if url and 'upload/' in url:
-        return url.replace('upload/', f'upload/c_fill,h_463,w_1241/')
+        return url.replace('upload/', 'upload/c_fill,h_463,w_1241/')
     else:
         return 'https://res.cloudinary.com/dtgokkyl1/image/upload/v1683470571/media/basic_images/default-cover-photo_furh0o.jpg'
 
@@ -38,7 +39,7 @@ r = requests.get(
 WORDS = []
 for word in r.text.split():
     WORDS.append(word)
-l = len(WORDS)
+wordLen = len(WORDS)
 
 
 def generate_sentence():
@@ -47,7 +48,7 @@ def generate_sentence():
     # extracting data in json format
     s = ''
     for i in range(wordCount):
-        i = random.randint(0, l-1)
+        i = random.randint(0, wordLen - 1)
         s += WORDS[i] + ' '
     s += '.'
     return s
@@ -68,9 +69,9 @@ def compress_image(oimage):
     reduced_ratio = max(original_file_size / (100 * 1024), 1)
     if img.mode == 'RGB' and reduced_ratio > 1:
         # save image with reduced quality
-        path = f"temp_images/image.jpg"
+        path = "temp_images/image.jpg"
         img.save(path, optimize=True,
-                 quality=int(100/reduced_ratio))
+                 quality=int(100 / reduced_ratio))
         # read image into img_io
         img_io = BytesIO()
         img_io.write(open(path, 'rb').read())
