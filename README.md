@@ -7,6 +7,9 @@ This is a basic website clone of Facebook web app.
 - Friending features
 - Basic photo features
 - (Technical) SQL Optimization
+## Demo
+- Check out the live web app at https://mtran.io
+- Test user account: username(test), password(test1234)
 ## Get Started
 Create a virtualenv and activate it:
 ```
