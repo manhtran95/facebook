@@ -181,5 +181,4 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get("CLOUDINARY_API_SECRET", ''),
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://*.mydomain.com',
-                        'http://*.127.0.0.1', 'http://localhost:1337']
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(" ")
