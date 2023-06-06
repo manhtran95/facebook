@@ -28,11 +28,14 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--mode', type=str, help="Mode")
         parser.add_argument('--num-users', type=str, help="Mode")
+        parser.add_argument('--user-id', type=str, help="Mode")
 
     def handle(self, *args, **options):
         self.stdout.write('seeding data...')
         num_users = int(options['num_users']) if options['num_users'] else 0
-        run_seed(self, options['mode'], num_users)
+        user_id = int(options['user_id']) if options['user_id'] else 0
+
+        run_seed(self, options['mode'], num_users, user_id)
         self.stdout.write('done.')
 
 
@@ -240,7 +243,7 @@ def randomize_datetimes():
     print("--- %.2f seconds ---" % (time.time() - start_time))
 
 
-def run_seed(self, mode, num_users):
+def run_seed(self, mode, num_users, user_id):
     """ Seed database based on mode
 
     :param mode: generate
@@ -258,6 +261,9 @@ def run_seed(self, mode, num_users):
             generate_likes()
         case "rq":
             generate_friend_requests()
+        case "posts":
+            user = AppUser.objects.filter(pk=user_id).get()
+            generate_posts(user)
 
 
 # python manage.py seed --mode=dt
