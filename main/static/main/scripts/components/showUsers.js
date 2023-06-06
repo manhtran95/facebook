@@ -3,7 +3,7 @@ import { processFriending } from "./friending.js"
 import { processProfileLink } from "../profile.js"
 
 export function showUsers(userList, sectionName, parentIdentifier) {
-    const maxZIndex = 50000;
+    const maxZIndex = 500;
     let userTemplate = document.querySelector(`.original-user-template`);
     let parent = document.querySelector(parentIdentifier)
     parent.clearChildren()

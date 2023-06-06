@@ -97,46 +97,56 @@ def random_date(start, end):
 
 def generateTest():
     print("Generate Test User")
-    AppUser.make_user(True)
+    user = AppUser.make_user(True)
+    generate_posts(user)
 
 
 def generateAll(num_users):
+    global MAKE_TEST_USER
     start_time = time.time()
     print("Generate Users and Posts")
     # make users and posts
     NUM_USERS = num_users
-    d1 = datetime.strptime('6/1/2022 1:30 PM', '%m/%d/%Y %I:%M %p')
-    d2 = datetime.strptime('5/25/2023 4:50 AM', '%m/%d/%Y %I:%M %p')
+
     for i in range(NUM_USERS):
         new_user = AppUser.make_user()
         if not new_user:
             continue
         print(new_user.id)
-        num_posts = random.randint(NUM_POSTS_MIN, NUM_POSTS_MAX)
 
-        new_posts = []
-        for j in range(num_posts):
-            new_post_object = Post.make_post_object(new_user)
-            new_post_object.pub_datetime = random_date(d1, d2)
-            new_posts.append(new_post_object)
-        Post.objects.bulk_create(new_posts)
+        generate_posts(new_user)
 
-        new_photos = []
-        for post in new_posts:
-            num_photos = random.randint(0, 4)
-            for j in range(num_photos):
-                new_photo = Photo(author=post.author, post=post,
-                                  image=photo_images[random.randint(
-                                      0, num_photo_images - 1)],
-                                  pub_datetime=post.pub_datetime)
-                new_photos.append(new_photo)
-        Photo.objects.bulk_create(new_photos)
     print("--- all users: %.2f seconds ---" % (time.time() - start_time))
 
     generate_friendings()
     generate_likes()
 
 # each user has 15 - 35 friends
+
+
+def generate_posts(new_user):
+    d1 = datetime.strptime('6/1/2022 1:30 PM', '%m/%d/%Y %I:%M %p')
+    d2 = datetime.strptime('5/25/2023 4:50 AM', '%m/%d/%Y %I:%M %p')
+
+    num_posts = random.randint(NUM_POSTS_MIN, NUM_POSTS_MAX)
+
+    new_posts = []
+    for j in range(num_posts):
+        new_post_object = Post.make_post_object(new_user)
+        new_post_object.pub_datetime = random_date(d1, d2)
+        new_posts.append(new_post_object)
+    Post.objects.bulk_create(new_posts)
+
+    new_photos = []
+    for post in new_posts:
+        num_photos = random.randint(0, 4)
+        for j in range(num_photos):
+            new_photo = Photo(author=post.author, post=post,
+                              image=photo_images[random.randint(
+                                  0, num_photo_images - 1)],
+                              pub_datetime=post.pub_datetime)
+            new_photos.append(new_photo)
+    Photo.objects.bulk_create(new_photos)
 
 
 def generate_friendings():
